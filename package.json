@@ -2,14 +2,11 @@
   "name": "nxtturn",
   "version": "1.0.0",
   "main": "index.js",
-  
   "scripts": {
-    "build": "npm run build:css && npm run copy:files",
-    "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "copy:files": "npx cpx \"*.html\" dist/ && npx cpx \"assets/**/*\" dist/assets/",
-    "watch": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+    "build": "node build.js",
+    "watch": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "cpx": "^1.5.0",
