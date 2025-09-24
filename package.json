@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify && cpx \"*.html\" dist/ && cpx \"assets/**/*\" dist/assets/",
-    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "copy:files": "cpx \"*.html\" dist/ && cpx \"assets/**/*\" dist/assets/",
-    "watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify && npx cpx \"*.html\" dist/ && npx cpx \"assets/**/*\" dist/assets/",
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "copy:files": "npx cpx \"*.html\" dist/ && npx cpx \"assets/**/*\" dist/assets/",
+    "watch": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
