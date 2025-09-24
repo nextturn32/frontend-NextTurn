@@ -1,0 +1,869 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback & Suggestions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#faf6ff',
+                            100: '#f2e9ff',
+                            500: '#9a5aff',
+                            600: '#8338ec',
+                            700: '#6b21cf',
+                        },
+                        accent: {
+                            500: '#f53178',
+                            600: '#e11d55',
+                        },brand:{50:'#eef5ff',100:'#e0edff',200:'#cfe0ff',300:'#a8cbff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde',800:'#1a4bb8',900:'#1a4090'},
+                        ink:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'},
+                        explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+                        seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+                        exams: { DEFAULT: '#10B981', light: '#D1FAE5' },
+                        network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+                        research: { DEFAULT: '#3B82F6', light: '#DBEAFE' },
+                        messages: { DEFAULT: '#EF4444', light: '#FEE2E2' },
+                        notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow:{
+                    soft: '0 6px 20px rgba(2,6,23,.08)',
+                    'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+                    'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+                    },
+                    animation: {
+                    'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    'bounce-subtle': 'bounce-subtle 1s infinite',
+                    },
+                    keyframes: {
+                    'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity: .85} },
+                    'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+
+
+  *{ box-sizing:border-box }
+  body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+  :root{
+    --icon-sm: 22px;
+    --icon-lg: 24px;
+    --svg-stroke: 2.2;
+    --nav-h: 68px;
+    --logo-h: 22px; /* tweak this to make the logo bigger/smaller */
+  }
+
+  .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+  .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+  .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+  .nav-btn.active{ background:rgba(207,224,255,.4) }
+  .nav-btn .icon{ transition:all .2s ease }
+  .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; stroke-linecap:round; stroke-linejoin:round }
+
+  .fa-solid.icon-fa{ font-size: calc(var(--icon-sm) + 1px); text-shadow: 0 .2px 0 currentColor }
+  @media (min-width:640px){ .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) } }
+
+  .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+  .nav-label{ font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap; transition:all .2s ease; font-weight:500; margin-top:2px }
+  .nav-btn:hover .nav-label{ color:#0f172a }
+  .nav-btn.active .nav-label{ font-weight:600 }
+
+  .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle }
+  @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) } }
+
+  .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+  .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+  .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+  .no-scrollbar::-webkit-scrollbar{ display:none }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+  .toggle::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2) }
+  input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+  input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+  .dark .nt-glass{ background:rgba(15,23,42,.88); border-bottom-color:rgba(30,41,59,.6) }
+  .dark #profileMenu, .dark .menu-panel{ background:#0f172a; border-color:#1e293b }
+  .dark .nav-btn .icon{ color:#94a3b8 }
+  .dark .nav-btn:hover .nav-label{ color:#e2e8f0 }
+  .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+  .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+  .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+
+  .profile-ico{ font-size:16px; color:#475569; transition:all .2s ease }
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{ color:#2f78f0; transform:translateY(-1px) }
+  .dark .profile-ico{ color:#94a3b8 }
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{ color:#93c5fd }
+
+  html,body{ max-width:100%; overflow-x:hidden }
+  body{ padding-top:var(--nav-h); background:linear-gradient(to bottom,#f8fafc,#f1f5f9); color:#0f172a }
+
+  .nav-scroller{ overflow-x:visible!important }
+  .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+  header, header.nt-glass, header nav{ overflow:visible!important }
+
+  .menu-panel{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top center }
+  .menu-item{ display:flex; align-items:center; gap:.65rem; padding:.75rem 1rem; transition:all .15s ease }
+  .menu-item .menu-ico{ width:18px; min-width:18px; text-align:center; color:#64748b }
+  .menu-item:hover{ background:#f5f8ff }
+  .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+  /* Profile dropdown */
+  #profileMenu{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top right }
+
+  .search-container{ position:relative; transition:all .3s ease }
+  .search-container:focus-within{ transform:translateY(-1px) }
+
+  .notification-badge{
+    position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+    background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite
+  }
+  .dark .notification-badge{ border-color:#0f172a }
+
+  .icon-explore{ color:#8B5CF6 }
+  .icon-seekers{ color:#EC4899 }
+  .icon-network{ color:#F59E0B }
+  .icon-messages{ color:#3dcb38 }
+  .icon-notifications{ color:#6366F1 }
+
+  .nav-btn:hover .icon-explore{ color:#7C3AED }
+  .nav-btn:hover .icon-seekers{ color:#DB2777 }
+  .nav-btn:hover .icon-network{ color:#D97706 }
+  .nav-btn:hover .icon-messages{ color:#48ee42 }
+  .nav-btn:hover .icon-notifications{ color:#4F46E5 }
+
+  .nav-label-explore,
+  .nav-label-seekers,
+  .nav-label-network,
+  .nav-label-messages,
+  .nav-label-notifications{ color:black }
+
+  .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+  .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+  .nav-btn:hover .nav-label-network{ color:#D97706 }
+  .nav-btn:hover .nav-label-messages{ color:#39ca34 }
+  .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+  .nav-btn.active .nav-label-explore{ color:#7C3AED }
+  .nav-btn.active .nav-label-seekers{ color:#DB2777 }
+  .nav-btn.active .nav-label-network{ color:#D97706 }
+  .nav-btn.active .nav-label-messages{ color:#39ca34 }
+  .nav-btn.active .nav-label-notifications{ color:#4F46E5 }
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --text-size: 1rem;
+            --line-height: 1.6;
+        }
+        
+        body {
+            font-size: var(--text-size);
+            line-height: var(--line-height);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .accessibility-mode {
+            --text-size: 1.15rem;
+            --line-height: 1.8;
+        }
+        
+        .high-contrast {
+            --bg-color: #000;
+            --text-color: #fff;
+            --primary-color: #ffff00;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        .high-contrast .bg-white {
+            background-color: #000 !important;
+            color: #fff !important;
+            border-color: #fff !important;
+        }
+        
+        .high-contrast .text-gray-600, .high-contrast .text-gray-700 {
+            color: #ddd !important;
+        }
+        
+        .high-contrast .bg-gray-100 {
+            background-color: #222 !important;
+            color: #fff !important;
+        }
+        
+        .focus-highlight:focus {
+            outline: 3px solid #f59e0b;
+            outline-offset: 2px;
+        }
+        
+        .rating-star {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.2s;
+        }
+        
+        .rating-star:hover {
+            transform: scale(1.2);
+        }
+        
+        .emoji-rating {
+            transition: all 0.3s ease;
+        }
+        
+        .emoji-rating:hover {
+            transform: scale(1.1);
+        }
+        
+        .emoji-rating.selected {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.5));
+        }
+        
+        .form-element {
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #0ea5e9;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen">
+
+    <header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <!-- container pushed in -->
+  <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="Homepage.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+      </a>
+      <!-- Search -->
+      <div class="search-container relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-solid fa-compass icon-explore icon-fa" aria-hidden="true"></i>
+              <span class="nav-label nav-label-explore">Explore</span>
+            </a>
+
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="school.html">
+                    <i class="menu-ico fa-solid fa-school"></i>
+                    <span>Schools</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="institute.html">
+                    <i class="menu-ico fa-solid fa-building-columns"></i>
+                    <span>Institutes</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="enterprises.html">
+                    <i class="menu-ico fa-solid fa-briefcase"></i>
+                    <span>Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="government.html">
+                    <i class="menu-ico fa-solid fa-landmark"></i>
+                    <span>Government Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="">
+                    <i class="menu-ico fa-solid fa-pen-to-square"></i>
+                    <span>Exams</span>
+                  </a>
+                </li>
+                <li class="pl-10 pr-4 py-2 flex gap-2">
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test
+                  </a>
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Calendar
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="research.html">
+                    <i class="menu-ico fa-solid fa-flask"></i>
+                    <span>Research</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <span class="icon icon-seekers" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-seekers">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <span class="icon icon-network" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              </span>
+              <span class="nav-label nav-label-network">Network</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li class="relative">
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <span class="icon icon-messages" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-messages">Messages</span>
+              <span class="notification-badge">3</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li class="relative">
+            <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <span class="icon icon-notifications" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-notifications">Alerts</span>
+              <span class="notification-badge">12</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE (nudged up) -->
+          <li class="relative">
+            <button id="profileBtn"
+              class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                     hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                     focus:outline-none transition-all duration-200
+                     -translate-y-0.5 sm:-translate-y-1">
+              <div class="relative -mt-0.5 sm:-mt-1">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white" alt="Profile"/>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white"></span>
+              </div>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-soft-lg border border-slate-100 opacity-0 transition-all duration-200 scale-95">
+              
+              <div class="p-4 border-b border-slate-100">
+              <a href="profile.html" target="_self"
+                class="block p-4 border-b border-slate-100 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-t-xl"
+                id="profileHeaderLink">
+                <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+              <div>
+                <p class="font-medium text-ink-900">Alex Morgan</p>
+                <p class="text-xs text-slate-500">Premium Member</p>
+              </div>
+              </div>
+                </a>      
+              </div>
+
+
+              <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
+                <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="games.html"><i class="menu-ico fa-solid fa-gamepad"></i><span>Games</span></a></li>
+                <li class="px-4">
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                  
+                </li>
+                <li class="border-t border-slate-100 mt-2">
+                  <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
+                    <i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Progress Indicator -->
+        
+
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-2xl p-8 mb-12 shadow-lg relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mt-16 -mr-16 w-40 h-40 rounded-full bg-white opacity-10"></div>
+            <div class="absolute bottom-0 left-0 -mb-16 -ml-16 w-40 h-40 rounded-full bg-accent-500 opacity-10"></div>
+            
+            <div class="max-w-3xl relative z-10">
+                <h2 class="text-4xl font-bold mb-4">We Value Your Feedback</h2>
+                <p class="text-xl mb-6">Your thoughts and suggestions help us improve our products and services. Please take a few minutes to share your experience with us.</p>
+                <div class="flex items-center">
+                    <i class="fas fa-clock text-xl mr-2"></i>
+                    <span>This form takes about 5 minutes to complete</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Form -->
+        <form id="feedbackForm" class="bg-white rounded-2xl shadow-md p-6 mb-12">
+            <!-- Overall Rating -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Overall Experience</h3>
+                <p class="text-gray-600 mb-6">How would you rate your overall experience with our product/service?</p>
+                
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                    <div class="emoji-rating flex flex-col items-center p-4 rounded-xl border-2 border-gray-200 hover:border-primary-300 mb-4 sm:mb-0" data-rating="1">
+                        <span class="text-4xl mb-2">😞</span>
+                        <span class="font-medium">Poor</span>
+                    </div>
+                    
+                    <div class="emoji-rating flex flex-col items-center p-4 rounded-xl border-2 border-gray-200 hover:border-primary-300 mb-4 sm:mb-0" data-rating="2">
+                        <span class="text-4xl mb-2">😕</span>
+                        <span class="font-medium">Fair</span>
+                    </div>
+                    
+                    <div class="emoji-rating flex flex-col items-center p-4 rounded-xl border-2 border-gray-200 hover:border-primary-300 mb-4 sm:mb-0" data-rating="3">
+                        <span class="text-4xl mb-2">😐</span>
+                        <span class="font-medium">Average</span>
+                    </div>
+                    
+                    <div class="emoji-rating flex flex-col items-center p-4 rounded-xl border-2 border-gray-200 hover:border-primary-300 mb-4 sm:mb-0" data-rating="4">
+                        <span class="text-4xl mb-2">🙂</span>
+                        <span class="font-medium">Good</span>
+                    </div>
+                    
+                    <div class="emoji-rating flex flex-col items-center p-4 rounded-xl border-2 border-gray-200 hover:border-primary-300 mb-4 sm:mb-0" data-rating="5">
+                        <span class="text-4xl mb-2">😍</span>
+                        <span class="font-medium">Excellent</span>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="experienceRating" name="experienceRating" value="">
+            </div>
+            
+            <!-- Detailed Feedback -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Detailed Feedback</h3>
+                
+                <div class="mb-6">
+                    <label for="feedbackCategory" class="block text-lg font-medium text-gray-700 mb-2">Feedback Category</label>
+                    <select id="feedbackCategory" name="feedbackCategory" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 form-element focus-highlight">
+                        <option value="">Select a category</option>
+                        <option value="usability">Usability</option>
+                        <option value="design">Design & Appearance</option>
+                        <option value="performance">Performance</option>
+                        <option value="features">Features & Functionality</option>
+                        <option value="support">Customer Support</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="feedbackText" class="block text-lg font-medium text-gray-700 mb-2">Your Feedback</label>
+                    <textarea id="feedbackText" name="feedbackText" rows="5" placeholder="Please share your thoughts, suggestions, or concerns..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 form-element focus-highlight"></textarea>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-lg font-medium text-gray-700 mb-2">What do you like most?</label>
+                    <textarea rows="3" placeholder="Tell us what you enjoy about our product/service..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 form-element focus-highlight"></textarea>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-lg font-medium text-gray-700 mb-2">What can we improve?</label>
+                    <textarea rows="3" placeholder="What aspects would you like to see improved?" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 form-element focus-highlight"></textarea>
+                </div>
+            </div>
+            
+            <!-- Additional Questions -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Additional Information</h3>
+                
+                <div class="mb-6">
+                    <label class="block text-lg font-medium text-gray-700 mb-4">How likely are you to recommend our product/service to others?</label>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-600">Not likely</span>
+                        <span class="text-sm text-gray-600">Neutral</span>
+                        <span class="text-sm text-gray-600">Very likely</span>
+                    </div>
+                    <input type="range" min="0" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600">
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>0</span>
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span>10</span>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-lg font-medium text-gray-700 mb-2">Which features do you use most often? (Select all that apply)</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                        <div class="flex items-center">
+                            <input id="feature1" type="checkbox" class="mr-2 focus-highlight" name="features" value="dashboard">
+                            <label for="feature1" class="text-gray-700">Dashboard</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="feature2" type="checkbox" class="mr-2 focus-highlight" name="features" value="reports">
+                            <label for="feature2" class="text-gray-700">Reports</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="feature3" type="checkbox" class="mr-2 focus-highlight" name="features" value="analytics">
+                            <label for="feature3" class="text-gray-700">Analytics</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="feature4" type="checkbox" class="mr-2 focus-highlight" name="features" value="notifications">
+                            <label for="feature4" class="text-gray-700">Notifications</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Contact Information (Optional)</h3>
+                <p class="text-gray-600 mb-6">If you'd like us to follow up with you, please provide your contact details.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="name" class="block text-lg font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 form-element focus-highlight">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-lg font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your email address" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 form-element focus-highlight">
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <input id="contactPermission" type="checkbox" class="mr-2 focus-highlight" name="contactPermission">
+                    <label for="contactPermission" class="text-gray-700">I agree to be contacted regarding my feedback</label>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4">
+                <button type="button" class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors focus-highlight">
+                    <i class="fas fa-times-circle mr-2"></i> Cancel
+                </button>
+                
+                <button type="submit" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center focus-highlight pulse">
+                    <i class="fas fa-paper-plane mr-2"></i> Submit Feedback
+                </button>
+            </div>
+        </form>
+
+        <!-- FAQ Section -->
+        <section class="bg-white rounded-2xl shadow-md p-6 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2">Frequently Asked Questions</h2>
+            <p class="text-gray-600 text-center mb-8">Find answers to common questions about providing feedback</p>
+            
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">How will my feedback be used?</h3>
+                    <p class="text-gray-600">Your feedback helps us identify areas for improvement and prioritize new features. We review all submissions and use them to make informed decisions about product development.</p>
+                </div>
+                
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Can I submit feedback anonymously?</h3>
+                    <p class="text-gray-600">Yes, the contact information section is optional. If you prefer to remain anonymous, simply leave those fields blank.</p>
+                </div>
+                
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">When can I expect a response?</h3>
+                    <p class="text-gray-600">While we review all feedback, we may not be able to respond to every submission individually. If you provide contact information and request a follow-up, we'll try to respond within 5-7 business days.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Can I attach files to my feedback?</h3>
+                    <p class="text-gray-600">Currently, our feedback form doesn't support file attachments. If you have screenshots or documents you'd like to share, please mention that in your feedback and we may follow up to request them.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+
+
+
+         // navigation menu panel functions
+
+      function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    li.classList.remove('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  function togglePanel(li){
+    if(li.classList.contains('open')){ hidePanel(li) }
+    else{
+      document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
+      showPanel(li);
+    }
+  }
+
+  function toggleProfileMenu(){
+    const menu=document.getElementById('profileMenu');
+    const chevron=document.getElementById('profileChevron');
+    const expanded=menu.classList.contains('visible');
+    if(expanded){
+      menu.classList.remove('visible','opacity-100','scale-100');
+      menu.classList.add('invisible','opacity-0','scale-95');
+      chevron.classList.remove('rotate-180');
+    }else{
+      menu.classList.remove('invisible','opacity-0','scale-95');
+      menu.classList.add('visible','opacity-100','scale-100');
+      chevron.classList.add('rotate-180');
+    }
+    document.getElementById('profileBtn').setAttribute('aria-expanded', String(!expanded));
+  }
+
+  function setupThemeToggle(){
+    const toggle=document.getElementById('themeToggle');
+    const themeRow=document.getElementById('themeRow');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme=localStorage.getItem('theme');
+    if(storedTheme==='dark'||(!storedTheme&&prefersDark)){
+      document.documentElement.classList.add('dark'); toggle.checked=true;
+    }else{
+      document.documentElement.classList.remove('dark'); toggle.checked=false;
+    }
+    toggle.addEventListener('change',function(){
+      if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+      else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+    });
+    themeRow.addEventListener('click',function(e){ if(e.target!==toggle){ toggle.click() }});
+  }
+
+  function setupClickOutside(){
+    document.addEventListener('click',function(e){
+      document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+      const profileMenu=document.getElementById('profileMenu');
+      const profileBtn=document.getElementById('profileBtn');
+      if(profileMenu.classList.contains('visible') && !profileMenu.contains(e.target) && !profileBtn.contains(e.target)){ toggleProfileMenu() }
+    });
+  }
+
+  function setupMobileBehavior(){
+  document.querySelectorAll('li[data-menu]').forEach(li=>{
+    const btn = li.querySelector('.nav-btn'); // works for <a> or <button>
+    if (!btn) return;
+
+    btn.addEventListener('click', function(e){
+      // prevent navigation for anchor menus
+      if (btn.tagName === 'A') e.preventDefault();
+      // on mobile, tap toggles the panel; on desktop, hover already handles it
+      if (window.innerWidth < 768) togglePanel(li);
+    });
+  });
+}
+
+  function setupKeyboardNav(){
+    // open with Enter/Space, close with Escape
+    document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{
+      btn.addEventListener('keydown', (e)=>{
+        const li=btn.closest('li[data-menu]');
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); togglePanel(li) }
+        if(e.key==='Escape'){ hidePanel(li) }
+      });
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        // close any open panels
+        document.querySelectorAll('li[data-menu].open').forEach(li=> hidePanel(li));
+        const pm=document.getElementById('profileMenu');
+        if(pm.classList.contains('visible')) toggleProfileMenu();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setupThemeToggle();
+    setupClickOutside();
+    setupMobileBehavior();
+    setupKeyboardNav();
+    document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+    document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+  });
+
+
+
+
+
+
+        // Only the elements that still exist
+        const feedbackForm = document.getElementById('feedbackForm');
+        const emojiRatings = document.querySelectorAll('.emoji-rating');
+        const experienceRating = document.getElementById('experienceRating');
+
+        // Emoji Rating Selection
+        emojiRatings.forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                emojiRatings.forEach(e => e.classList.remove('selected', 'bg-primary-50', 'border-primary-500'));
+                emoji.classList.add('selected', 'bg-primary-50', 'border-primary-500');
+                experienceRating.value = emoji.getAttribute('data-rating');
+            });
+
+            emoji.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    emoji.click();
+                }
+            });
+
+            emoji.setAttribute('tabindex', '0');
+        });
+
+        // Form Submission
+        feedbackForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!experienceRating.value) {
+                showNotification('Please provide an overall rating', 'error');
+                return;
+            }
+            showNotification('Thank you for your feedback! We appreciate your time.', 'success');
+            setTimeout(() => {
+                feedbackForm.reset();
+                emojiRatings.forEach(e => e.classList.remove('selected', 'bg-primary-50', 'border-primary-500'));
+            }, 2000);
+        });
+
+        // Simple notification toast
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transform transition-all duration-300 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.classList.add('translate-x-0', 'opacity-100');
+            }, 10);
+            setTimeout(() => {
+                notification.classList.remove('translate-x-0', 'opacity-100');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add focus styles to form elements
+        const formElements = feedbackForm.querySelectorAll('input, select, textarea, button');
+        formElements.forEach(el => {
+            el.classList.add('focus-highlight');
+        });
+    </script>
+</body>
+</html>
+

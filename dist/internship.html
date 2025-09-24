@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internship Portal</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- SINGLE merged Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            /* Core palette */
+            primary: '#1e40af',
+            secondary: '#2563eb',
+            accent: '#3b82f6',
+            light: '#f3f4f6',
+            dark: '#1f2937',
+            /* Supporting */
+            brand:{50:'#eef5ff',100:'#e0edff',200:'#cfe0ff',300:'#a8cbff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde',800:'#1a4bb8',900:'#1a4090'},
+            ink:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'},
+            explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+            seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+            network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+            messages: { DEFAULT: '#3B82F6', light: '#DBEAFE' }, /* align with UI (blue) */
+            notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+          },
+          boxShadow:{
+            soft: '0 6px 20px rgba(2,6,23,.08)',
+            'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+            'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+          },
+          animation: {
+            'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-subtle': 'bounce-subtle 1s infinite',
+          },
+          keyframes: {
+            'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity:.85} },
+            'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *{ box-sizing:border-box }
+    body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+    .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+    /* Icon sizing & weights */
+    :root{ --icon-sm:22px; --icon-lg:24px; --svg-stroke:2.2 }
+    .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+    .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+    .nav-btn.active{ background:rgba(207,224,255,.4) }
+    .nav-btn .icon{ transition:all .2s ease }
+    .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; }
+    .fa-solid.icon-fa{ font-size: calc(var(--icon-sm) + 1px); text-shadow: 0 .2px 0 currentColor; }
+    @media (min-width:640px){ .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) } }
+    .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+
+    .nav-label{ font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap; transition:all .2s ease; font-weight:500; margin-top:2px; }
+    .nav-btn:hover .nav-label{ color:#0f172a }
+    .nav-btn.active .nav-label{ font-weight:600 }
+    /* remove forced black from earlier version */
+    .nav-label-explore,.nav-label-seekers,.nav-label-network,.nav-label-messages,.nav-label-notifications{ color:inherit }
+
+    .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; }
+    @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) } }
+
+    .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+    .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+    .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+    .no-scrollbar::-webkit-scrollbar{ display:none }
+    .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+    .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+    .toggle::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2) }
+    input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+    input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+    /* Layout constants */
+    :root{ --nav-h:68px }
+    html,body{ max-width:100%; overflow-x:hidden }
+    body{ padding-top:var(--nav-h) }
+
+    .nav-scroller{ overflow-x:visible!important }
+    .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+    header, header.nt-glass, header nav{ overflow:visible!important }
+
+    .menu-panel{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top center; }
+    .menu-item{ display:flex; align-items:center; gap:.65rem; padding:.75rem 1rem; transition:all .15s ease; }
+    .menu-item .menu-ico{ width:18px; min-width:18px; text-align:center; color:#64748b; }
+    .menu-item:hover{ background:#f5f8ff }
+    .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+    #profileMenu{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top right; }
+
+    .search-container{ position:relative; transition:all .3s ease }
+    .search-container:focus-within{ transform:translateY(-1px) }
+
+    .notification-badge{
+      position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+      background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+      display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite;
+    }
+
+    .icon-explore{ color:#8B5CF6 }
+    .icon-seekers{ color:#EC4899 }
+    .icon-network{ color:#F59E0B }
+    .icon-messages{ color:#3B82F6 } /* synced with config */
+    .icon-notifications{ color:#6366F1 }
+
+    .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+    .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+    .nav-btn:hover .nav-label-network{ color:#D97706 }
+    .nav-btn:hover .nav-label-messages{ color:#3B82F6 }
+    .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+
+    /* ===== main page ===== */
+    html, body { height: 100%; }
+    body { overflow: hidden; } /* columns handle scroll */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .internship-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .filter-section { transition: all 0.3s ease; }
+    .ad-container { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; }
+
+    /* Reusable chip with dark-mode contrast */
+    .chip{ border-radius:9999px; padding:.25rem .75rem; font-size:.75rem; line-height:1; display:inline-block }
+    .dark .chip{ background-color:#1f2937 !important; color:#cbd5e1 !important; border:1px solid #334155 }
+
+    /* Dark mode surfaces */
+    .dark .bg-white { background-color:#0f172a !important; }
+    .dark .text-dark, .dark .text-ink-700 { color:#e2e8f0 !important; }
+    .dark .menu-panel, .dark #profileMenu{ background:#0f172a; border-color:#1e293b }
+    .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+    .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+    .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+    .dark .notification-badge{ border-color:#0f172a }
+
+    /* safer column scroll */
+    aside > .overflow-y-auto, section .overflow-y-auto { overscroll-behavior: contain; }
+  </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-slate-950 h-screen text-slate-900 dark:text-slate-100">
+
+  <!-- NAV -->
+  <header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70 dark:bg-slate-900/85 dark:border-slate-800">
+    <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <div class="flex items-center gap-3 py-2.5">
+        <!-- BRAND -->
+        <a class="select-none inline-flex items-center" href="Homepage.html" aria-label="NxtTurn">
+          <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+        </a>
+
+        <!-- Search -->
+        <div class="search-container relative ml-3 hidden md:block">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+            <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+            </svg>
+          </span>
+          <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400 dark:bg-slate-800/70 dark:border-slate-700 dark:text-slate-200"
+                 placeholder="Search..." type="search"/>
+        </div>
+
+        <div class="flex-1"></div>
+
+        <!-- ICON STRIP (trimmed for brevity, all icons consistent) -->
+        <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+          <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+            <!-- EXPLORE -->
+            <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+              <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0">
+                <i class="icon fa-solid fa-compass icon-explore icon-fa"></i>
+                <span class="nav-label nav-label-explore">Explore</span>
+              </a>
+              <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white dark:bg-slate-900 dark:border-slate-800 shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+                <ul class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                  <li><a class="menu-item hover:bg-brand-50/70 dark:hover:bg-slate-800" href="school.html"><i class="menu-ico fa-solid fa-school"></i><span>Schools</span></a></li>
+                  <li><a class="menu-item hover:bg-brand-50/70 dark:hover:bg-slate-800" href="institute.html"><i class="menu-ico fa-solid fa-building-columns"></i><span>Institutes</span></a></li>
+                  <li><a class="menu-item hover:bg-brand-50/70 dark:hover:bg-slate-800" href="enterprises.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Enterprises</span></a></li>
+                  <li><a class="menu-item hover:bg-brand-50/70 dark:hover:bg-slate-800" href="government.html"><i class="menu-ico fa-solid fa-landmark"></i><span>Government Enterprises</span></a></li>
+                  <li><a class="menu-item hover:bg-brand-50/70 dark:hover:bg-slate-800" href="#"><i class="menu-ico fa-solid fa-pen-to-square"></i><span>Exams</span></a></li>
+                  <li class="pl-10 pr-4 py-2 flex gap-2">
+                    <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html"><i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test</a>
+                    <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html"><i class="fa-solid fa-calendar-days mr-1"></i> Calendar</a>
+                  </li>
+                  <li><a class="menu-item hover:bg-brand-50/70 dark:hover:bg-slate-800" href="research.html"><i class="menu-ico fa-solid fa-flask"></i><span>Research</span></a></li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- SEEKERS -->
+            <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+              <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0">
+                <span class="icon icon-seekers" aria-hidden="true">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </span>
+                <span class="nav-label nav-label-seekers">Seekers</span>
+              </a>
+              <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white dark:bg-slate-900 dark:border-slate-800 shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+                <ul class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                  <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                  <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                  <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                  <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                  <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                  <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- NETWORK -->
+            <li>
+              <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0">
+                <span class="icon icon-network" aria-hidden="true">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                </span>
+                <span class="nav-label nav-label-network">Network</span>
+              </a>
+            </li>
+
+            <!-- MESSAGES -->
+            <li class="relative">
+              <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0">
+                <span class="icon icon-messages" aria-hidden="true">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                  </svg>
+                </span>
+                <span class="nav-label nav-label-messages">Messages</span>
+                <span class="notification-badge">3</span>
+              </a>
+            </li>
+
+            <!-- NOTIFICATIONS -->
+            <li class="relative">
+              <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0">
+                <span class="icon icon-notifications" aria-hidden="true">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                  </svg>
+                </span>
+                <span class="nav-label nav-label-notifications">Alerts</span>
+                <span class="notification-badge">12</span>
+              </a>
+            </li>
+
+            <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+            <!-- PROFILE -->
+            <li class="relative">
+              <button id="profileBtn"
+                class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                       hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                       focus:outline-none transition-all duration-200
+                       -translate-y-0.5 sm:-translate-y-1 dark:hover:bg-slate-800 dark:text-slate-200 dark:hover:ring-slate-700">
+                <div class="relative -mt-0.5 sm:-mt-1">
+                  <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white dark:ring-slate-800" alt="Profile"/>
+                  <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white dark:ring-slate-900"></span>
+                </div>
+                <span class="hidden sm:inline">Profile</span>
+                <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+
+              <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white dark:bg-slate-900 shadow-soft-lg border border-slate-100 dark:border-slate-800 opacity-0 transition-all duration-200 scale-95">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-800">
+                  <a href="profile.html" class="block p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-t-xl" id="profileHeaderLink">
+                    <div class="flex items-center gap-3">
+                      <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+                      <div>
+                        <p class="font-medium text-ink-900 dark:text-slate-100">Alex Morgan</p>
+                        <p class="text-xs text-slate-500">Premium Member</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <ul class="py-2 text-sm">
+                  <li><a class="menu-item" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                  <li><a class="menu-item" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                  <li><a class="menu-item" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                  <li><a class="menu-item" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                  <li class="px-4">
+                    <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5">
+                      <span class="flex items-center gap-3"><i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span></span>
+                      <span class="flex items-center gap-2">
+                        <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                        <span class="toggle" aria-hidden="true"></span>
+                      </span>
+                    </button>
+                  </li>
+                  <li class="border-t border-slate-100 dark:border-slate-800 mt-2">
+                    <a class="menu-item text-rose-600 hover:bg-rose-50/70 dark:hover:bg-rose-950/30" href="login.html"><i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span></a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Page container -->
+  <main class="max-w-[1600px] xl:max-w-[1760px] mx-auto px-6 py-6 h-full">
+    <div class="flex flex-col lg:flex-row gap-5 h-full">
+
+      <!-- LEFT: Filters -->
+      <aside class="w-full lg:w-[22%] xl:w-[21%] bg-white dark:bg-slate-900 rounded-xl shadow p-6 h-full">
+        <div class="h-full overflow-y-auto scrollbar-hide pr-1">
+          <h2 class="text-xl font-bold text-dark dark:text-slate-100 mb-6 flex items-center">
+            <i class="fas fa-filter mr-2 text-accent"></i>Filters
+          </h2>
+
+          <!-- Search -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Search</label>
+            <div class="relative">
+              <input type="text" placeholder="Search Internships" class="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+              <i class="fas fa-magnifying-glass absolute right-3 top-3 text-gray-400"></i>
+            </div>
+          </div>
+
+          <!-- Country -->
+          <div class="mb-6 filter-section">
+            <div class="flex justify-between items-center cursor-pointer" onclick="toggleFilter('countryFilter')">
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">Country</label>
+              <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+            <div id="countryFilter" class="mt-2 space-y-2">
+              <select class="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                <option value="">Select Country</option>
+                <option value="usa">United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="canada">Canada</option>
+                <option value="australia">Australia</option>
+                <option value="germany">Germany</option>
+                <option value="france">France</option>
+                <option value="japan">Japan</option>
+                <option value="singapore">Singapore</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- City -->
+          <div class="mb-6 filter-section">
+            <div class="flex justify-between items-center cursor-pointer" onclick="toggleFilter('cityFilter')">
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">City</label>
+              <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+            <div id="cityFilter" class="mt-2 space-y-2">
+              <select class="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                <option value="">Select City</option>
+                <option>New York</option><option>London</option><option>Toronto</option>
+                <option>Sydney</option><option>Berlin</option><option>Paris</option>
+                <option>Tokyo</option><option>Singapore</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Industry -->
+          <div class="mb-6 filter-section">
+            <div class="flex justify-between items-center cursor-pointer" onclick="toggleFilter('industryFilter')">
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">Industry</label>
+              <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+            <div id="industryFilter" class="mt-2 space-y-2">
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">Technology</span></label>
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">Finance</span></label>
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">Marketing</span></label>
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">Healthcare</span></label>
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div class="mb-6 filter-section">
+            <div class="flex justify-between items-center cursor-pointer" onclick="toggleFilter('durationFilter')">
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">Duration</label>
+              <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+            <div id="durationFilter" class="mt-2 space-y-2">
+              <label class="flex items-center"><input type="radio" name="duration" class="h-4 w-4 text-primary border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">3 months</span></label>
+              <label class="flex items-center"><input type="radio" name="duration" class="h-4 w-4 text-primary border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">6 months</span></label>
+              <label class="flex items-center"><input type="radio" name="duration" class="h-4 w-4 text-primary border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">1 year</span></label>
+            </div>
+          </div>
+
+          <!-- Work Type -->
+          <div class="mb-6 filter-section">
+            <div class="flex justify-between items-center cursor-pointer" onclick="toggleFilter('workTypeFilter')">
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">Work Type</label>
+              <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+            <div id="workTypeFilter" class="mt-2 space-y-2">
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">Remote</span></label>
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">Hybrid</span></label>
+              <label class="flex items-center"><input type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 dark:border-slate-600"><span class="ml-2 text-sm text-gray-700 dark:text-slate-300">On-site</span></label>
+            </div>
+          </div>
+
+          <button class="w-full bg-primary text-white py-2 rounded-lg font-medium hover:bg-secondary transition">Apply Filters</button>
+          <button class="w-full mt-2 text-gray-500 dark:text-slate-300 py-2 rounded-lg font-medium hover:text-primary transition">Reset Filters</button>
+        </div>
+      </aside>
+
+      <!-- MIDDLE: Listings -->
+      <section class="w-full lg:w-[56%] xl:w-[58%] bg-transparent h-full">
+        <!-- Gradient heading bar -->
+        <div class="mb-4">
+          <div class="w-full rounded-xl p-4 bg-gradient-to-r from-primary via-accent to-secondary shadow">
+            <h2 class="text-white text-lg font-semibold flex items-center">
+              <i class="fas fa-briefcase mr-2"></i>Internships Available
+            </h2>
+          </div>
+        </div>
+
+        <!-- Sort row -->
+        <div class="flex items-center justify-end mb-3">
+          <div class="flex items-center">
+            <span class="text-sm text-gray-600 dark:text-slate-300 mr-2">Sort by:</span>
+            <select class="text-sm border border-gray-300 dark:border-slate-700 rounded-lg px-2 py-1 focus:ring-primary focus:border-primary bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+              <option>Most Relevant</option>
+              <option>Newest</option>
+              <option>Highest Paid</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Scrollable list area -->
+        <div id="listScroller" class="h-[calc(100%-92px)] overflow-y-auto scrollbar-hide pr-1">
+          <div id="internshipList" class="space-y-4">
+
+            <!-- 1 -->
+            <div class="internship-card bg-white dark:bg-slate-900 rounded-xl shadow p-6 transition duration-300">
+              <div class="flex justify-between">
+                <div>
+                  <h3 class="font-bold text-lg text-dark dark:text-slate-100">Frontend Developer Intern</h3>
+                  <p class="text-primary font-medium">TechCorp Inc.</p>
+                </div>
+                <div class="h-10 w-10 rounded-lg bg-blue-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-laptop-code text-blue-500"></i>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-slate-400">
+                <span class="flex items-center mr-4"><i class="fas fa-location-dot mr-1"></i> New York, USA</span>
+                <span class="flex items-center mr-4"><i class="fas fa-clock mr-1"></i> Full-time</span>
+                <span class="flex items-center"><i class="fas fa-dollar-sign mr-1"></i> $3,500/mo</span>
+              </div>
+              <p class="mt-3 text-gray-600 dark:text-slate-300">Build responsive web apps using React and modern CSS frameworks.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="chip bg-blue-100 text-primary">React</span>
+                <span class="chip bg-blue-100 text-primary">JavaScript</span>
+                <span class="chip bg-blue-100 text-primary">HTML/CSS</span>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500 dark:text-slate-400">Posted 2 days ago</span>
+                <!-- CHANGED: button -> anchor -->
+                <a href="applyinternship.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary transition">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="internship-card bg-white dark:bg-slate-900 rounded-xl shadow p-6 transition duration-300">
+              <div class="flex justify-between">
+                <div>
+                  <h3 class="font-bold text-lg text-dark dark:text-slate-100">Data Science Intern</h3>
+                  <p class="text-primary font-medium">Data Insights Ltd.</p>
+                </div>
+                <div class="h-10 w-10 rounded-lg bg-green-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-chart-line text-green-600"></i>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-slate-400">
+                <span class="flex items-center mr-4"><i class="fas fa-location-dot mr-1"></i> London, UK</span>
+                <span class="flex items-center mr-4"><i class="fas fa-clock mr-1"></i> Part-time</span>
+                <span class="flex items-center"><i class="fas fa-dollar-sign mr-1"></i> $2,800/mo</span>
+              </div>
+              <p class="mt-3 text-gray-600 dark:text-slate-300">Analyze data, build ML models, and create visualizations.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="chip bg-green-100 text-green-700">Python</span>
+                <span class="chip bg-green-100 text-green-700">Machine Learning</span>
+                <span class="chip bg-green-100 text-green-700">SQL</span>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500 dark:text-slate-400">Posted 5 days ago</span>
+                <!-- CHANGED -->
+                <a href="applyinternship.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary transition">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="internship-card bg-white dark:bg-slate-900 rounded-xl shadow p-6 transition duration-300">
+              <div class="flex justify-between">
+                <div>
+                  <h3 class="font-bold text-lg text-dark dark:text-slate-100">Marketing Intern</h3>
+                  <p class="text-primary font-medium">Global Brands</p>
+                </div>
+                <div class="h-10 w-10 rounded-lg bg-purple-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-bullhorn text-purple-600"></i>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-slate-400">
+                <span class="flex items-center mr-4"><i class="fas fa-location-dot mr-1"></i> Toronto, Canada</span>
+                <span class="flex items-center mr-4"><i class="fas fa-clock mr-1"></i> Full-time</span>
+                <span class="flex items-center"><i class="fas fa-dollar-sign mr-1"></i> $2,500/mo</span>
+              </div>
+              <p class="mt-3 text-gray-600 dark:text-slate-300">Develop campaigns, analyze trends, and create digital content.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="chip bg-purple-100 text-purple-700">Digital Marketing</span>
+                <span class="chip bg-purple-100 text-purple-700">SEO</span>
+                <span class="chip bg-purple-100 text-purple-700">Social Media</span>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500 dark:text-slate-400">Posted 1 week ago</span>
+                <!-- CHANGED -->
+                <a href="applyinternship.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary transition">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="internship-card bg-white dark:bg-slate-900 rounded-xl shadow p-6 transition duration-300">
+              <div class="flex justify-between">
+                <div>
+                  <h3 class="font-bold text-lg text-dark dark:text-slate-100">UX/UI Design Intern</h3>
+                  <p class="text-primary font-medium">Creative Solutions</p>
+                </div>
+                <div class="h-10 w-10 rounded-lg bg-pink-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-paint-brush text-pink-500"></i>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-slate-400">
+                <span class="flex items-center mr-4"><i class="fas fa-location-dot mr-1"></i> Berlin, Germany</span>
+                <span class="flex items-center mr-4"><i class="fas fa-clock mr-1"></i> Full-time</span>
+                <span class="flex items-center"><i class="fas fa-dollar-sign mr-1"></i> $2,900/mo</span>
+              </div>
+              <p class="mt-3 text-gray-600 dark:text-slate-300">Design intuitive UI and engaging user experiences.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="chip bg-pink-100 text-pink-700">Figma</span>
+                <span class="chip bg-pink-100 text-pink-700">UI/UX</span>
+                <span class="chip bg-pink-100 text-pink-700">Wireframing</span>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500 dark:text-slate-400">Posted 3 days ago</span>
+                <!-- CHANGED -->
+                <a href="applyinternship.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary transition">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="internship-card bg-white dark:bg-slate-900 rounded-xl shadow p-6 transition duration-300">
+              <div class="flex justify-between">
+                <div>
+                  <h3 class="font-bold text-lg text-dark dark:text-slate-100">Backend Developer Intern</h3>
+                  <p class="text-primary font-medium">ServerStack Inc.</p>
+                </div>
+                <div class="h-10 w-10 rounded-lg bg-indigo-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-server text-indigo-600"></i>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-slate-400">
+                <span class="flex items-center mr-4"><i class="fas fa-location-dot mr-1"></i> Remote</span>
+                <span class="flex items-center mr-4"><i class="fas fa-clock mr-1"></i> Full-time</span>
+                <span class="flex items-center"><i class="fas fa-dollar-sign mr-1"></i> $3,200/mo</span>
+              </div>
+              <p class="mt-3 text-gray-600 dark:text-slate-300">Build scalable backends and APIs using Node.js and Python.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="chip bg-indigo-100 text-indigo-700">Node.js</span>
+                <span class="chip bg-indigo-100 text-indigo-700">Python</span>
+                <span class="chip bg-indigo-100 text-indigo-700">API Development</span>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500 dark:text-slate-400">Posted 1 day ago</span>
+                <!-- CHANGED -->
+                <a href="applyinternship.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary transition">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- EXTRA CARDS (hidden initially) -->
+            <div class="internship-card bg-white dark:bg-slate-900 rounded-xl shadow p-6 transition duration-300 hidden extra-card">
+              <div class="flex justify-between">
+                <div>
+                  <h3 class="font-bold text-lg text-dark dark:text-slate-100">Product Manager Intern</h3>
+                  <p class="text-primary font-medium">Productive Inc.</p>
+                </div>
+                <div class="h-10 w-10 rounded-lg bg-yellow-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-clipboard-list text-yellow-600"></i>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-slate-400">
+                <span class="flex items-center mr-4"><i class="fas fa-location-dot mr-1"></i> San Francisco, USA</span>
+                <span class="flex items-center mr-4"><i class="fas fa-clock mr-1"></i> Full-time</span>
+                <span class="flex items-center"><i class="fas fa-dollar-sign mr-1"></i> $4,000/mo</span>
+              </div>
+              <p class="mt-3 text-gray-600 dark:text-slate-300">Coordinate cross-functional teams and product roadmaps.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="chip bg-yellow-100 text-yellow-700">Agile</span>
+                <span class="chip bg-yellow-100 text-yellow-700">JIRA</span>
+                <span class="chip bg-yellow-100 text-yellow-700">Roadmapping</span>
+              </div>
+              <div class="mt-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500 dark:text-slate-400">Posted today</span>
+                <!-- CHANGED -->
+                <a href="applyinternship.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary transition">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- More hidden cards trimmed for brevity -->
+          </div>
+
+          <!-- Show more -->
+          <div class="mt-4">
+            <button id="showMoreBtn" class="w-full bg-primary text-white py-2 rounded-lg font-medium hover:bg-secondary transition">Show More</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Recommendations & Ads -->
+      <aside class="w-full lg:w-[22%] xl:w-[21%] h-full">
+        <div class="h-full overflow-y-auto scrollbar-hide space-y-6 pr-1">
+          <!-- Recommended -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow p-6">
+            <h2 class="text-xl font-bold text-dark dark:text-slate-100 mb-4">Recommended For You</h2>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="h-8 w-8 rounded-lg bg-blue-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-desktop text-blue-500 text-sm"></i>
+                </div>
+                <div class="ml-3">
+                  <h3 class="font-medium text-dark dark:text-slate-100">UX Designer Intern</h3>
+                  <p class="text-xs text-primary">DesignHub</p>
+                  <p class="text-xs text-gray-500 dark:text-slate-400">London, UK • $2,700/mo</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="h-8 w-8 rounded-lg bg-green-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-server text-green-600 text-sm"></i>
+                </div>
+                <div class="ml-3">
+                  <h3 class="font-medium text-dark dark:text-slate-100">Backend Developer</h3>
+                  <p class="text-xs text-primary">ServerStack</p>
+                  <p class="text-xs text-gray-500 dark:text-slate-400">Remote • $3,200/mo</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="h-8 w-8 rounded-lg bg-purple-100 dark:bg-slate-800 flex items-center justify-center">
+                  <i class="fas fa-tasks text-purple-600 text-sm"></i>
+                </div>
+                <div class="ml-3">
+                  <h3 class="font-medium text-dark dark:text-slate-100">Product Manager</h3>
+                  <p class="text-xs text-primary">Productive Inc.</p>
+                  <p class="text-xs text-gray-500 dark:text-slate-400">San Francisco, USA • $4,200/mo</p>
+                </div>
+              </div>
+            </div>
+            <button class="mt-4 w-full text-center text-primary text-sm font-medium hover:text-secondary">View All Recommendations</button>
+          </div>
+
+          <!-- Ad -->
+          <div class="ad-container p-6 text-white">
+            <h2 class="text-xl font-bold mb-2">Premium Membership</h2>
+            <p class="text-sm">Get exclusive access to premium internships and direct contact with recruiters.</p>
+            <button class="mt-4 bg-white text-primary px-4 py-2 rounded-lg font-medium hover:bg-gray-100">Upgrade Now</button>
+          </div>
+
+          <!-- Recent Applications -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow p-6">
+            <h2 class="text-xl font-bold text-dark dark:text-slate-100 mb-4"><i class="fas fa-history mr-2 text-accent"></i>Recent Applications</h2>
+            <div class="space-y-3">
+              <div>
+                <h3 class="font-medium text-dark dark:text-slate-100">Software Developer</h3>
+                <div class="flex justify-between text-xs text-gray-500 dark:text-slate-400">
+                  <span>TechSolutions Inc.</span><span class="text-green-500">In Review</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-medium text-dark dark:text-slate-100">Data Analyst</h3>
+                <div class="flex justify-between text-xs text-gray-500 dark:text-slate-400">
+                  <span>DataWorks</span><span class="text-gray-500 dark:text-slate-400">Submitted</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-medium text-dark dark:text-slate-100">Marketing Assistant</h3>
+                <div class="flex justify-between text-xs text-gray-500 dark:text-slate-400">
+                  <span>Brandify</span><span class="text-blue-600">Interview</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Career Resources -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow p-6">
+            <h2 class="text-xl font-bold text-dark dark:text-slate-100 mb-4"><i class="fas fa-ad mr-2 text-accent"></i>Career Resources</h2>
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-blue-50 dark:bg-slate-800 rounded-lg">
+                <i class="fas fa-file-alt text-blue-500 mr-3"></i>
+                <div>
+                  <h3 class="font-medium text-dark dark:text-slate-100">Resume Template Pack</h3>
+                  <p class="text-xs text-gray-500 dark:text-slate-400">Free download</p>
+                </div>
+              </div>
+              <div class="flex items-center p-3 bg-green-50 dark:bg-slate-800 rounded-lg">
+                <i class="fas fa-video text-green-600 mr-3"></i>
+                <div>
+                  <h3 class="font-medium text-dark dark:text-slate-100">Interview Prep Webinar</h3>
+                  <p class="text-xs text-gray-500 dark:text-slate-400">Tomorrow at 2 PM EST</p>
+                </div>
+              </div>
+              <div class="flex items-center p-3 bg-purple-50 dark:bg-slate-800 rounded-lg">
+                <i class="fas fa-book text-purple-600 mr-3"></i>
+                <div>
+                  <h3 class="font-medium text-dark dark:text-slate-100">Internship Guide eBook</h3>
+                  <p class="text-xs text-gray-500 dark:text-slate-400">20% discount</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    /* Hover menu helpers (desktop) + toggles */
+    function showPanel(li){ const p=li.querySelector('.menu-panel'); if(!p) return; p.classList.remove('invisible','opacity-0','translate-y-1'); p.classList.add('visible','opacity-100','translate-y-0'); li.classList.add('open'); }
+    function hidePanel(li){ const p=li.querySelector('.menu-panel'); if(!p) return; p.classList.remove('visible','opacity-100','translate-y-0'); p.classList.add('invisible','opacity-0','translate-y-1'); li.classList.remove('open'); }
+    function togglePanel(li){ if(li.classList.contains('open')) hidePanel(li); else { document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) }); showPanel(li); } }
+    function toggleProfileMenu(){
+      const menu=document.getElementById('profileMenu'); const chev=document.getElementById('profileChevron');
+      const open=menu.classList.contains('visible');
+      if(open){ menu.classList.remove('visible','opacity-100','scale-100'); menu.classList.add('invisible','opacity-0','scale-95'); chev.classList.remove('rotate-180'); }
+      else{ menu.classList.remove('invisible','opacity-0','scale-95'); menu.classList.add('visible','opacity-100','scale-100'); chev.classList.add('rotate-180'); }
+      document.getElementById('profileBtn').setAttribute('aria-expanded', String(!open));
+    }
+    function setupThemeToggle(){
+      const toggle=document.getElementById('themeToggle'); const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const stored=localStorage.getItem('theme');
+      if(stored==='dark'||(!stored&&prefersDark)){ document.documentElement.classList.add('dark'); toggle.checked=true; }
+      toggle.addEventListener('change',function(){ if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }});
+      document.getElementById('themeRow').addEventListener('click',e=>{ const t=document.getElementById('themeToggle'); if(e.target!==t) t.click(); });
+    }
+    function setupClickOutside(){
+      document.addEventListener('click',function(e){
+        document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+        const menu=document.getElementById('profileMenu'); const btn=document.getElementById('profileBtn');
+        if(menu.classList.contains('visible') && !menu.contains(e.target) && !btn.contains(e.target)){ toggleProfileMenu() }
+      });
+    }
+    function setupMobileBehavior(){
+      document.querySelectorAll('li[data-menu]').forEach(li=>{
+        const link=li.querySelector('a'); link.addEventListener('click',function(e){ if(window.innerWidth<768){ e.preventDefault(); togglePanel(li) }});
+      });
+    }
+
+    // Filter collapse
+    function toggleFilter(id){ const el=document.getElementById(id); el.classList.toggle('hidden'); }
+
+    document.addEventListener('DOMContentLoaded',function(){
+      setupThemeToggle(); setupClickOutside(); setupMobileBehavior();
+      document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+      document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+
+      // Expand filters by default
+      ['countryFilter','cityFilter','industryFilter','durationFilter','workTypeFilter'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+
+      // Show More logic (reveal 5 at a time)
+      const step = 5, extras = Array.from(document.querySelectorAll('.extra-card')); let revealed = 0;
+      const btn = document.getElementById('showMoreBtn');
+      function revealNext() {
+        const slice = extras.slice(revealed, revealed + step);
+        slice.forEach(card => card.classList.remove('hidden'));
+        revealed += slice.length;
+        if (revealed >= extras.length) {
+          btn.textContent = 'All Shown';
+          btn.disabled = true;
+          btn.classList.add('opacity-60','cursor-not-allowed');
+        }
+      }
+      btn.addEventListener('click', revealNext);
+    });
+
+    // Simple ad rotation
+    const adTitles = ["Premium Membership", "Exclusive Internships", "Recruiter Connection"];
+    const adElement = () => document.querySelector('.ad-container h2');
+    let adIndex = 0;
+    setInterval(() => {
+      const el = adElement();
+      if (!el) return;
+      adIndex = (adIndex + 1) % adTitles.length;
+      el.textContent = adTitles[adIndex];
+    }, 5000);
+  </script>
+</body>
+</html>

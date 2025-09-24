@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | My Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+      <!-- Font Awesome v6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5',
+                        'primary-light': '#6366f1',
+                        'primary-dark': '#4338ca',
+                        brand:{50:'#eef5ff',100:'#e0edff',200:'#cfe0ff',300:'#a8cbff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde',800:'#1a4bb8',900:'#1a4090'},
+                        ink:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'},
+                        explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+                        seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+                        exams: { DEFAULT: '#10B981', light: '#D1FAE5' },
+                        network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+                        research: { DEFAULT: '#3B82F6', light: '#DBEAFE' },
+                        messages: { DEFAULT: '#EF4444', light: '#FEE2E2' },
+                        notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+                    },
+                    fontSize: {
+                        'xs': '0.75rem',
+                        'sm': '0.875rem',
+                        'base': '0.9375rem',
+                        'lg': '1.0625rem',
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    spacing: {
+                        '4.5': '1.125rem',
+                        '5.5': '1.375rem',
+                        '7.5': '1.875rem',
+                    },
+        boxShadow:{
+          soft: '0 6px 20px rgba(2,6,23,.08)',
+          'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+          'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+        },
+        animation: {
+          'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'bounce-subtle': 'bounce-subtle 1s infinite',
+        },
+        keyframes: {
+          'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity: .85} },
+          'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+        }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+
+
+        /* nav */
+
+        *{ box-sizing:border-box }
+  body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+  .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+  /* ===== Icon weight tweaks ===== */
+  :root{
+    --icon-sm: 22px;
+    --icon-lg: 24px;
+    --svg-stroke: 2.2;
+  }
+  .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+  .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+  .nav-btn.active{ background:rgba(207,224,255,.4) }
+  .nav-btn .icon{ transition:all .2s ease }
+
+  .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; }
+
+  .fa-solid.icon-fa{
+    font-size: calc(var(--icon-sm) + 1px);
+    text-shadow: 0 .2px 0 currentColor;
+  }
+  @media (min-width:640px){
+    .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) }
+  }
+
+  .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+
+  .nav-label{
+    font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap;
+    transition:all .2s ease; font-weight:500; margin-top:2px;
+  }
+  .nav-btn:hover .nav-label{ color:#0f172a }
+  .nav-btn.active .nav-label{ font-weight:600 }
+
+  .nav-btn .icon{
+    width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center;
+    line-height:1; vertical-align:middle;
+  }
+  @media (min-width:640px){
+    .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) }
+  }
+
+  .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+  .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+  .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+  .no-scrollbar::-webkit-scrollbar{ display:none }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+  .toggle::after{
+    content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff;
+    transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2)
+  }
+  input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+  input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+  .dark body{ background:linear-gradient(to bottom,#0b1220,#0b1220); color:#e2e8f0 }
+  .dark .nt-glass{ background:rgba(15,23,42,.88); border-bottom-color:rgba(30,41,59,.6) }
+  .dark #profileMenu, .dark .menu-panel{ background:#0f172a; border-color:#1e293b }
+  .dark .nav-btn .icon{ color:#94a3b8 }
+  .dark .nav-btn:hover .nav-label{ color:#e2e8f0 }
+  .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+  .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+  .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+
+  .profile-ico{ font-size:16px; color:#475569; transition:all .2s ease }
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{ color:#2f78f0; transform:translateY(-1px) }
+  .dark .profile-ico{ color:#94a3b8 }
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{ color:#93c5fd }
+
+  /* ===== fixed navbar + no horizontal icon scroll ===== */
+  :root{ --nav-h:68px }
+  html,body{ max-width:100%; overflow-x:hidden }
+  body{ padding-top:var(--nav-h) }
+
+  .nav-scroller{ overflow-x:visible!important }
+  .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+
+  header, header.nt-glass, header nav{ overflow:visible!important }
+
+  .menu-panel{
+    box-shadow:0 20px 40px rgba(2,6,23,.15);
+    border:1px solid #e2e8f0;
+    transform-origin:top center;
+  }
+  .menu-item{
+    display:flex; align-items:center; gap:.65rem;
+    padding:.75rem 1rem; transition:all .15s ease;
+  }
+  .menu-item .menu-ico{
+    width:18px; min-width:18px; text-align:center; color:#64748b;
+  }
+  .menu-item:hover{ background:#f5f8ff }
+  .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+  /* Profile dropdown */
+  #profileMenu{
+    box-shadow:0 20px 40px rgba(2,6,23,.15);
+    border:1px solid #e2e8f0;
+    transform-origin:top right;
+  }
+
+  .search-container{ position:relative; transition:all .3s ease }
+  .search-container:focus-within{ transform:translateY(-1px) }
+
+  .notification-badge{
+    position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+    background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite;
+  }
+  .dark .notification-badge{ border-color:#0f172a }
+
+  .icon-explore{ color:#8B5CF6 }
+  .icon-seekers{ color:#EC4899 }
+  .icon-network{ color:#F59E0B }
+  .icon-messages{ color:#3dcb38 }
+  .icon-notifications{ color:#6366F1 }
+
+  .nav-btn:hover .icon-explore{ color:#7C3AED }
+  .nav-btn:hover .icon-seekers{ color:#DB2777 }
+  .nav-btn:hover .icon-network{ color:#D97706 }
+  .nav-btn:hover .icon-messages{ color:#48ee42  }
+  .nav-btn:hover .icon-notifications{ color:#4F46E5 }
+
+  .nav-label-explore,
+  .nav-label-seekers,
+  .nav-label-network,
+  .nav-label-messages,
+  .nav-label-notifications{ color:black }
+
+  .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+  .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+  .nav-btn:hover .nav-label-network{ color:#D97706 }
+  .nav-btn:hover .nav-label-messages{ color:#39ca34 }
+  .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+
+  .nav-btn.active .nav-label-explore{ color:#7C3AED }
+  .nav-btn.active .nav-label-seekers{ color:#DB2777 }
+  .nav-btn.active .nav-label-network{ color:#D97706 }
+  .nav-btn.active .nav-label-messages{ color:#39ca34  }
+  .nav-btn.active .nav-label-notifications{ color:#4F46E5 }
+
+
+    
+  
+  /* main  */
+
+
+    * { box-shadow: none !important; }
+
+    .nt-chip{ @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-white text-slate-600; }
+    .nt-card{ background:#fff; border-radius:.75rem; border:1px solid #e5e7eb; }
+
+    .nt-input{ @apply w-full rounded-md px-3 py-2 text-sm outline-none; border:1px solid #e2e8f0; background:#fff; }
+    .nt-input:focus{ outline:2px solid #2563eb; }
+
+    .nt-select{
+      @apply w-full text-sm outline-none transition;
+      border:none; background-color:#f7fbff; color:#334155; border-radius:8px;
+      padding:.50rem 2.2rem .50rem .75rem;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232563eb'%3E%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right .9rem center;background-size:1rem;
+      -webkit-appearance:none; -moz-appearance:none; appearance:none;
+    }
+    .nt-select:hover{ background-color:#f2f7ff; }
+    .nt-select:focus{ background-color:#eef5ff; }
+    .nt-row{ display:flex; align-items:center; justify-content:space-between; gap:.5rem; white-space:nowrap; }
+    .nt-select-compact{ width:70%; min-width:160px; margin-left:auto; }
+
+    .nt-check{
+      @apply rounded border-slate-300;
+      accent-color:#2563eb;
+    }
+
+    .nt-label{ @apply block text-sm text-slate-700; }
+    .nt-sub{ @apply text-xs text-slate-500; }
+
+    .nt-title-standalone{
+      display:flex; align-items:center;
+      min-height:56px; padding:0 1rem; margin-bottom:1rem;
+      background:linear-gradient(90deg,#2563eb,#1d4ed8);
+      color:#fff; font-weight:700; letter-spacing:.2px;
+      border-radius:.75rem;
+      position: sticky; top: 0; z-index: 30;
+    }
+
+    .nt-hdr-accent{
+      @apply text-[14px] font-bold text-slate-700;
+      background-color:#eef5ff; border-left:4px solid #2563eb;
+      border-radius:.375rem; padding:.35rem .55rem;
+    }
+
+    .nt-neon{
+      display:flex; align-items:center; gap:.6rem;
+      background:#ffffff; border-radius:12px;
+      padding:.55rem .55rem .55rem .8rem;
+      border:2px solid #486dffa4;
+      transition:border-color .15s ease;
+    }
+    .nt-neon:focus-within{ border-color:#2563eb; }
+    .nt-neon-ico{ width:18px; height:18px; color:#64748b; flex:0 0 auto; }
+    .nt-neon-input{ flex:1; border:0; outline:0; background:transparent; color:#0f172a; font-size:14px; }
+    .nt-neon-input::placeholder{ color:#94a3b8; }
+    .nt-neon-filter{ width:38px; height:32px; border-radius:10px; display:grid; place-items:center; background:#ffffff; border:0 !important; position: relative; right:10px !important}
+
+    .round-card{ background:#fff; border:1px solid #e5e7eb; border-radius:20px; }
+
+    @media (min-width: 768px){
+      .col-scroll{ height:calc(100vh - 3rem); overflow-y:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; }
+      .col-scroll::-webkit-scrollbar{ width:0; height:0; }
+    }
+
+    .btn{ @apply inline-flex items-center justify-center text-sm font-medium px-3 py-2 transition-colors; }
+    .btn-primary{ background:#2563eb; color:#fff; }
+    .btn-primary:hover{ background:#1d4ed8; }
+    .btn-ghost{ background:#eef5ff; color:#2563eb; }
+    .btn-ghost:hover{ background:#dbe9ff; }
+
+    .btn-sq { height:44px; border-radius:10px; padding:0 14px; }
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+        }
+        
+        .compact-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #c7d2fe #f5f7ff;
+        }
+        
+        .compact-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .compact-scroll::-webkit-scrollbar-track {
+            background: #f5f7ff;
+            border-radius: 2px;
+        }
+        
+        .compact-scroll::-webkit-scrollbar-thumb {
+            background-color: #c7d2fe;
+            border-radius: 2px;
+        }
+        
+        /* New class to hide scrollbar completely */
+        .no-scrollbar::-webkit-scrollbar {
+            width: 0px;
+        }
+        
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        .message-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border: 2px solid white;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        
+        .conversation-item.active {
+            background-color: #f0f4ff;
+            border-left: 2px solid #4f46e5;
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 6px;
+        }
+        
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #94a3b8;
+            border-radius: 50%;
+            margin: 0 1.5px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-3px); }
+        }
+        
+        .message-bubble {
+            max-width: 280px;
+        }
+
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+      <header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <!-- container pushed in -->
+  <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="Homepage.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+      </a>
+      <!-- Search -->
+      <div class="search-container relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-solid fa-compass icon-explore icon-fa" aria-hidden="true"></i>
+              <span class="nav-label nav-label-explore">Explore</span>
+            </a>
+
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="school.html">
+                    <i class="menu-ico fa-solid fa-school"></i>
+                    <span>Schools</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="institute.html">
+                    <i class="menu-ico fa-solid fa-building-columns"></i>
+                    <span>Institutes</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="enterprises.html">
+                    <i class="menu-ico fa-solid fa-briefcase"></i>
+                    <span>Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="government.html">
+                    <i class="menu-ico fa-solid fa-landmark"></i>
+                    <span>Government Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="">
+                    <i class="menu-ico fa-solid fa-pen-to-square"></i>
+                    <span>Exams</span>
+                  </a>
+                </li>
+                <li class="pl-10 pr-4 py-2 flex gap-2">
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test
+                  </a>
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Calendar
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="research.html">
+                    <i class="menu-ico fa-solid fa-flask"></i>
+                    <span>Research</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <span class="icon icon-seekers" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-seekers">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <span class="icon icon-network" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              </span>
+              <span class="nav-label nav-label-network">Network</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li class="relative">
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <span class="icon icon-messages" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-messages">Messages</span>
+              <span class="notification-badge">3</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li class="relative">
+            <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <span class="icon icon-notifications" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-notifications">Alerts</span>
+              <span class="notification-badge">12</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE (nudged up) -->
+          <li class="relative">
+            <button id="profileBtn"
+              class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                     hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                     focus:outline-none transition-all duration-200
+                     -translate-y-0.5 sm:-translate-y-1">
+              <div class="relative -mt-0.5 sm:-mt-1">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white" alt="Profile"/>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white"></span>
+              </div>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+           
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-soft-lg border border-slate-100 opacity-0 transition-all duration-200 scale-95">
+              
+              <div class="p-4 border-b border-slate-100">
+              <a href="profile.html" target="_self"
+                class="block p-4 border-b border-slate-100 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-t-xl"
+                id="profileHeaderLink">
+                <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+              <div>
+                <p class="font-medium text-ink-900">Alex Morgan</p>
+                <p class="text-xs text-slate-500">Premium Member</p>
+              </div>
+              </div>
+                </a>
+              </div>
+
+              <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
+                <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="games.html"><i class="menu-ico fa-solid fa-gamepad"></i><span>Games</span></a></li>
+                <li class="px-4">
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                </li>
+                <li class="border-t border-slate-100 mt-2">
+                  <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
+                    <i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+    <div class="flex h-[85vh] max-w-6xl mx-auto py-2 space-x-6 mt-4 md:mt-6">
+
+        
+        <aside class="w-72 bg-white rounded-lg shadow-md flex flex-col">
+            <div class="p-3 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-primary">My Inbox</h2>
+                    <button class="p-1.5 rounded-full hover:bg-gray-100">
+                        <i data-feather="plus" class="w-4 h-4 text-gray-600"></i>
+                    </button>
+                </div>
+                <div class="mt-3 relative">
+                    <input type="text" placeholder="Search..." class="w-full pl-8 pr-3 py-1.5 bg-gray-100 rounded-lg text-sm focus:ring-1 focus:ring-primary-light focus:outline-none">
+                    <i data-feather="search" class="w-3.5 h-3.5 text-gray-500 absolute left-2.5 top-1.5"></i>
+                </div>
+            </div>
+            <nav class="flex-1 overflow-y-auto no-scrollbar">
+                <ul class="text-gray-600 py-1">
+                    <li class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer text-primary font-medium">
+                        <i data-feather="inbox" class="w-4 h-4"></i> All Inbox
+                        <span class="ml-auto bg-primary-light text-white text-xs px-1.5 py-0.5 rounded-full">4</span>
+                    </li>
+                    <li class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer">
+                        <i data-feather="star" class="w-4 h-4"></i> Starred
+                    </li>
+                    <li class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer">
+                        <i data-feather="clock" class="w-4 h-4"></i> Snoozed
+                    </li>
+                    <li class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer">
+                        <i data-feather="send" class="w-4 h-4"></i> Sent
+                    </li>
+                    <li class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer">
+                        <i data-feather="file-text" class="w-4 h-4"></i> Drafts
+                        <span class="ml-auto bg-gray-200 text-gray-600 text-xs px-1.5 py-0.5 rounded-full">2</span>
+                    </li>
+                    <li class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer">
+                        <i data-feather="trash-2" class="w-4 h-4"></i> Deleted
+                    </li>
+                </ul>
+                
+                <div class="px-3 py-1">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Labels</h3>
+                    <ul class="text-gray-600">
+                        <li class="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-50 cursor-pointer">
+                            <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                            Work
+                        </li>
+                        <li class="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-50 cursor-pointer">
+                            <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                            Friends
+                        </li>
+                        <li class="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-50 cursor-pointer">
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                            Family
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="p-3 border-t border-gray-200">
+                <button class="w-full flex items-center justify-center gap-1.5 bg-primary text-white py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors text-sm">
+                    <i data-feather="tag" class="w-3.5 h-3.5"></i> Manage Labels
+                </button>
+            </div>
+        </aside>
+
+        <section class="flex-1 flex flex-col bg-white rounded-lg shadow-md">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=2" class="w-9 h-9 rounded-full">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800 text-sm">Aya Mason</h4>
+                        <p class="text-xs text-gray-500">Online - Last seen 2h ago</p>
+                    </div>
+                </div>
+                <div class="flex gap-1">
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="phone" class="w-4 h-4 text-gray-600"></i>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="video" class="w-4 h-4 text-gray-600"></i>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="info" class="w-4 h-4 text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-3 no-scrollbar bg-gray-50">
+                <div class="text-center">
+                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">Today</span>
+                </div>
+                
+                <div class="flex items-start gap-1.5">
+                    <img src="https://i.pravatar.cc/32?img=2" class="w-7 h-7 rounded-full flex-shrink-0">
+                    <div class="bg-white px-3 py-1.5 rounded-xl message-bubble shadow-sm">
+                        <p class="text-gray-800 text-sm">Ever wondered how come graphic designers always manage to produce beautiful graphics?</p>
+                        <span class="text-xs text-gray-400 mt-0.5">8:00 PM</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <div class="bg-primary text-white px-3 py-1.5 rounded-xl message-bubble shadow-sm">
+                        <p class="text-sm">Freelance Design Tricks: The truth is, nobody ever stumbled upon a beautiful design by accident.</p>
+                        <span class="text-xs text-gray-200 mt-0.5">8:20 PM</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-start gap-1.5">
+                    <img src="https://i.pravatar.cc/32?img=2" class="w-7 h-7 rounded-full flex-shrink-0">
+                    <div class="bg-white px-3 py-1.5 rounded-xl message-bubble shadow-sm">
+                        <p class="text-gray-800 text-sm">Successful businesses have many things in common, today we'll look at the major factors.</p>
+                        <span class="text-xs text-gray-400 mt-0.5">8:30 PM</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <div class="bg-primary text-white px-3 py-1.5 rounded-xl message-bubble shadow-sm">
+                        <p class="text-sm">Attending a trade show can be a very effective method of promoting your company.</p>
+                        <span class="text-xs text-gray-200 mt-0.5">8:40 PM</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-start gap-1.5">
+                    <img src="https://i.pravatar.cc/32?img=2" class="w-7 h-7 rounded-full flex-shrink-0">
+                    <div class="bg-white px-3 py-1.5 rounded-xl message-bubble shadow-sm">
+                        <p class="text-gray-800 text-sm">I've found some great resources on this topic. Should I send them over?</p>
+                        <span class="text-xs text-gray-400 mt-0.5">8:45 PM</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <div class="bg-primary text-white px-3 py-1.5 rounded-xl message-bubble shadow-sm">
+                        <p class="text-sm">Yes, please! That would be very helpful.</p>
+                        <span class="text-xs text-gray-200 mt-0.5">8:47 PM</span>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator">
+                    <span class="mr-1.5">Aya is typing</span>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <div class="p-3 border-t border-gray-200 bg-white flex items-center gap-2">
+                <button class="p-1.5 rounded-full hover:bg-gray-100">
+                    <i data-feather="paperclip" class="w-4 h-4 text-gray-500"></i>
+                </button>
+                <button class="p-1.5 rounded-full hover:bg-gray-100">
+                    <i data-feather="image" class="w-4 h-4 text-gray-500"></i>
+                </button>
+                <input type="text" placeholder="Write a message..." class="flex-1 message-input px-3 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-1 focus:ring-primary-light text-sm">
+                <button class="p-2.5 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors">
+                    <i data-feather="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </section>
+
+        <section class="w-72 bg-white rounded-lg shadow-md flex flex-col">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="font-semibold text-gray-700 text-sm">Conversations</h3>
+                <button class="p-1.5 rounded-full hover:bg-gray-100">
+                    <i data-feather="edit-3" class="w-4 h-4 text-gray-500"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto no-scrollbar">
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=1" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Jonathon Benitez</h4>
+                        <p class="text-xs text-gray-500 truncate">Hey, are you available?</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">4:45 pm</span>
+                        <span class="mt-0.5 w-4 h-4 flex items-center justify-center bg-primary text-white text-xs rounded-full">2</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 conversation-item active">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=2" class="w-9 h-9 rounded-full">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Aya Mason</h4>
+                        <p class="text-xs text-gray-500 truncate">How To Write Better...</p>
+                    </div>
+                    <span class="text-xs text-gray-400">2:30 pm</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=3" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Vijay Choi</h4>
+                        <p class="text-xs text-gray-500 truncate">Consider this following...</p>
+                    </div>
+                    <span class="text-xs text-gray-400">7:36 pm</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=4" class="w-9 h-9 rounded-full">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Maria Rodriguez</h4>
+                        <p class="text-xs text-gray-500 truncate">Looking forward!</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Mon</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=5" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">David Kim</h4>
+                        <p class="text-xs text-gray-500 truncate">Thanks for the feedback</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Sun</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=6" class="w-9 h-9 rounded-full">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Emily Chen</h4>
+                        <p class="text-xs text-gray-500 truncate">I'll be there soon.</p>
+                    </div>
+                    <span class="text-xs text-gray-400">4:20 am</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=7" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Chris Evans</h4>
+                        <p class="text-xs text-gray-500 truncate">Did you get the files?</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">8:00 am</span>
+                        <span class="mt-0.5 w-4 h-4 flex items-center justify-center bg-primary text-white text-xs rounded-full">1</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=8" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Sophia Martinez</h4>
+                        <p class="text-xs text-gray-500 truncate">Let's schedule a call.</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Yesterday</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=9" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Alex Johnson</h4>
+                        <p class="text-xs text-gray-500 truncate">Sounds good!</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Tue</span>
+                </div>
+                
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=10" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Michael Smith</h4>
+                        <p class="text-xs text-gray-500 truncate">Thanks for the update.</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Wed</span>
+                </div>
+
+                <div class="flex items-center gap-2 p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/36?img=11" class="w-9 h-9 rounded-full">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-800 text-sm">Jane Doe</h4>
+                        <p class="text-xs text-gray-500 truncate">See you tomorrow!</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Thu</span>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <script>
+
+        
+    function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn=li.querySelector('.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    li.classList.remove('open');
+    const btn=li.querySelector('.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  function togglePanel(li){
+    if(li.classList.contains('open')){ hidePanel(li) }
+    else{
+      document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
+      showPanel(li);
+    }
+  }
+
+  function toggleProfileMenu(){
+    const menu=document.getElementById('profileMenu');
+    const chevron=document.getElementById('profileChevron');
+    const isExpanded=menu.classList.contains('visible');
+    if(isExpanded){
+      menu.classList.remove('visible','opacity-100','scale-100');
+      menu.classList.add('invisible','opacity-0','scale-95');
+      chevron.classList.remove('rotate-180');
+    }else{
+      menu.classList.remove('invisible','opacity-0','scale-95');
+      menu.classList.add('visible','opacity-100','scale-100');
+      chevron.classList.add('rotate-180');
+    }
+    document.getElementById('profileBtn').setAttribute('aria-expanded', !isExpanded);
+  }
+
+  function setupThemeToggle(){
+    const toggle=document.getElementById('themeToggle');
+    const themeRow=document.getElementById('themeRow');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme=localStorage.getItem('theme');
+    if(storedTheme==='dark'||(!storedTheme&&prefersDark)){
+      document.documentElement.classList.add('dark'); toggle.checked=true;
+    }else{
+      document.documentElement.classList.remove('dark'); toggle.checked=false;
+    }
+    toggle.addEventListener('change',function(){
+      if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+      else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+    });
+    themeRow.addEventListener('click',function(e){ if(e.target!==toggle){ toggle.click() }});
+  }
+
+  function setupClickOutside(){
+    document.addEventListener('click',function(e){
+      document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+      const profileMenu=document.getElementById('profileMenu');
+      const profileBtn=document.getElementById('profileBtn');
+      if(profileMenu.classList.contains('visible') && !profileMenu.contains(e.target) && !profileBtn.contains(e.target)){ toggleProfileMenu() }
+    });
+  }
+
+  function setupMobileBehavior(){
+    const menuItems=document.querySelectorAll('li[data-menu]');
+    menuItems.forEach(li=>{
+      const link=li.querySelector('a');
+      link.addEventListener('click',function(e){
+        if(window.innerWidth<768){ e.preventDefault(); togglePanel(li) }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setupThemeToggle();
+    setupClickOutside();
+    setupMobileBehavior();
+    document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+    document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'){
+        const profileMenu=document.getElementById('profileMenu');
+        if(profileMenu.classList.contains('visible')) toggleProfileMenu();
+      }
+    });
+  });
+
+
+        feather.replace();
+        
+        // Simple interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Conversation item click
+            const conversationItems = document.querySelectorAll('.conversation-item');
+            conversationItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    conversationItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Send message functionality
+            const messageInput = document.querySelector('.message-input');
+            const sendButton = document.querySelector('button:has(i[data-feather="send"])');
+            
+            sendButton.addEventListener('click', function() {
+                if (messageInput.value.trim() !== '') {
+                    // In a real app, you would send the message to the server
+                    // Here we'll just clear the input
+                    messageInput.value = '';
+                }
+            });
+            
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && messageInput.value.trim() !== '') {
+                    // In a real app, you would send the message to the server
+                    // Here we'll just clear the input
+                    messageInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
