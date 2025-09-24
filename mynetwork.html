@@ -1,0 +1,1509 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>My Professional Network | Connect & Collaborate</title>
+
+  <!-- Tailwind (keep one) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Unified Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand:{50:'#eef5ff',200:'#cfe0ff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde'},
+            ink:{900:'#0f172a',700:'#1e293b',500:'#334155'},
+            primary:'#2563eb',
+            secondary:'#4f46e5',
+            dark:'#1e293b',
+            light:'#f8fafc',
+            explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+          seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+          exams: { DEFAULT: '#10B981', light: '#D1FAE5' },
+          network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+          research: { DEFAULT: '#3B82F6', light: '#DBEAFE' },
+          messages: { DEFAULT: '#EF4444', light: '#FEE2E2' },
+          notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+          },
+          boxShadow:{
+          soft: '0 6px 20px rgba(2,6,23,.08)',
+          'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+          'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+        },
+        animation: {
+          'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'bounce-subtle': 'bounce-subtle 1s infinite',
+        },
+        keyframes: {
+          'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity: .85} },
+          'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+        }
+        }
+      }
+    }
+  </script>
+
+  <style>
+
+
+    /* navbar */
+      *{ box-sizing:border-box }
+  body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+  
+  :root{
+    --icon-sm: 22px;
+    --icon-lg: 24px;
+    --svg-stroke: 2.2;
+    --nav-h: 68px;
+    --logo-h: 22px; /* tweak this to make the logo bigger/smaller */
+  }
+
+  .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+  .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+  .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+  .nav-btn.active{ background:rgba(207,224,255,.4) }
+  .nav-btn .icon{ transition:all .2s ease }
+  .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; stroke-linecap:round; stroke-linejoin:round }
+
+  .fa-solid.icon-fa{ font-size: calc(var(--icon-sm) + 1px); text-shadow: 0 .2px 0 currentColor }
+  @media (min-width:640px){ .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) } }
+
+  .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+  .nav-label{ font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap; transition:all .2s ease; font-weight:500; margin-top:2px }
+  .nav-btn:hover .nav-label{ color:#0f172a }
+  .nav-btn.active .nav-label{ font-weight:600 }
+
+  .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle }
+  @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) } }
+
+  .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+  .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+  .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+  .no-scrollbar::-webkit-scrollbar{ display:none }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+  .toggle::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2) }
+  input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+  input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+  .dark .nt-glass{ background:rgba(15,23,42,.88); border-bottom-color:rgba(30,41,59,.6) }
+  .dark #profileMenu, .dark .menu-panel{ background:#0f172a; border-color:#1e293b }
+  .dark .nav-btn .icon{ color:#94a3b8 }
+  .dark .nav-btn:hover .nav-label{ color:#e2e8f0 }
+  .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+  .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+  .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+
+  .profile-ico{ font-size:16px; color:#475569; transition:all .2s ease }
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{ color:#2f78f0; transform:translateY(-1px) }
+  .dark .profile-ico{ color:#94a3b8 }
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{ color:#93c5fd }
+
+  html,body{ max-width:100%; overflow-x:hidden }
+  body{ padding-top:var(--nav-h); background:linear-gradient(to bottom,#f8fafc,#f1f5f9); color:#0f172a }
+
+  .nav-scroller{ overflow-x:visible!important }
+  .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+  header, header.nt-glass, header nav{ overflow:visible!important }
+
+  .menu-panel{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top center }
+  .menu-item{ display:flex; align-items:center; gap:.65rem; padding:.75rem 1rem; transition:all .15s ease }
+  .menu-item .menu-ico{ width:18px; min-width:18px; text-align:center; color:#64748b }
+  .menu-item:hover{ background:#f5f8ff }
+  .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+  /* Profile dropdown */
+  #profileMenu{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top right }
+
+  .search-container{ position:relative; transition:all .3s ease }
+  .search-container:focus-within{ transform:translateY(-1px) }
+
+  .notification-badge{
+    position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+    background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite
+  }
+  .dark .notification-badge{ border-color:#0f172a }
+
+  .icon-explore{ color:#8B5CF6 }
+  .icon-seekers{ color:#EC4899 }
+  .icon-network{ color:#F59E0B }
+  .icon-messages{ color:#3dcb38 }
+  .icon-notifications{ color:#6366F1 }
+
+  .nav-btn:hover .icon-explore{ color:#7C3AED }
+  .nav-btn:hover .icon-seekers{ color:#DB2777 }
+  .nav-btn:hover .icon-network{ color:#D97706 }
+  .nav-btn:hover .icon-messages{ color:#48ee42 }
+  .nav-btn:hover .icon-notifications{ color:#4F46E5 }
+
+  .nav-label-explore,
+  .nav-label-seekers,
+  .nav-label-network,
+  .nav-label-messages,
+  .nav-label-notifications{ color:black }
+
+  .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+  .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+  .nav-btn:hover .nav-label-network{ color:#D97706 }
+  .nav-btn:hover .nav-label-messages{ color:#39ca34 }
+  .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+  .nav-btn.active .nav-label-explore{ color:#7C3AED }
+  .nav-btn.active .nav-label-seekers{ color:#DB2777 }
+  .nav-btn.active .nav-label-network{ color:#D97706 }
+  .nav-btn.active .nav-label-messages{ color:#39ca34 }
+  .nav-btn.active .nav-label-notifications{ color:#4F46E5 }
+
+  /* simple focus ring for keyboard users */
+  .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(79,145,255,.35) }
+
+
+
+  /* mainpage */
+
+   html, body{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-x: hidden;
+  overflow-y: auto;          /* <-- key change */
+}
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none;              /* Chrome/Safari/Opera/Edge (Chromium) */
+    }
+
+    /* ===== Network page base styles ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; background:#f1f5f9; }
+    .card-hover{transition:.3s;box-shadow:0 4px 6px rgba(0,0,0,.05)}
+    .card-hover:hover{transform:translateY(-5px);box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}
+    .connection-item{transition:.2s}
+    .connection-item:hover{background:#f8fafc;transform:translateX(5px)}
+    .gradient-bg{background:linear-gradient(120deg,#2563eb,#4f46e5)}
+    .stat-card{transition:.3s;box-shadow:0 4px 6px rgba(0,0,0,.05);cursor:pointer}
+    .stat-card:hover{transform:scale(1.03);box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}
+    .filter-btn{transition:.2s}
+    .filter-btn.active{background:#2563eb;color:#fff}
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:100;justify-content:center;align-items:center}
+    .modal-content{background:#fff;border-radius:12px;width:90%;max-width:600px;max-height:80vh;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+    .modal-close{position:absolute;top:15px;right:15px;font-size:1.5rem;cursor:pointer;color:#64748b}
+    .modal-close:hover{color:#334155}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .animate-fade-in{animation:fadeIn .5s ease-out forwards}
+    .collapsed{max-height:500px;overflow:hidden}
+    .expanded{max-height:none}
+    .pane-scroll{overflow-y:auto}
+    .no-scrollbar::-webkit-scrollbar{display:none}
+    .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+    .event-item{transition:.2s;border-left:3px solid transparent}
+    .event-item:hover{background:#f8fafc;border-left-color:#2563eb}
+
+    /* ===== EQUAL all-sides shadow for main boxes ===== */
+    .nt-equal-shadow{ box-shadow: 0 0 18px rgba(2,6,23,.10) !important; }
+    .dark .nt-equal-shadow{ box-shadow: 0 0 18px rgba(0,0,0,.45) !important; }
+
+   
+  </style>
+</head>
+
+<body class="text-gray-800">
+  <!-- ===== NAVBAR (fixed) ===== -->
+<header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <!-- container pushed in -->
+  <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="Homepage.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+      </a>
+      <!-- Search -->
+      <div class="search-container relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-solid fa-compass icon-explore icon-fa" aria-hidden="true"></i>
+              <span class="nav-label nav-label-explore">Explore</span>
+            </a>
+
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="school.html">
+                    <i class="menu-ico fa-solid fa-school"></i>
+                    <span>Schools</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="institute.html">
+                    <i class="menu-ico fa-solid fa-building-columns"></i>
+                    <span>Institutes</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="enterprises.html">
+                    <i class="menu-ico fa-solid fa-briefcase"></i>
+                    <span>Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="government.html">
+                    <i class="menu-ico fa-solid fa-landmark"></i>
+                    <span>Government Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="">
+                    <i class="menu-ico fa-solid fa-pen-to-square"></i>
+                    <span>Exams</span>
+                  </a>
+                </li>
+                <li class="pl-10 pr-4 py-2 flex gap-2">
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test
+                  </a>
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Calendar
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="research.html">
+                    <i class="menu-ico fa-solid fa-flask"></i>
+                    <span>Research</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <span class="icon icon-seekers" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-seekers">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <span class="icon icon-network" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              </span>
+              <span class="nav-label nav-label-network">Network</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li class="relative">
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <span class="icon icon-messages" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-messages">Messages</span>
+              <span class="notification-badge">3</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li class="relative">
+            <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <span class="icon icon-notifications" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-notifications">Alerts</span>
+              <span class="notification-badge">12</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE (nudged up) -->
+          <li class="relative">
+            <button id="profileBtn"
+              class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                     hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                     focus:outline-none transition-all duration-200
+                     -translate-y-0.5 sm:-translate-y-1">
+              <div class="relative -mt-0.5 sm:-mt-1">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white" alt="Profile"/>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white"></span>
+              </div>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-soft-lg border border-slate-100 opacity-0 transition-all duration-200 scale-95">
+              
+              <div class="p-4 border-b border-slate-100">
+              <a href="profile.html" target="_self"
+                class="block p-4 border-b border-slate-100 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-t-xl"
+                id="profileHeaderLink">
+                <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+              <div>
+                <p class="font-medium text-ink-900">Alex Morgan</p>
+                <p class="text-xs text-slate-500">Premium Member</p>
+              </div>
+              </div>
+                </a>
+              </div>
+
+              <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
+                <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="games.html"><i class="menu-ico fa-solid fa-gamepad"></i><span>Games</span></a></li>
+                <li class="px-4">
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                </li>
+                <li class="border-t border-slate-100 mt-2">
+                  <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
+                    <i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+  <!-- ===== Modals ===== -->
+  <div id="connectionsModal" class="modal">
+    <div class="modal-content relative p-6">
+      <span class="modal-close" data-modal="connectionsModal">&times;</span>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Connections</h2>
+      <p class="text-gray-600 mb-4">You have 452 professional connections in your network.</p>
+      <div class="space-y-4">
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+          <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sarah Johnson">
+          <div class="ml-4">
+            <h3 class="font-semibold">Sarah Johnson</h3>
+            <p class="text-gray-600 text-sm">Product Manager at InnovateCo</p>
+          </div>
+        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+          <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+          <div class="ml-4">
+            <h3 class="font-semibold">Michael Chen</h3>
+            <p class="text-gray-600 text-sm">Lead Developer at TechStart</p>
+          </div>
+        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+          <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/28.jpg" alt="Emma Rodriguez">
+          <div class="ml-4">
+            <h3 class="font-semibold">Emma Rodriguez</h3>
+            <p class="text-gray-600 text-sm">UX Researcher at DesignHub</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6">
+        <button class="w-full bg-primary text-white py-2 rounded-lg font-medium hover:bg-secondary transition-colors">Manage Connections</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mutualModal" class="modal">
+    <div class="modal-content relative p-6">
+      <span class="modal-close" data-modal="mutualModal">&times;</span>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Mutual Connections</h2>
+      <p class="text-gray-600 mb-4">You have 28 mutual connections with people in your network.</p>
+      <div class="space-y-4">
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+          <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/22.jpg" alt="James Wilson">
+          <div class="ml-4">
+            <h3 class="font-semibold">James Wilson</h3>
+            <p class="text-gray-600 text-sm">5 mutual connections</p>
+          </div>
+        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+          <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/33.jpg" alt="Lisa Wong">
+          <div class="ml-4">
+            <h3 class="font-semibold">Lisa Wong</h3>
+            <p class="text-gray-600 text-sm">3 mutual connections</p>
+          </div>
+        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+          <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/12.jpg" alt="Sophia Martinez">
+          <div class="ml-4">
+            <h3 class="font-semibold">Sophia Martinez</h3>
+            <p class="text-gray-600 text-sm">8 mutual connections</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6">
+        <button class="w-full bg-primary text-white py-2 rounded-lg font-medium hover:bg-secondary transition-colors">View All Mutual Connections</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Main content ===== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-8 gap-8">
+      <!-- Left Column -->
+      <div id="leftColumn" class="lg:col-span-2 space-y-6 pane-scroll no-scrollbar">
+        <!-- Profile -->
+        <div class="gradient-bg rounded-2xl p-4 text-white relative overflow-hidden nt-equal-shadow">
+          <div class="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white opacity-10"></div>
+          <div class="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-white opacity-10"></div>
+          <div class="flex flex-col items-center relative z-10">
+            <div class="relative mb-3">
+              <img class="h-20 w-20 rounded-full border-2 border-white shadow-lg object-cover" src="https://randomuser.me/api/portraits/men/52.jpg" alt="Profile">
+              <span class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></span>
+            </div>
+            <div class="text-center">
+              <h1 class="text-lg font-bold">John Doe</h1>
+              <p class="text-blue-100 text-xs">Senior Product Designer at TechCorp</p>
+              <p class="text-blue-100 mt-1 text-xs"><i class="fas fa-map-marker-alt mr-1"></i> San Francisco, CA</p>
+            </div>
+            <div class="flex space-x-2 mt-3">
+              <button id="shareProfileBtn" class="bg-white text-primary px-3 py-1 rounded-lg font-semibold flex items-center shadow-md hover:shadow-lg transition-shadow text-[11px]">
+                <i class="fas fa-share-alt mr-1"></i> Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Network Overview (MUTUAL REMOVED) -->
+        <div class="bg-white rounded-2xl nt-equal-shadow p-4">
+          <div class="mb-4">
+            <h2 class="text-lg font-bold text-gray-800">Network Overview</h2>
+          </div>
+          <div class="grid grid-cols-1 gap-3">
+            <div class="stat-card bg-blue-50 rounded-xl p-3 text-center animate-fade-in" style="animation-delay: 0.05s" data-modal="connectionsModal" id="connectionsStatCard">
+              <div class="text-xl font-bold text-primary leading-none">452</div>
+              <div class="text-gray-600 text-xs">Connections</div>
+              <div class="mt-1 text-[11px] text-blue-500 flex items-center justify-center">
+                <i class="fas fa-arrow-up mr-1"></i> 12% this month
+              </div>
+            </div>
+
+            <!-- Mutual card deleted -->
+
+            <div class="stat-card bg-amber-50 rounded-xl p-3 text-center animate-fade-in" style="animation-delay: 0.15s" id="pendingStatCard">
+              <div class="text-xl font-bold text-amber-600 leading-none">3</div>
+              <div class="text-gray-600 text-xs">Pending</div>
+              <div class="mt-1 text-[11px] text-amber-600 flex items-center justify-center">
+                <i class="fas fa-user-clock mr-1"></i> review now
+              </div>
+            </div>
+
+            <div class="stat-card bg-green-50 rounded-xl p-3 text-center animate-fade-in" style="animation-delay: 0.20s" id="eventsStatCard">
+              <div class="text-xl font-bold text-green-600 leading-none">5</div>
+              <div class="text-gray-600 text-xs">Events</div>
+              <div class="mt-1 text-[11px] text-green-600 flex items-center justify-center">
+                <i class="fas fa-calendar mr-1"></i> this month
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Column -->
+      <div id="middleColumn" class="lg:col-span-4 pane-scroll no-scrollbar">
+        <div class="bg-white rounded-2xl nt-equal-shadow mb-8">
+          <!-- Sticky header -->
+          <div class="sticky top-0 z-20 bg-white p-6 border-b border-gray-100">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+              <h2 class="text-xl font-bold text-gray-800 mb-4 md:mb-0" id="listHeader">Your Connections</h2>
+              <div class="relative w-full md:w-auto">
+                <input type="text" placeholder="Search connections..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-full md:w-64">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrollable content -->
+          <div class="p-6 pt-4">
+            <div id="connectionsList" class="collapsed">
+              <!-- ===== Regular (1-10) ===== -->
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sarah Johnson">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Sarah Johnson</h3>
+                    <p class="text-gray-600 text-sm">Product Manager at InnovateCo</p>
+                    <div class="text-xs text-gray-500 mt-1">5 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg">
+                  <i class="fas fa-comment-dots text-xl"></i>
+                </button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-yellow-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Michael Chen</h3>
+                    <p class="text-gray-600 text-sm">Lead Developer at TechStart</p>
+                    <div class="text-xs text-gray-500 mt-1">3 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg">
+                  <i class="fas fa-comment-dots text-xl"></i>
+                </button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/28.jpg" alt="Emma Rodriguez">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Emma Rodriguez</h3>
+                    <p class="text-gray-600 text-sm">UX Researcher at DesignHub</p>
+                    <div class="text-xs text-gray-500 mt-1">8 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg">
+                  <i class="fas fa-comment-dots text-xl"></i>
+                </button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/75.jpg" alt="David Kim">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-gray-300 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">David Kim</h3>
+                    <p class="text-gray-600 text-sm">Marketing Director at BrandWorks</p>
+                    <div class="text-xs text-gray-500 mt-1">2 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg">
+                  <i class="fas fa-comment-dots text-xl"></i>
+                </button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/42.jpg" alt="Priya Patel">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Priya Patel</h3>
+                    <p class="text-gray-600 text-sm">Data Scientist at AnalyticsPro</p>
+                    <div class="text-xs text-gray-500 mt-1">7 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg">
+                  <i class="fas fa-comment-dots text-xl"></i>
+                </button>
+              </div>
+              <!-- 6-10 -->
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Olivia Brown">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Olivia Brown</h3>
+                    <p class="text-gray-600 text-sm">Product Analyst at InsightIQ</p>
+                    <div class="text-xs text-gray-500 mt-1">4 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/41.jpg" alt="Noah Lee">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-yellow-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Noah Lee</h3>
+                    <p class="text-gray-600 text-sm">Full-stack Engineer at CodeBase</p>
+                    <div class="text-xs text-gray-500 mt-1">2 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ava Thompson">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Ava Thompson</h3>
+                    <p class="text-gray-600 text-sm">Design Lead at PixelForge</p>
+                    <div class="text-xs text-gray-500 mt-1">6 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/16.jpg" alt="Ethan Walker">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-gray-300 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Ethan Walker</h3>
+                    <p class="text-gray-600 text-sm">Mobile Dev at AppNest</p>
+                    <div class="text-xs text-gray-500 mt-1">1 mutual connection</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="regular">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/9.jpg" alt="Mia Davis">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Mia Davis</h3>
+                    <p class="text-gray-600 text-sm">Researcher at UXLab</p>
+                    <div class="text-xs text-gray-500 mt-1">3 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+
+              <!-- ===== Mutuals ===== -->
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="mutual">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/22.jpg" alt="James Wilson">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">James Wilson</h3>
+                    <p class="text-gray-600 text-sm">Product Designer at CreativeLabs</p>
+                    <div class="text-xs text-gray-500 mt-1">5 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="mutual">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/33.jpg" alt="Lisa Wong">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-yellow-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Lisa Wong</h3>
+                    <p class="text-gray-600 text-sm">Frontend Developer at WebSolutions</p>
+                    <div class="text-xs text-gray-500 mt-1">3 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="mutual">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/12.jpg" alt="Sophia Martinez">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Sophia Martinez</h3>
+                    <p class="text-gray-600 text-sm">Content Strategist at MediaGroup</p>
+                    <div class="text-xs text-gray-500 mt-1">8 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="mutual">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/5.jpg" alt="Arun Singh">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Arun Singh</h3>
+                    <p class="text-gray-600 text-sm">PM at DeltaWorks</p>
+                    <div class="text-xs text-gray-500 mt-1">7 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="mutual">
+                <div class="flex items-center">
+                  <div class="relative">
+                    <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/74.jpg" alt="Zara Khan">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-yellow-500 rounded-full border-2 border-white"></span>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Zara Khan</h3>
+                    <p class="text-gray-600 text-sm">UX Writer at StoryCraft</p>
+                    <div class="text-xs text-gray-500 mt-1">4 mutual connections</div>
+                  </div>
+                </div>
+                <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg"><i class="fas fa-comment-dots text-xl"></i></button>
+              </div>
+
+              <!-- ===== Pending ===== -->
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="pending">
+                <div class="flex items-center">
+                  <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/15.jpg" alt="Arjun Mehta">
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Arjun Mehta</h3>
+                    <p class="text-gray-600 text-sm">Backend Engineer at CloudNest</p>
+                    <div class="text-xs text-gray-500 mt-1">2 mutual connections</div>
+                  </div>
+                </div>
+                <div class="flex space-x-2">
+                  <button class="accept-btn bg-primary text-white px-3 py-2 rounded-lg text-sm">Accept</button>
+                  <button class="ignore-btn border border-gray-300 px-3 py-2 rounded-lg text-sm">Ignore</button>
+                </div>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="pending">
+                <div class="flex items-center">
+                  <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/55.jpg" alt="Riya Sharma">
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Riya Sharma</h3>
+                    <p class="text-gray-600 text-sm">UI Designer at PixelPilot</p>
+                    <div class="text-xs text-gray-500 mt-1">4 mutual connections</div>
+                  </div>
+                </div>
+                <div class="flex space-x-2">
+                  <button class="accept-btn bg-primary text-white px-3 py-2 rounded-lg text-sm">Accept</button>
+                  <button class="ignore-btn border border-gray-300 px-3 py-2 rounded-lg text-sm">Ignore</button>
+                </div>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="pending">
+                <div class="flex items-center">
+                  <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/60.jpg" alt="Vikas Rao">
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Vikas Rao</h3>
+                    <p class="text-gray-600 text-sm">Growth Marketer at LaunchLab</p>
+                    <div class="text-xs text-gray-500 mt-1">1 mutual connection</div>
+                  </div>
+                </div>
+                <div class="flex space-x-2">
+                  <button class="accept-btn bg-primary text-white px-3 py-2 rounded-lg text-sm">Accept</button>
+                  <button class="ignore-btn border border-gray-300 px-3 py-2 rounded-lg text-sm">Ignore</button>
+                </div>
+              </div>
+              <div class="connection-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="pending">
+                <div class="flex items-center">
+                  <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/52.jpg" alt="Hannah Moore">
+                  <div class="ml-4">
+                    <h3 class="font-semibold">Hannah Moore</h3>
+                    <p class="text-gray-600 text-sm">Product Owner at Sprintly</p>
+                    <div class="text-xs text-gray-500 mt-1">3 mutual connections</div>
+                  </div>
+                </div>
+                <div class="flex space-x-2">
+                  <button class="accept-btn bg-primary text-white px-3 py-2 rounded-lg text-sm">Accept</button>
+                  <button class="ignore-btn border border-gray-300 px-3 py-2 rounded-lg text-sm">Ignore</button>
+                </div>
+              </div>
+
+              <!-- ===== Events ===== -->
+              <div class="event-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="events">
+                <div class="flex items-center">
+                  <div class="bg-blue-100 text-primary rounded-xl p-3 mr-4"><i class="fas fa-calendar-alt text-xl"></i></div>
+                  <div>
+                    <h3 class="font-semibold">Tech Leadership Conference</h3>
+                    <p class="text-gray-600 text-sm">Oct 15, 2023 • 9:00 AM - 5:00 PM</p>
+                    <div class="text-xs text-blue-500 mt-1">32 connections attending</div>
+                  </div>
+                </div>
+                <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Add</button>
+              </div>
+              <div class="event-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="events">
+                <div class="flex items-center">
+                  <div class="bg-purple-100 text-secondary rounded-xl p-3 mr-4"><i class="fas fa-users text-xl"></i></div>
+                  <div>
+                    <h3 class="font-semibold">Design Thinking Workshop</h3>
+                    <p class="text-gray-600 text-sm">Oct 22, 2023 • 10:00 AM - 2:00 PM</p>
+                    <div class="text-xs text-purple-500 mt-1">18 connections attending</div>
+                  </div>
+                </div>
+                <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Add</button>
+              </div>
+              <div class="event-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="events">
+                <div class="flex items-center">
+                  <div class="bg-green-100 text-green-600 rounded-xl p-3 mr-4"><i class="fas fa-briefcase text-xl"></i></div>
+                  <div>
+                    <h3 class="font-semibold">Startup Networking Mixer</h3>
+                    <p class="text-gray-600 text-sm">Oct 28, 2023 • 6:00 PM - 9:00 PM</p>
+                    <div class="text-xs text-green-500 mt-1">24 connections attending</div>
+                  </div>
+                </div>
+                <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Add</button>
+              </div>
+              <div class="event-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="events">
+                <div class="flex items-center">
+                  <div class="bg-amber-100 text-amber-600 rounded-xl p-3 mr-4"><i class="fas fa-graduation-cap text-xl"></i></div>
+                  <div>
+                    <h3 class="font-semibold">UX Design Masterclass</h3>
+                    <p class="text-gray-600 text-sm">Nov 5, 2023 • 11:00 AM - 4:00 PM</p>
+                    <div class="text-xs text-amber-500 mt-1">15 connections attending</div>
+                  </div>
+                </div>
+                <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Add</button>
+              </div>
+              <div class="event-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="events">
+                <div class="flex items-center">
+                  <div class="bg-red-100 text-red-600 rounded-xl p-3 mr-4"><i class="fas fa-laptop-code text-xl"></i></div>
+                  <div>
+                    <h3 class="font-semibold">Frontend Developers Meetup</h3>
+                    <p class="text-gray-600 text-sm">Nov 12, 2023 • 7:00 PM - 9:00 PM</p>
+                    <div class="text-xs text-red-600 mt-1">29 connections attending</div>
+                  </div>
+                </div>
+                <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Add</button>
+              </div>
+              <div class="event-item flex items-center justify-between p-4 border-b border-gray-100" data-connection-type="events">
+                <div class="flex items-center">
+                  <div class="bg-blue-100 text-primary rounded-xl p-3 mr-4"><i class="fas fa-microphone text-xl"></i></div>
+                  <div>
+                    <h3 class="font-semibold">Product Ops Roundtable</h3>
+                    <p class="text-gray-600 text-sm">Nov 19, 2023 • 3:00 PM - 5:00 PM</p>
+                    <div class="text-xs text-blue-500 mt-1">12 connections attending</div>
+                  </div>
+                </div>
+                <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Add</button>
+              </div>
+            </div>
+
+            <div class="mt-6 text-center">
+              <button id="viewAllConnectionsBtn" class="text-primary font-semibold hover:text-secondary flex items-center justify-center">
+                View All Connections <i class="fas fa-arrow-down ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div id="rightColumn" class="lg:col-span-2 space-y-8 pane-scroll no-scrollbar">
+        <!-- People You May Know -->
+        <div class="bg-white rounded-2xl nt-equal-shadow p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold text-gray-800">People You May Know</h2>
+            <button id="refreshSuggestionsBtn" class="text-primary text-sm font-semibold"><i class="fas fa-sync-alt"></i></button>
+          </div>
+          <div class="space-y-4">
+            <div class="card-hover bg-gray-50 rounded-xl p-4 animate-fade-in" style="animation-delay: 0.1s">
+              <div class="flex items-center mb-3">
+                <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/33.jpg" alt="Lisa Wong">
+                <div class="ml-3">
+                  <h3 class="font-semibold text-sm">Lisa Wong</h3>
+                  <p class="text-gray-600 text-xs">Frontend Developer at WebSolutions</p>
+                  <div class="text-xs text-gray-500 mt-1">5 mutual connections</div>
+                </div>
+              </div>
+              <div class="flex space-x-2">
+                <button class="connect-btn flex-1 bg-primary text-white py-1 rounded-lg font-medium text-xs hover:bg-secondary transition-colors">Connect</button>
+                <button class="remove-btn w-8 h-8 flex items-center justify-center border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-times text-xs"></i></button>
+              </div>
+            </div>
+            <div class="card-hover bg-gray-50 rounded-xl p-4 animate-fade-in" style="animation-delay: 0.2s">
+              <div class="flex items-center mb-3">
+                <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/22.jpg" alt="James Wilson">
+                <div class="ml-3">
+                  <h3 class="font-semibold text-sm">James Wilson</h3>
+                  <p class="text-gray-600 text-xs">Product Designer at CreativeLabs</p>
+                  <div class="text-xs text-gray-500 mt-1">3 mutual connections</div>
+                </div>
+              </div>
+              <div class="flex space-x-2">
+                <button class="connect-btn flex-1 bg-primary text-white py-1 rounded-lg font-medium text-xs hover:bg-secondary transition-colors">Connect</button>
+                <button class="remove-btn w-8 h-8 flex items-center justify-center border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-times text-xs"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <button id="seeMoreSuggestionsBtn" class="text-primary text-sm font-semibold hover:text-secondary flex items-center justify-center w-full">
+              See More <i class="fas fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-2xl nt-equal-shadow p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Recent Activity</h2>
+          <div class="space-y-4">
+            <div class="flex items-start animate-fade-in" style="animation-delay: 0.1s">
+              <img class="h-8 w-8 rounded-full object-cover mt-1" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+              <div class="ml-2">
+                <p class="text-gray-700 text-sm"><span class="font-semibold">Michael Chen</span> commented on your post</p>
+                <p class="text-gray-500 text-xs">2 hours ago</p>
+              </div>
+            </div>
+            <div class="flex items-start animate-fade-in" style="animation-delay: 0.2s">
+              <img class="h-8 w-8 rounded-full object-cover mt-1" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sarah Johnson">
+              <div class="ml-2">
+                <p class="text-gray-700 text-sm"><span class="font-semibold">Sarah Johnson</span> liked your article</p>
+                <p class="text-gray-500 text-xs">5 hours ago</p>
+              </div>
+            </div>
+            <div class="flex items-start animate-fade-in" style="animation-delay: 0.3s">
+              <div class="bg-green-100 text-green-600 rounded-xl p-1 mt-1"><i class="fas fa-user-plus text-xs"></i></div>
+              <div class="ml-2">
+                <p class="text-gray-700 text-sm">You connected with <span class="font-semibold">Alex Morgan</span></p>
+                <p class="text-gray-500 text-xs">Yesterday</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <button id="seeAllActivityBtn" class="text-primary text-sm font-semibold hover:text-secondary flex items-center justify-center w-full">
+              See All <i class="fas fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Industry News -->
+        <div class="bg-white rounded-2xl nt-equal-shadow p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Industry News</h2>
+          <div class="space-y-4">
+            <div class="animate-fade-in" style="animation-delay: 0.1s">
+              <h3 class="font-semibold text-sm">Tech Industry Growth Exceeds Expectations</h3>
+              <p class="text-gray-600 text-xs mt-1">The technology sector has shown remarkable resilience with 8% growth in Q3.</p>
+              <p class="text-gray-500 text-xs mt-2">2 hours ago • TechNews</p>
+            </div>
+            <div class="animate-fade-in" style="animation-delay: 0.2s">
+              <h3 class="font-semibold text-sm">New Design Tools Revolutionizing Workflows</h3>
+              <p class="text-gray-600 text-xs mt-1">Latest releases from major design platforms are changing how teams collaborate.</p>
+              <p class="text-gray-500 text-xs mt-2">5 hours ago • DesignDaily</p>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <button id="seeAllNewsBtn" class="text-primary text-sm font-semibold hover:text-secondary flex items-center justify-center w-full">
+              See All News <i class="fas fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Skills Endorsements -->
+        <div class="bg-white rounded-2xl nt-equal-shadow p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Skills Endorsements</h2>
+          <div class="space-y-4">
+            <div class="animate-fade-in" style="animation-delay: 0.1s">
+              <div class="flex justify-between items-center">
+                <span class="font-medium text-sm">UI/UX Design</span>
+                <span class="text-xs bg-primary text-white px-2 py-1 rounded-full">24</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                <div class="bg-primary h-1.5 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="animate-fade-in" style="animation-delay: 0.2s">
+              <div class="flex justify-between items-center">
+                <span class="font-medium text-sm">Product Strategy</span>
+                <span class="text-xs bg-primary text-white px-2 py-1 rounded-full">18</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                <div class="bg-primary h-1.5 rounded-full" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="animate-fade-in" style="animation-delay: 0.3s">
+              <div class="flex justify-between items-center">
+                <span class="font-medium text-sm">Figma</span>
+                <span class="text-xs bg-primary text-white px-2 py-1 rounded-full">32</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                <div class="bg-primary h-1.5 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <button id="seeAllEndorsementsBtn" class="text-primary text-sm font-semibold hover:text-secondary flex items-center justify-center w-full">
+              See All Skills <i class="fas fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== Navbar JS ===== -->
+  <script>
+    
+
+     function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    li.classList.remove('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  function togglePanel(li){
+    if(li.classList.contains('open')){ hidePanel(li) }
+    else{
+      document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
+      showPanel(li);
+    }
+  }
+
+  function toggleProfileMenu(){
+    const menu=document.getElementById('profileMenu');
+    const chevron=document.getElementById('profileChevron');
+    const expanded=menu.classList.contains('visible');
+    if(expanded){
+      menu.classList.remove('visible','opacity-100','scale-100');
+      menu.classList.add('invisible','opacity-0','scale-95');
+      chevron.classList.remove('rotate-180');
+    }else{
+      menu.classList.remove('invisible','opacity-0','scale-95');
+      menu.classList.add('visible','opacity-100','scale-100');
+      chevron.classList.add('rotate-180');
+    }
+    document.getElementById('profileBtn').setAttribute('aria-expanded', String(!expanded));
+  }
+
+  function setupThemeToggle(){
+    const toggle=document.getElementById('themeToggle');
+    const themeRow=document.getElementById('themeRow');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme=localStorage.getItem('theme');
+    if(storedTheme==='dark'||(!storedTheme&&prefersDark)){
+      document.documentElement.classList.add('dark'); toggle.checked=true;
+    }else{
+      document.documentElement.classList.remove('dark'); toggle.checked=false;
+    }
+    toggle.addEventListener('change',function(){
+      if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+      else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+    });
+    themeRow.addEventListener('click',function(e){ if(e.target!==toggle){ toggle.click() }});
+  }
+
+  function setupClickOutside(){
+    document.addEventListener('click',function(e){
+      document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+      const profileMenu=document.getElementById('profileMenu');
+      const profileBtn=document.getElementById('profileBtn');
+      if(profileMenu.classList.contains('visible') && !profileMenu.contains(e.target) && !profileBtn.contains(e.target)){ toggleProfileMenu() }
+    });
+  }
+
+  function setupMobileBehavior(){
+  document.querySelectorAll('li[data-menu]').forEach(li=>{
+    const btn = li.querySelector('.nav-btn'); // works for <a> or <button>
+    if (!btn) return;
+
+    btn.addEventListener('click', function(e){
+      // prevent navigation for anchor menus
+      if (btn.tagName === 'A') e.preventDefault();
+      // on mobile, tap toggles the panel; on desktop, hover already handles it
+      if (window.innerWidth < 768) togglePanel(li);
+    });
+  });
+}
+
+
+  function setupKeyboardNav(){
+    // open with Enter/Space, close with Escape
+    document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{
+      btn.addEventListener('keydown', (e)=>{
+        const li=btn.closest('li[data-menu]');
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); togglePanel(li) }
+        if(e.key==='Escape'){ hidePanel(li) }
+      });
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        // close any open panels
+        document.querySelectorAll('li[data-menu].open').forEach(li=> hidePanel(li));
+        const pm=document.getElementById('profileMenu');
+        if(pm.classList.contains('visible')) toggleProfileMenu();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setupThemeToggle();
+    setupClickOutside();
+    setupMobileBehavior();
+    setupKeyboardNav();
+    document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+    document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+  });
+
+
+
+    // ===== Auto padding for fixed header so content never hides behind it =====
+    function setHeaderPadding(){
+      const header = document.getElementById('siteHeader');
+      if(!header) return;
+      const h = header.offsetHeight || 0;
+      document.documentElement.style.setProperty('--nav-h', (h + 8) + 'px'); // +8px breathing room
+    }
+    window.addEventListener('load', setHeaderPadding);
+    window.addEventListener('resize', setHeaderPadding);
+    // In case fonts/icons change height after first paint:
+    setTimeout(setHeaderPadding, 0);
+  </script>
+
+  <!-- ===== Network page JS ===== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const leftCol = document.getElementById('leftColumn');
+      const middleCol = document.getElementById('middleColumn');
+      const rightCol = document.getElementById('rightColumn');
+      const connectionsList = document.getElementById('connectionsList');
+      const viewAllBtn = document.getElementById('viewAllConnectionsBtn');
+      const listHeader = document.getElementById('listHeader');
+
+      function setPaneHeights(){
+        const grid = document.querySelector('main .grid');
+        const rect = grid.getBoundingClientRect();
+        const available = window.innerHeight - rect.top - 24;
+        if (window.innerWidth >= 1024 && available > 300){
+          leftCol.style.maxHeight = available + 'px';
+          rightCol.style.maxHeight = available + 'px';
+          const leftVisible = Math.min(available, leftCol.scrollHeight);
+          middleCol.style.height = leftVisible + 'px';
+          middleCol.style.maxHeight = available + 'px';
+        } else {
+          leftCol.style.maxHeight = '';
+          rightCol.style.maxHeight = '';
+          middleCol.style.height = '';
+          middleCol.style.maxHeight = '';
+        }
+      }
+      setPaneHeights();
+      window.addEventListener('resize', setPaneHeights);
+      window.addEventListener('load', setPaneHeights);
+
+      let currentFilter = 'all';
+      const loadedMore = { regular:false, mutual:false, pending:false, events:false };
+      const appendedByType = { regular:[], mutual:[], pending:[], events:[] };
+
+      function getFilterLabel(f){
+        return f === 'all' ? 'Connections'
+             : f === 'mutual' ? 'Mutuals'
+             : f === 'pending' ? 'Pending'
+             : 'Events';
+      }
+      function setViewAllLabel(f, expanded){
+        const label = getFilterLabel(f);
+        viewAllBtn.innerHTML = (expanded ? `Show Less ${label}` : `View All ${label}`) + ' <i class="fas fa-arrow-' + (expanded?'up':'down') + ' ml-2"></i>';
+      }
+      function resetExtras(type){
+        appendedByType[type].forEach(node => node.remove());
+        appendedByType[type] = [];
+        loadedMore[type] = false;
+      }
+
+      function createConnectionItem({img,name,title,mutual,status='green'}, type='regular'){
+        const wrapper = document.createElement('div');
+        wrapper.className = 'connection-item flex items-center justify-between p-4 border-b border-gray-100';
+        wrapper.setAttribute('data-connection-type', type);
+        const statusColor = status==='green' ? 'bg-green-500' : status==='yellow' ? 'bg-yellow-500' : 'bg-gray-300';
+        wrapper.innerHTML = `
+          <div class="flex items-center">
+            <div class="relative">
+              <img class="h-12 w-12 rounded-full object-cover" src="${img}" alt="${name}">
+              <span class="absolute bottom-0 right-0 w-3 h-3 ${statusColor} rounded-full border-2 border-white"></span>
+            </div>
+            <div class="ml-4">
+              <h3 class="font-semibold">${name}</h3>
+              <p class="text-gray-600 text-sm">${title}</p>
+              ${mutual ? `<div class="text-xs text-gray-500 mt-1">${mutual}</div>` : ''}
+            </div>
+          </div>
+          <button class="message-btn text-primary hover:text-secondary bg-blue-50 p-2 rounded-lg">
+            <i class="fas fa-comment-dots text-xl"></i>
+          </button>
+        `;
+        wrapper.querySelector('.message-btn').addEventListener('click', ()=>{});
+        return wrapper;
+      }
+      function createPendingItem({img,name,title,mutual}){
+        const wrapper = document.createElement('div');
+        wrapper.className = 'connection-item flex items-center justify-between p-4 border-b border-gray-100';
+        wrapper.setAttribute('data-connection-type','pending');
+        wrapper.innerHTML = `
+          <div class="flex items-center">
+            <img class="h-12 w-12 rounded-full object-cover" src="${img}" alt="${name}">
+            <div class="ml-4">
+              <h3 class="font-semibold">${name}</h3>
+              <p class="text-gray-600 text-sm">${title}</p>
+              ${mutual ? `<div class="text-xs text-gray-500 mt-1">${mutual}</div>` : ''}
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <button class="accept-btn bg-primary text-white px-3 py-2 rounded-lg text-sm">Accept</button>
+            <button class="ignore-btn border border-gray-300 px-3 py-2 rounded-lg text-sm">Ignore</button>
+          </div>
+        `;
+        wrapper.querySelector('.accept-btn').addEventListener('click', function(){ wrapper.remove(); });
+        wrapper.querySelector('.ignore-btn').addEventListener('click', function(){ wrapper.remove(); });
+        return wrapper;
+      }
+      function createEventItem({icon='calendar-alt',bg='bg-blue-100',text='text-primary',title,when,attending}){
+        const wrapper = document.createElement('div');
+        wrapper.className = 'event-item flex items-center justify-between p-4 border-b border-gray-100';
+        wrapper.setAttribute('data-connection-type','events');
+        wrapper.innerHTML = `
+          <div class="flex items-center">
+            <div class="${bg} ${text} rounded-xl p-3 mr-4">
+              <i class="fas fa-${icon} text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold">${title}</h3>
+              <p class="text-gray-600 text-sm">${when}</p>
+              <div class="text-xs ${text.replace('text-','text-')} mt-1">${attending}</div>
+            </div>
+          </div>
+          <button class="text-primary text-sm font-semibold hover:text-secondary bg-blue-50 px-3 py-2 rounded-lg">
+            <i class="fas fa-calendar-plus mr-1"></i> Add
+          </button>
+        `;
+        return wrapper;
+      }
+
+      const extraData = {
+        regular: [
+          {img:'https://randomuser.me/api/portraits/men/18.jpg', name:'Liam Carter', title:'SRE at CloudSphere', mutual:'5 mutual connections', status:'green'},
+          {img:'https://randomuser.me/api/portraits/women/21.jpg', name:'Chloe Nguyen', title:'Visual Designer at BrightCo', mutual:'2 mutual connections', status:'green'},
+          {img:'https://randomuser.me/api/portraits/men/77.jpg', name:'Aiden Brooks', title:'Data Analyst at Quantica', mutual:'4 mutual connections', status:'yellow'},
+          {img:'https://randomuser.me/api/portraits/women/17.jpg', name:'Nora Patel', title:'Community Manager at Loop', mutual:'3 mutual connections', status:'green'},
+        ],
+        mutual: [
+          {img:'https://randomuser.me/api/portraits/men/8.jpg', name:'Carlos Ruiz', title:'Data Eng at StreamFlow', mutual:'5 mutual connections', status:'green'},
+          {img:'https://randomuser.me/api/portraits/women/22.jpg', name:'Emily Clark', title:'Brand Strategist at North&Co', mutual:'9 mutual connections', status:'green'},
+          {img:'https://randomuser.me/api/portraits/men/29.jpg', name:'Jon Park', title:'SecOps at Guardly', mutual:'2 mutual connections', status:'green'},
+        ],
+        pending: [
+          {img:'https://randomuser.me/api/portraits/men/84.jpg', name:'Rohit Verma', title:'QA Engineer at Testify', mutual:'2 mutual connections'},
+          {img:'https://randomuser.me/api/portraits/men/21.jpg', name:'Yuki Tanaka', title:'Growth Analyst at Metricly', mutual:'1 mutual connection'},
+        ],
+        events: [
+          {icon:'users', bg:'bg-purple-100', text:'text-secondary', title:'Community Design Jam', when:'Dec 3, 2023 • 1:00 PM - 4:00 PM', attending:'21 connections attending'},
+          {icon:'laptop-code', bg:'bg-red-100', text:'text-red-600', title:'Web Perf Clinic', when:'Dec 10, 2023 • 6:00 PM - 8:00 PM', attending:'17 connections attending'},
+          {icon:'lightbulb', bg:'bg-amber-100', text:'text-amber-600', title:'Innovation Sprint Kickoff', when:'Dec 17, 2023 • 10:00 AM - 12:00 PM', attending:'10 connections attending'},
+        ]
+      };
+
+      function loadMore(type){
+        if (type === 'all') type = 'regular';
+        if (loadedMore[type]) return;
+        const items = extraData[type] || [];
+        items.forEach(data => {
+          let node;
+          if (type === 'regular' || type === 'mutual') {
+            node = createConnectionItem(data, type === 'regular' ? 'regular' : 'mutual');
+          } else if (type === 'pending') {
+            node = createPendingItem(data);
+          } else {
+            node = createEventItem(data);
+          }
+          connectionsList.appendChild(node);
+          appendedByType[type].push(node);
+        });
+        loadedMore[type] = true;
+      }
+
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const connectionItemsAll = () => document.querySelectorAll('.connection-item, .event-item');
+
+      function filterConnections(filterType) {
+        currentFilter = filterType;
+        listHeader.textContent =
+          filterType === 'mutual' ? 'Mutual Connections' :
+          filterType === 'pending' ? 'Pending Requests' :
+          filterType === 'events' ? 'Upcoming Events' :
+          'Your Connections';
+
+        connectionItemsAll().forEach(item => {
+          const type = item.getAttribute('data-connection-type');
+          if (filterType === 'all') {
+            item.style.display = (type === 'regular') ? 'flex' : 'none';
+          } else if (filterType === 'mutual') {
+            item.style.display = (type === 'mutual') ? 'flex' : 'none';
+          } else if (filterType === 'pending') {
+            item.style.display = (type === 'pending') ? 'flex' : 'none';
+          } else if (filterType === 'events') {
+            item.style.display = (type === 'events') ? 'flex' : 'none';
+          } else {
+            item.style.display = 'flex';
+          }
+        });
+
+        connectionsList.classList.remove('expanded');
+        connectionsList.classList.add('collapsed');
+        setViewAllLabel(filterType, false);
+      }
+      filterConnections('all');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          const filter = this.getAttribute('data-filter');
+          filterConnections(filter);
+        });
+      });
+
+      // Stat cards as filters (MUTUAL removed safely)
+      document.getElementById('connectionsStatCard').addEventListener('click', function() {
+        filterConnections('all');
+      });
+      const mutualCard = document.getElementById('mutualStatCard');
+      if (mutualCard) { mutualCard.addEventListener('click', function(){ filterConnections('mutual'); }); }
+      document.getElementById('pendingStatCard').addEventListener('click', function() {
+        filterConnections('pending');
+      });
+      document.getElementById('eventsStatCard').addEventListener('click', function() {
+        filterConnections('events');
+      });
+
+      viewAllBtn.addEventListener('click', function() {
+        const isExpanded = connectionsList.classList.contains('expanded');
+        if (!isExpanded) {
+          connectionsList.classList.remove('collapsed');
+          connectionsList.classList.add('expanded');
+          setViewAllLabel(currentFilter, true);
+          loadMore(currentFilter);
+        } else {
+          connectionsList.classList.remove('expanded');
+          connectionsList.classList.add('collapsed');
+          setViewAllLabel(currentFilter, false);
+          if (currentFilter === 'all') resetExtras('regular');
+          else resetExtras(currentFilter);
+        }
+      });
+
+      const modals = document.querySelectorAll('.modal');
+      const statCards = document.querySelectorAll('.stat-card');
+      const closeButtons = document.querySelectorAll('.modal-close');
+      statCards.forEach(card => {
+        card.addEventListener('click', function() {
+          const modalId = this.getAttribute('data-modal');
+          if (modalId && modalId !== 'connectionsModal' && modalId !== 'mutualModal') {
+            document.getElementById(modalId).style.display = 'flex';
+          }
+        });
+      });
+      closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const modalId = this.getAttribute('data-modal');
+          document.getElementById(modalId).style.display = 'none';
+        });
+      });
+      modals.forEach(modal => {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) this.style.display = 'none';
+        });
+      });
+
+      const searchInput = document.querySelector('input[type="text"]');
+      if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+          const searchTerm = this.value.toLowerCase();
+          connectionItemsAll().forEach(item => {
+            if (item.style.display === 'none') return;
+            const name = item.querySelector('h3') ? item.querySelector('h3').textContent.toLowerCase() : '';
+            const title = item.querySelector('p') ? item.querySelector('p').textContent.toLowerCase() : '';
+            item.style.opacity = (name.includes(searchTerm) || title.includes(searchTerm)) ? '1' : '0.35';
+          });
+        });
+      }
+
+      document.querySelectorAll('.connect-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const originalText = this.innerHTML;
+          this.innerHTML = '<i class="fas fa-check mr-2"></i> Connected';
+          this.classList.remove('bg-primary','hover:bg-secondary');
+          this.classList.add('bg-green-500','hover:bg-green-600');
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.classList.remove('bg-green-500','hover:bg-green-600');
+            this.classList.add('bg-primary','hover:bg-secondary');
+          }, 2000);
+        });
+      });
+      document.querySelectorAll('.remove-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const card = this.closest('.card-hover');
+          card.style.opacity = '0';
+          setTimeout(() => { card.remove(); }, 300);
+        });
+      });
+      document.getElementById('shareProfileBtn').addEventListener('click', function() {});
+
+      document.querySelectorAll('.accept-btn').forEach(btn=>{
+        btn.addEventListener('click', function(){ this.closest('.connection-item').remove(); });
+      });
+      document.querySelectorAll('.ignore-btn').forEach(btn=>{
+        btn.addEventListener('click', function(){ this.closest('.connection-item').remove(); });
+      });
+    });
+  </script>
+</body>
+</html>
+

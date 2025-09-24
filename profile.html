@@ -1,0 +1,1659 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NxtTurn • Profile</title>
+
+  <!-- Your compiled Tailwind -->
+  <link href="dist/output.css" rel="stylesheet">
+
+  <!-- Tailwind CDN (for navbar utilities & custom colors).
+       After you recompile including the navbar, you can remove these two lines. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <script>
+      tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'sans-serif'] },
+        colors: {
+          brand:{50:'#eef5ff',100:'#e0edff',200:'#cfe0ff',300:'#a8cbff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde',800:'#1a4bb8',900:'#1a4090'},
+          ink:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'},
+          explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+          seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+          exams: { DEFAULT: '#10B981', light: '#D1FAE5' },
+          network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+          research: { DEFAULT: '#3B82F6', light: '#DBEAFE' },
+          messages: { DEFAULT: '#EF4444', light: '#FEE2E2' },
+          notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+        },
+        boxShadow:{
+          soft: '0 6px 20px rgba(2,6,23,.08)',
+          'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+          'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+        },
+        animation: {
+          'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'bounce-subtle': 'bounce-subtle 1s infinite',
+        },
+        keyframes: {
+          'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity: .85} },
+          'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+        }
+      }
+    }
+  }
+  </script>
+
+  <!-- Font Awesome for navbar icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+
+
+    
+      /* 1) Remove the page (document) scrollbar */
+html, body {
+  height: 100%;
+  overflow: hidden;        /* hides the right-edge scrollbar */
+}
+
+/* 2) Make your internal scroll areas fit the viewport under the navbar */
+.col-scroll{
+  height: calc(100vh - (var(--nav-h) + var(--nav-gap, 0px) + 24px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 3) Hide scrollbars *inside* those panels (visual only) */
+.col-scroll { scrollbar-width: none; }            /* Firefox */
+.col-scroll::-webkit-scrollbar { width: 0; height: 0; } /* WebKit */
+
+
+
+    /* ===== Navbar styles (scoped) ===== */
+    
+     *{ box-sizing:border-box }
+  body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+  :root{
+    --icon-sm: 22px;
+    --icon-lg: 24px;
+    --svg-stroke: 2.2;
+    --nav-h: 68px;
+    --logo-h: 22px; /* tweak this to make the logo bigger/smaller */
+  }
+
+  .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+  .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+  .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+  .nav-btn.active{ background:rgba(207,224,255,.4) }
+  .nav-btn .icon{ transition:all .2s ease }
+  .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; stroke-linecap:round; stroke-linejoin:round }
+
+  .fa-solid.icon-fa{ font-size: calc(var(--icon-sm) + 1px); text-shadow: 0 .2px 0 currentColor }
+  @media (min-width:640px){ .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) } }
+
+  .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+  .nav-label{ font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap; transition:all .2s ease; font-weight:500; margin-top:2px }
+  .nav-btn:hover .nav-label{ color:#0f172a }
+  .nav-btn.active .nav-label{ font-weight:600 }
+
+  .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle }
+  @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) } }
+
+  .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+  .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+  .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+  .no-scrollbar::-webkit-scrollbar{ display:none }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+  .toggle::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2) }
+  input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+  input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+  .dark .nt-glass{ background:rgba(15,23,42,.88); border-bottom-color:rgba(30,41,59,.6) }
+  .dark #profileMenu, .dark .menu-panel{ background:#0f172a; border-color:#1e293b }
+  .dark .nav-btn .icon{ color:#94a3b8 }
+  .dark .nav-btn:hover .nav-label{ color:#e2e8f0 }
+  .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+  .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+  .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+
+  .profile-ico{ font-size:16px; color:#475569; transition:all .2s ease }
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{ color:#2f78f0; transform:translateY(-1px) }
+  .dark .profile-ico{ color:#94a3b8 }
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{ color:#93c5fd }
+
+  html,body{ max-width:100%; overflow-x:hidden }
+  body{ padding-top:var(--nav-h); background:linear-gradient(to bottom,#f8fafc,#f1f5f9); color:#0f172a }
+
+  .nav-scroller{ overflow-x:visible!important }
+  .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+  header, header.nt-glass, header nav{ overflow:visible!important }
+
+  .menu-panel{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top center }
+  .menu-item{ display:flex; align-items:center; gap:.65rem; padding:.75rem 1rem; transition:all .15s ease }
+  .menu-item .menu-ico{ width:18px; min-width:18px; text-align:center; color:#64748b }
+  .menu-item:hover{ background:#f5f8ff }
+  .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+  /* Profile dropdown */
+  #profileMenu{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top right }
+
+  .search-container{ position:relative; transition:all .3s ease }
+  .search-container:focus-within{ transform:translateY(-1px) }
+
+  .notification-badge{
+    position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+    background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite
+  }
+  .dark .notification-badge{ border-color:#0f172a }
+
+  .icon-explore{ color:#8B5CF6 }
+  .icon-seekers{ color:#EC4899 }
+  .icon-network{ color:#F59E0B }
+  .icon-messages{ color:#3dcb38 }
+  .icon-notifications{ color:#6366F1 }
+
+  .nav-btn:hover .icon-explore{ color:#7C3AED }
+  .nav-btn:hover .icon-seekers{ color:#DB2777 }
+  .nav-btn:hover .icon-network{ color:#D97706 }
+  .nav-btn:hover .icon-messages{ color:#48ee42 }
+  .nav-btn:hover .icon-notifications{ color:#4F46E5 }
+
+  .nav-label-explore,
+  .nav-label-seekers,
+  .nav-label-network,
+  .nav-label-messages,
+  .nav-label-notifications{ color:black }
+
+  .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+  .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+  .nav-btn:hover .nav-label-network{ color:#D97706 }
+  .nav-btn:hover .nav-label-messages{ color:#39ca34 }
+  .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+  .nav-btn.active .nav-label-explore{ color:#7C3AED }
+  .nav-btn.active .nav-label-seekers{ color:#DB2777 }
+  .nav-btn.active .nav-label-network{ color:#D97706 }
+  .nav-btn.active .nav-label-messages{ color:#39ca34 }
+  .nav-btn.active .nav-label-notifications{ color:#4F46E5 }
+
+  /* simple focus ring for keyboard users */
+  .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(79,145,255,.35) }
+
+
+    /* ===== Your existing page styles (unchanged) ===== */
+    :root{
+      --nt-shadow: 0 0 12px rgba(2,6,23,.08);
+      --nt-shadow-mid: 0 0 6px rgba(2,6,23,.06);
+      --text:#0f172a; --muted:#64748b; --blue:#2563eb; --card:#f8fafc; --border:#e5e7eb;
+    }
+    .nt-shadow{ box-shadow: var(--nt-shadow) !important; }
+    .nt-border{ border:1px solid rgba(226,232,240,.9) }
+    .shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl, [class*="shadow"]{ box-shadow: var(--nt-shadow) !important; }
+    #profile .nt-shadow, #profile .nt-panel, #profile .card, #profile .bg-white.rounded-2xl, #profile .bg-white.border.rounded-2xl, #profile [class*="shadow"]{ box-shadow: var(--nt-shadow-mid) !important; }
+    .nt-scroll::-webkit-scrollbar{width:10px;height:10px}
+    .nt-scroll::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:999px}
+    .nt-scroll:hover::-webkit-scrollbar-thumb{background:#cbd5e1}
+    .toast-enter{opacity:0;transform:translateY(6px)}
+    .toast-enter-active{opacity:1;transform:translateY(0);transition:all .18s ease-out}
+    .toast-leave{opacity:1}
+    .toast-leave-active{opacity:0;transition:opacity .15s ease-in}
+    .col-scroll{ height: calc(100vh - 24px); overflow-y: auto; overscroll-behavior: contain; }
+    .col-fixed{ position: sticky; top: 8px; align-self: start; height: calc(100vh - 24px); overflow: hidden; }
+    aside.col-scroll{ height: calc(100vh - 24px) !important; overflow-y: auto !important; scrollbar-width: none; -ms-overflow-style: none; }
+    aside.col-scroll::-webkit-scrollbar{width:0;height:0}
+    .col-right{scrollbar-gutter:stable;}
+    .col-left{scrollbar-width:none;}
+    .col-left::-webkit-scrollbar{width:0;height:0}
+    #feedHost iframe{width:100%;border:0}
+    .card, .mini-card, .nt-panel, .bg-white.rounded-2xl, .bg-white.border.rounded-2xl{ box-shadow: var(--nt-shadow) !important; }
+    .cover-wrap{position:relative;height:220px}
+    #coverImg{object-position:center 60%}
+    .cover-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0),rgba(0,0,0,.08) 55%,rgba(0,0,0,.18));pointer-events:none; border-top-left-radius:1rem; border-top-right-radius:1rem;}
+    .profile-chip{display:inline-flex;gap:.35rem;align-items:center;padding:.35rem .6rem;border-radius:999px;background:linear-gradient(#f8fafc,#ffffff); border:1px solid rgba(148,163,184,.35); font-size:.78rem}
+    .stat-pill{display:grid;place-items:center;border-radius:12px;padding:.6rem .9rem;background:linear-gradient(180deg,#f8fafc,#ffffff); border:1px solid rgba(226,232,240,.9)}
+    .meta-row{display:flex;flex-wrap:wrap;gap:.5rem .75rem;justify-content:center}
+    #profile .stat-pill .text-slate-500{ color: var(--blue) !important; }
+    #content-skill .p-3{transition: box-shadow .18s ease, transform .12s ease, border-color .18s ease;}
+    #content-skill .p-3:hover{transform: translateY(-1px); box-shadow: var(--nt-shadow-mid); border-color: rgba(148,163,184,.35);}
+    .skill-meter{height:.45rem;border-radius:999px;overflow:hidden;background: linear-gradient(180deg,#eef2f7,#e9eef6)}
+    .skill-meter > span{display:block;height:100%;transition:width .35s ease;background: linear-gradient(90deg,#60a5fa,#3b82f6,#2563eb); position:relative; overflow:hidden}
+    .skill-meter > span::after{content:"";position:absolute;inset:0 0 0 auto;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%);animation:sweep 2.4s ease-in-out infinite;pointer-events:none}
+    @keyframes sweep{0%{transform:translateX(-120%)}60%{transform:translateX(120%)}100%{transform:translateX(120%)}}
+    .badge-verified{display:inline-flex;align-items:center;gap:.25rem;padding:.18rem .45rem;border-radius:999px;font-size:.7rem;background:linear-gradient(#f0f7ff,#ffffff);border:1px solid rgba(148,163,184,.35)}
+    .modal-panel{width:100%;max-width:80rem}
+    .editor-scroll{max-height:65vh;overflow:auto}
+    .editor-head{position:sticky;top:0;background:#fff;z-index:10;border-bottom:1px solid rgba(148,163,184,.35)}
+    .editor-grid{display:grid;grid-template-columns:4fr 1.5fr 1.5fr 1.6fr 1.2fr 1fr;gap:.75rem}
+    .editor-row{display:grid;grid-template-columns:4fr 1.5fr 1.5fr 1.6fr 1.2fr 1fr;gap:.75rem;align-items:center}
+    .editor-row>*{min-width:0}
+    .editor-row input,.editor-row select{width:100%}
+    @media (max-width:1024px){.editor-grid,.editor-row{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){.editor-grid,.editor-row{grid-template-columns:1fr}.editor-head{display:none}}
+    .card{background:#fff;border:1px solid var(--border)}
+    .link{color:#2563eb;font-weight:600}
+    aside.col-scroll a.link{ background:#2563eb; color:#fff !important; border:1px solid #1d4ed8; padding:6px 12px; border-radius:9999px; display:inline-flex;align-items:center;justify-content:center; text-decoration:none; }
+    aside.col-scroll a.link:hover{ background:#1d4ed8; }
+    aside.col-scroll a.link:active{ background:#1e40af; }
+    .subtle{color:var(--muted)}
+    .side-title{font-size:16px;line-height:1.02;font-weight:700;color:var(--text)}
+    .right-name{font-size:14px;font-weight:600}
+    .right-role{font-size:12px}
+    .nav-arrow{ display:inline-flex;align-items:center;justify-content:center; width:34px;height:34px;border-radius:9999px;border:1.5px solid (var(--border)); background:#fff;color:inherit;font-weight:800;line-height:1;user-select:none; transition:background .15s ease, box-shadow .15s ease, transform .05s ease; }
+    .nav-arrow:hover{ background:#f8fafc; box-shadow:0 0 0 4px rgba(2,6,23,.06) }
+    .nav-arrow:active{ transform:translateY(1px) }
+    .lnav-item{display:flex;align-items:center;gap:.55rem;padding:.55rem .65rem;border-radius:.75rem}
+    .lnav-item:hover{background:#f8fafc}
+    .lnav-item[aria-current="page"]{background:#eef2ff;color:#1d4ed8;font-weight:600}
+    .progress{height:.45rem;border-radius:999px;background:#eef2f7;overflow:hidden}
+    .progress>span{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#3b82f6,#2563eb)}
+    .mini-card{ background: linear-gradient(135deg,#e7f0ff, #ffffff); border:1px solid #e5e7eb; }
+
+
+
+    /* Make navbar dropdowns float above page content */
+.menu-panel{ z-index: 60 !important; }
+
+/* Keep in-page kebab menus under the navbar dropdowns */
+.nt-kebab-menu{ z-index: 30 !important; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- ===== Fixed Navbar Header (added) ===== -->
+
+<header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <!-- container pushed in -->
+  <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="Homepage.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+      </a>
+      <!-- Search -->
+      <div class="search-container relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-solid fa-compass icon-explore icon-fa" aria-hidden="true"></i>
+              <span class="nav-label nav-label-explore">Explore</span>
+            </a>
+
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="school.html">
+                    <i class="menu-ico fa-solid fa-school"></i>
+                    <span>Schools</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="institute.html">
+                    <i class="menu-ico fa-solid fa-building-columns"></i>
+                    <span>Institutes</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="enterprises.html">
+                    <i class="menu-ico fa-solid fa-briefcase"></i>
+                    <span>Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="government.html">
+                    <i class="menu-ico fa-solid fa-landmark"></i>
+                    <span>Government Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="">
+                    <i class="menu-ico fa-solid fa-pen-to-square"></i>
+                    <span>Exams</span>
+                  </a>
+                </li>
+                <li class="pl-10 pr-4 py-2 flex gap-2">
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test
+                  </a>
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Calendar
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="research.html">
+                    <i class="menu-ico fa-solid fa-flask"></i>
+                    <span>Research</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <span class="icon icon-seekers" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-seekers">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <span class="icon icon-network" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              </span>
+              <span class="nav-label nav-label-network">Network</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li class="relative">
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <span class="icon icon-messages" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-messages">Messages</span>
+              <span class="notification-badge">3</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li class="relative">
+            <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <span class="icon icon-notifications" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-notifications">Alerts</span>
+              <span class="notification-badge">12</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE (nudged up) -->
+          <li class="relative">
+            <button id="profileBtn"
+              class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                     hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                     focus:outline-none transition-all duration-200
+                     -translate-y-0.5 sm:-translate-y-1">
+              <div class="relative -mt-0.5 sm:-mt-1">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white" alt="Profile"/>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white"></span>
+              </div>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-soft-lg border border-slate-100 opacity-0 transition-all duration-200 scale-95">
+              
+              <div class="p-4 border-b border-slate-100">
+              <a href="profile.html" target="_self"
+                class="block p-4 border-b border-slate-100 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-t-xl"
+                id="profileHeaderLink">
+                <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+              <div>
+                <p class="font-medium text-ink-900">Alex Morgan</p>
+                <p class="text-xs text-slate-500">Premium Member</p>
+              </div>
+              </div>
+                </a>
+              </div>
+
+              <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
+                <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="games.html"><i class="menu-ico fa-solid fa-gamepad"></i><span>Games</span></a></li>
+                <li class="px-4">
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                </li>
+                <li class="border-t border-slate-100 mt-2">
+                  <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
+                    <i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+  <!-- GRID: LEFT (3) + CENTER (6) + RIGHT (3) -->
+<main class="mt-4 sm:mt-5 max-w-7xl mx-auto px-3 sm:px-6 py-3 grid grid-cols-1 lg:grid-cols-12 gap-3">
+
+
+    <!-- LEFT SIDEBAR (fixed) -->
+    <aside class="lg:col-span-3 xl:col-span-3 space-y-4 py-1">
+      <!-- Mini profile card -->
+      <section class="mini-card rounded-2xl p-4 nt-shadow">
+        <div class="flex items-center gap-3">
+          <img id="leftAvatar" src="https://i.pravatar.cc/160?img=5" class="h-12 w-12 rounded-full ring-2 ring-white object-cover" alt="">
+          <div>
+            <div id="leftName" class="font-semibold leading-tight">DR Alexa Morgan</div>
+            <div id="leftUser" class="text-xs text-slate-600">@alexamorgan</div>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <a href="posts.html" class="inline-flex w-full items-center justify-center gap-2 px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 text-sm font-medium">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            My Posts
+          </a>
+        </div>
+
+        <div class="mt-4">
+          <div class="text-xs text-slate-500 mb-1">Profile completeness</div>
+          <div class="progress"><span id="pbar" style="width: 72%"></span></div>
+          <div id="ptext" class="text-xs text-slate-600 mt-1">72% complete</div>
+        </div>
+      </section>
+
+      <!-- Menu + quick actions -->
+      <section class="bg-white nt-border rounded-2xl p-4 nt-shadow">
+        <h3 class="font-semibold text-sm mb-2">Profile Menu</h3>
+        <nav id="leftNav" class="space-y-1 text-[14px]">
+          <!-- ORDER: Overview → Designations → Education → Skills → Experience -->
+          <a href="#" class="lnav-item" data-section="overview" aria-current="page">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            Overview 
+          </a>
+          <a href="#" class="lnav-item" data-section="designations">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h12M4 17h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Designations
+          </a>
+          <a href="#" class="lnav-item" data-section="education">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4-9 4-9-4z" stroke="currentColor" stroke-width="1.6"/><path d="M7 10v5a5 5 0 0 0 10 0v-5" stroke="currentColor" stroke-width="1.6"/></svg>
+            Education
+          </a>
+          <a href="#" class="lnav-item" data-section="skills">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Skills
+          </a>
+          <a href="#" class="lnav-item" data-section="experience">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.6"/><path d="M9 7V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.6"/></svg>
+            Experience
+          </a>
+
+          <div class="h-px bg-slate-200 my-2"></div>
+
+          <!-- utilities -->
+          <a href="#" class="lnav-item" data-action="openResume">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l3 3v17a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.6"/><path d="M15 2v4h4" stroke="currentColor" stroke-width="1.6"/></svg>
+            Resume / CV
+          </a>
+          <a href="#" class="lnav-item" data-action="share">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M16 8a3 3 0 1 0-2.82-4H13a3 3 0 0 0 3 3zM8 13a3 3 0 1 0-2.82-4H5a3 3 0 0 0 3 3zM16 20a3 3 0 1 0-2.82-4H13a3 3 0 0 0 3 3z" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l5 3m0-6l-5 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Share Profile
+          </a>
+          <a href="#" class="lnav-item" data-action="settings">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>
+            Settings
+          </a>
+        </nav>
+
+        <input id="resumeInput" type="file" accept=".pdf,.doc,.docx" class="hidden">
+      </section>
+    </aside>
+
+    <!-- CENTER -->
+    <section class="lg:col-span-6 xl:col-span-6 col-scroll col-left px-1" id="profile">
+
+      <!-- Profile card -->
+      <section id="section-overview" class="bg-white rounded-2xl nt-border nt-shadow overflow-visible">
+        <!-- Cover -->
+        <div class="cover-wrap cursor-pointer" onclick="openViewer([state.cover],0)">
+          <img id="coverImg" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover rounded-t-2xl" alt="cover">
+          <div class="cover-overlay rounded-t-2xl"></div>
+          <div class="absolute top-3 right-3 z-30">
+            <button id="coverMenuBtn" class="p-2 rounded-full bg-white shadow hover:bg-slate-50" aria-label="menu">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </button>
+            <div id="coverMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-0">
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openEdit('cover')">Edit Cover</button>
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openEdit('avatar')">Edit Profile Photo</button>
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openEdit('nameUser')">Edit Name</button>
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('designations','Designations','e.g., UI Engineer, Interaction Design…')">Edit Designations</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar + username + name + designations -->
+        <div class="px-5 pb-5 -mt-10">
+          <div class="flex flex-col items-center text-center relative">
+            <div class="relative cursor-pointer" onclick="openViewer([state.avatar],0)">
+              <img id="avatarImg" src="https://i.pravatar.cc/160?img=5" class="h-28 w-28 rounded-full ring-4 ring-white object-cover nt-shadow" alt="profile">
+              <!-- Avatar edit button kept -->
+              <button class="absolute bottom-1 right-1 p-2 rounded-full bg-white border text-black hover:bg-slate-100"
+                onclick="event.stopPropagation(); openEdit('avatar')" aria-label="edit avatar">
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21l3.9-.6 11-11a2.8 2.8 0 10-4-4l-11 11L3 21z"/><path d="M15 5l4 4"/>
+                </svg>
+              </button>
+            </div>
+            <div class="mt-3 flex flex-col items-center gap-2">
+              <p id="profileUser" class="text-slate-500">@Sakshi</p>
+              <div class="flex items-center gap-2">
+                <h2 id="profileName" class="text-xl font-bold mb-2">DR Alexa Morgan</h2>
+                <!-- Removed the pencil icon beside the name -->
+              </div>
+              <div id="designationRow" class="meta-row mb-1"></div>
+            </div>
+          </div>
+
+          <!-- Followers / Following / Connections -->
+          <div class="mt-5 grid grid-cols-3 gap-3 text-sm">
+            <div class="stat-pill text-center">
+              <div class="text-slate-500 text-xs font-bold mb-1">Followers</div>
+              <div class="font-semibold" id="statFollowers">1,248</div>
+            </div>
+            <div class="stat-pill text-center">
+              <div class="text-slate-500 text-xs font-bold mb-1">Following</div>
+              <div class="font-semibold" id="statFollowing">321</div>
+            </div>
+            <div class="stat-pill text-center">
+              <div class="text-slate-500 text-xs font-bold mb-1">Connections</div>
+              <div class="font-semibold" id="statConnections">560</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sections -->
+      <section class="mt-3 space-y-3">
+        <!-- Bio -->
+        <section class="bg-white rounded-2xl nt-border p-4 nt-shadow nt-panel">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">Bio</h3>
+            <div class="relative">
+              <button class="p-2 rounded-full hover:bg-slate-100" data-kebab aria-label="Bio menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </button>
+              <div class="nt-kebab-menu hidden absolute right-0 mt-1 w-44 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-40">
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('bio','Bio','Write a short line…')">Add</button>
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('bio','Bio','Write a short line…')">Edit</button>
+                <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="toggleDeleteMode('bio')">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div id="content-bio" class="space-y-2"></div>
+        </section>
+
+        <!-- Education -->
+        <section id="section-education" class="bg-white rounded-2xl nt-border p-4 nt-shadow nt-panel">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">Education</h3>
+            <div class="relative">
+              <button class="p-2 rounded-full hover:bg-slate-100" data-kebab aria-label="Education menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </button>
+              <div class="nt-kebab-menu hidden absolute right-0 mt-1 w-44 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-40">
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('education','Education','Degree, School, Years…')">Add</button>
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('education','Education','Degree, School, Years…')">Edit</button>
+                <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="toggleDeleteMode('education')">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div id="content-edu" class="space-y-2"></div>
+        </section>
+
+        <!-- Skills -->
+        <section id="section-skills" class="bg-white rounded-2xl nt-border p-4 nt-shadow nt-panel">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">Skills</h3>
+            <div class="relative">
+              <button class="p-2 rounded-full hover:bg-slate-100" data-kebab aria-label="Skills menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </button>
+              <div class="nt-kebab-menu hidden absolute right-0 mt-1 w-44 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-40">
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50"
+                        onclick="state.skills.push({name:'New Skill',level:50,months:12,endorsements:0,verified:false}); render(); openSkillEditor();">Add</button>
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openSkillEditor()">Edit</button>
+                <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="toggleDeleteMode('skills')">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div id="content-skill" class="space-y-2"></div>
+        </section>
+
+        <!-- Experience -->
+        <section id="section-experience" class="bg-white rounded-2xl nt-border p-4 nt-shadow nt-panel">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">Experience</h3>
+            <div class="relative">
+              <button class="p-2 rounded-full hover:bg-slate-100" data-kebab aria-label="Experience menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </button>
+              <div class="nt-kebab-menu hidden absolute right-0 mt-1 w-44 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-40">
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('experience','Experience','Role @ Company (Years)…')">Add</button>
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('experience','Experience','Role @ Company (Years)…')">Edit</button>
+                <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="toggleDeleteMode('experience')">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div id="content-exp" class="space-y-2"></div>
+        </section>
+
+        <!-- Contact -->
+        <section class="bg-white rounded-2xl nt-border p-4 nt-shadow nt-panel">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">Contact</h3>
+            <div class="relative">
+              <button class="p-2 rounded-full hover:bg-slate-100" data-kebab aria-label="Contact menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </button>
+              <div class="nt-kebab-menu hidden absolute right-0 mt-1 w-44 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-40">
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('contact','Contact','Label: value')">Add</button>
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openListEditor('contact','Contact','Label: value')">Edit</button>
+                <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="toggleDeleteMode('contact')">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div id="content-contact" class="space-y-2"></div>
+        </section>
+
+        <!-- Add your own tab -->
+        <section class="bg-white rounded-2xl nt-border p-4 nt-shadow nt-panel">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">Add your own tab</h3>
+            <div class="relative">
+              <button class="p-2 rounded-full hover:bg-slate-100" data-kebab aria-label="Custom tab menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+              </button>
+              <div class="nt-kebab-menu hidden absolute right-0 mt-1 w-44 bg-white rounded-xl nt-border nt-shadow overflow-hidden z-40">
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openCustomEditor()">Add</button>
+                <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="openCustomEditor()">Edit</button>
+                <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="toggleDeleteMode('custom')">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div id="content-custom" class="space-y-2"></div>
+        </section>
+      </section>
+
+      <!-- POSTS -->
+      <section id="feedHost" class="mt-5">
+        <iframe id="postsFrame" src="posts.html" title="My Posts" scrolling="no"></iframe>
+      </section>
+    </section>
+
+    <!-- RIGHT RAIL -->
+    <aside class="lg:col-span-3 xl:col-span-3 col-scroll space-y-4 py-1">
+      <main class="mx-auto max-w-sm px-0 py-0">
+        <div class="space-y-4">
+          <!-- People You May Know -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h2 class="side-title mb-3">People You May Know</h2>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <ul id="pymkList" class="space-y-4">
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya Sharma">
+                  <div><div class="right-name">Priya Sharma</div><div class="right-role subtle">Software Engineer</div></div>
+                </div><a href="#" class="link text-[14px]">Connect</a>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rohan Verma">
+                  <div><div class="right-name">Rohan Verma</div><div class="right-role subtle">Data Scientist</div></div>
+                </div><a href="#" class="link text-[14px]">Connect</a>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Anjali Mehta">
+                  <div><div class="right-name">Anjali Mehta</div><div class="right-role subtle">UX Designer</div></div>
+                </div><a href="#" class="link text-[14px]">Connect</a>
+              </li>
+            </ul>
+            <div class="mt-3">
+              <button id="viewMorePYMK" class="rounded-full px-3 py-1.5 text-[13px] font-semibold bg-slate-100 hover:bg-slate-200 border border-slate-200">View More</button>
+            </div>
+          </section>
+
+          <!-- Sponsored (Carousel) -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-[18px] font-semibold">Sponsored</h3>
+              <div class="flex items-center gap-2">
+                <span class="text-[13px] subtle select-none">Ad</span>
+                <div class="flex items-center">
+                  <button id="sPrev" class="nav-arrow" aria-label="Previous ad" title="Previous">&lt;</button>
+                  <button id="sNext" class="nav-arrow ml-1" aria-label="Next ad" title="Next">&gt;</button>
+                </div>
+              </div>
+            </div>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <div id="sCard">
+              <img id="sImg" class="w-full h-44 object-cover rounded-xl" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" alt="Sponsored">
+              <a id="sTitle" href="#" target="_blank" rel="noopener" class="block mt-3 text-[18px] font-semibold leading-tight hover:underline">Master the Vue 3 Composition API</a>
+              <p id="sDesc" class="text-[14px] text-slate-600 leading-6">The ultimate course for building scalable and maintainable Vue applications. Enroll now!</p>
+            </div>
+          </section>
+
+          <!-- Featured Institutes -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h3 class="side-title mb-2">Featured Institutes</h3>
+            <div class="h-px bg-slate-200 mb-2"></div>
+            <ul class="divide-y divide-slate-100">
+              <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IITB</span><span class="font-semibold text-[14px]">IIT Bombay</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+              <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IIMA</span><span class="font-semibold text-[14px]">IIM Ahmedabad</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+              <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">NITT</span><span class="font-semibold text-[14px]">NIT Trichy</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+            </ul>
+          </section>
+
+          <!-- Full-Stack Web Dev (React + Node) -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="overflow-hidden rounded-xl border border-slate-200">
+              <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=800&auto=format&fit=crop" alt="Full-Stack Web Development Poster">
+              <div class="p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-[15px] font-semibold leading-tight">Full-Stack Web Dev (React + Node)</div>
+                  <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                </div>
+                <div class="text-[12px] subtle mt-0.5">ByteCraft Labs</div>
+                <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Job Openings -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h3 class="text-[18px] font-semibold mb-2">Job Openings</h3>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Backend Engineer</div><div class="text-[12px] subtle -mt-0.5">Flipkart • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">iOS Developer</div><div class="text-[12px] subtle -mt-0.5">Swiggy • Remote</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Data Analyst</div><div class="text-[12px] subtle -mt-0.5">Razorpay • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+            </ul>
+          </section>
+
+          <!-- Python for Data Science -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="overflow-hidden rounded-xl border border-slate-200">
+              <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" alt="Python for Data Science Poster">
+              <div class="p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-[15px] font-semibold leading-tight">Python for Data Science</div>
+                  <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                </div>
+                <div class="text-[12px] subtle mt-0.5">PyMasters Academy</div>
+                <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- IT Internships -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h3 class="text-[18px] font-semibold mb-2">IT Internships</h3>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">SDE Intern</div><div class="text-[12px] subtle -mt-0.5">Google • Hyderabad</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">ML Intern</div><div class="text-[12px] subtle -mt-0.5">NVIDIA • Pune</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Frontend Intern</div><div class="text-[12px] subtle -mt-0.5">Zoho • Chennai</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+            </ul>
+          </section>
+
+          <!-- AI & ML Foundations -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="overflow-hidden rounded-xl border border-slate-200">
+              <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" alt="AI & ML Foundations Poster">
+              <div class="p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-[15px] font-semibold leading-tight">AI & ML Foundations</div>
+                  <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                </div>
+                <div class="text-[12px] subtle mt-0.5">DeepLearn Hub</div>
+                <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Small Sponsored -->
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="flex items-center justify-between mb-1"><h3 class="text-[16px] font-semibold">Sponsored</h3><span class="text-[12px] subtle">Ad</span></div>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <div class="text-[15px] font-medium leading-snug">Build a career in Cloud with IBM SkillsBuild.</div>
+            <p class="text-[13px] text-slate-600 mt-1">Free labs and badges. Start today.</p>
+          </section>
+        </div>
+      </main>
+    </aside>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div id="viewer" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
+    <button id="viewerPrev" class="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 text-white/80 hover:text-white text-3xl">‹</button>
+    <button id="viewerNext" class="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-white/80 hover:text-white text-3xl">›</button>
+    <button id="viewerClose" class="absolute top-5 right-5 text-white text-3xl">✕</button>
+    <div class="flex flex-col items-center gap-3">
+      <img id="viewerImg" class="max-h-[82vh] max-w-[92vw] rounded-lg shadow-2xl select-none" draggable="false" />
+      <div class="flex gap-2">
+        <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomOut">-</button>
+        <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomReset">100%</button>
+        <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomIn">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div id="editModal" class="hidden fixed inset-0 z-50 bg-black/40 grid place-items-center p-4">
+    <div class="modal-panel bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 id="editTitle" class="text-lg font-semibold">Edit</h3>
+        <button class="p-2 rounded-lg hover:bg-slate-100" onclick="closeEdit()">✕</button>
+      </div>
+      <div class="p-4 space-y-3 editor-scroll">
+        <div id="editSlot"></div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button class="px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50" onclick="closeEdit()">Cancel</button>
+          <button id="editSaveBtn" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOASTS -->
+  <div id="toasts" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[60] space-y-2"></div>
+
+  <script>
+
+
+
+     /* Navbar behavior: desktop = navigate, mobile/tablet = toggle dropdowns */
+ 
+
+     function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    li.classList.remove('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  function togglePanel(li){
+    if(li.classList.contains('open')){ hidePanel(li) }
+    else{
+      document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
+      showPanel(li);
+    }
+  }
+
+  function toggleProfileMenu(){
+    const menu=document.getElementById('profileMenu');
+    const chevron=document.getElementById('profileChevron');
+    const expanded=menu.classList.contains('visible');
+    if(expanded){
+      menu.classList.remove('visible','opacity-100','scale-100');
+      menu.classList.add('invisible','opacity-0','scale-95');
+      chevron.classList.remove('rotate-180');
+    }else{
+      menu.classList.remove('invisible','opacity-0','scale-95');
+      menu.classList.add('visible','opacity-100','scale-100');
+      chevron.classList.add('rotate-180');
+    }
+    document.getElementById('profileBtn').setAttribute('aria-expanded', String(!expanded));
+  }
+
+  function setupThemeToggle(){
+    const toggle=document.getElementById('themeToggle');
+    const themeRow=document.getElementById('themeRow');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme=localStorage.getItem('theme');
+    if(storedTheme==='dark'||(!storedTheme&&prefersDark)){
+      document.documentElement.classList.add('dark'); toggle.checked=true;
+    }else{
+      document.documentElement.classList.remove('dark'); toggle.checked=false;
+    }
+    toggle.addEventListener('change',function(){
+      if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+      else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+    });
+    themeRow.addEventListener('click',function(e){ if(e.target!==toggle){ toggle.click() }});
+  }
+
+  function setupClickOutside(){
+    document.addEventListener('click',function(e){
+      document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+      const profileMenu=document.getElementById('profileMenu');
+      const profileBtn=document.getElementById('profileBtn');
+      if(profileMenu.classList.contains('visible') && !profileMenu.contains(e.target) && !profileBtn.contains(e.target)){ toggleProfileMenu() }
+    });
+  }
+
+  function setupMobileBehavior(){
+  document.querySelectorAll('li[data-menu]').forEach(li=>{
+    const btn = li.querySelector('.nav-btn'); // works for <a> or <button>
+    if (!btn) return;
+
+    btn.addEventListener('click', function(e){
+      // prevent navigation for anchor menus
+      if (btn.tagName === 'A') e.preventDefault();
+      // on mobile, tap toggles the panel; on desktop, hover already handles it
+      if (window.innerWidth < 768) togglePanel(li);
+    });
+  });
+}
+
+  function setupKeyboardNav(){
+    // open with Enter/Space, close with Escape
+    document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{
+      btn.addEventListener('keydown', (e)=>{
+        const li=btn.closest('li[data-menu]');
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); togglePanel(li) }
+        if(e.key==='Escape'){ hidePanel(li) }
+      });
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        // close any open panels
+        document.querySelectorAll('li[data-menu].open').forEach(li=> hidePanel(li));
+        const pm=document.getElementById('profileMenu');
+        if(pm.classList.contains('visible')) toggleProfileMenu();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setupThemeToggle();
+    setupClickOutside();
+    setupMobileBehavior();
+    setupKeyboardNav();
+    document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+    document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+  });
+
+
+
+
+    const FEED_SIZE = 50;
+
+    /* cover menu */
+    const coverMenuBtn=document.getElementById('coverMenuBtn');
+    const coverMenu=document.getElementById('coverMenu');
+    coverMenuBtn.addEventListener('click',e=>{e.stopPropagation(); coverMenu.classList.toggle('hidden')});
+    document.addEventListener('click',()=>coverMenu.classList.add('hidden'));
+
+    /* Kebab menus (3 dots) — open/close + click-away */
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('[data-kebab]');
+      const all = document.querySelectorAll('.nt-kebab-menu');
+      if(btn){
+        e.stopPropagation();
+        const menu = btn.nextElementSibling;
+        all.forEach(m => { if(m!==menu) m.classList.add('hidden'); });
+        menu?.classList.toggle('hidden');
+        return;
+      }
+      all.forEach(m => m.classList.add('hidden'));
+    });
+
+    /* toast */
+    function toast(msg){
+      const host=document.getElementById('toasts');
+      const el=document.createElement('div');
+      el.className='toast-enter bg-black/80 text-white px-3 py-2 rounded-lg text-sm shadow';
+      el.textContent=msg; host.appendChild(el);
+      requestAnimationFrame(()=>{ el.classList.add('toast-enter-active'); });
+      setTimeout(()=>{ el.classList.remove('toast-enter-active'); el.classList.add('toast-leave','toast-leave-active'); setTimeout(()=>el.remove(),180); },1600);
+    }
+
+    /* lightbox viewer */
+    const viewer=document.getElementById('viewer');
+    const viewerImg=document.getElementById('viewerImg');
+    const viewerPrev=document.getElementById('viewerPrev');
+    const viewerNext=document.getElementById('viewerNext');
+    const viewerClose=document.getElementById('viewerClose');
+    const zoomIn=document.getElementById('zoomIn');
+    const zoomOut=document.getElementById('zoomOut');
+    const zoomReset=document.getElementById('zoomReset');
+    let viewerImages=[], viewerIndex=0, zoom=1;
+    function openViewer(images, index=0){ viewerImages=images; viewerIndex=index; zoom=1; viewerImg.style.transform='scale(1)'; viewerImg.src=viewerImages[viewerIndex]; viewer.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); }
+    function closeViewer(){ viewer.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); }
+    function navViewer(dir){ viewerIndex=(viewerIndex+dir+viewerImages.length)%viewerImages.length; viewerImg.src=viewerImages[viewerIndex]; zoom=1; viewerImg.style.transform='scale(1)'; }
+    viewerPrev.onclick=()=>navViewer(-1); viewerNext.onclick=()=>navViewer(1); viewerClose.onclick=closeViewer;
+    zoomIn.onclick=()=>{ zoom=Math.min(zoom+0.2,3); viewerImg.style.transform=`scale(${zoom})`; };
+    zoomOut.onclick=()=>{ zoom=Math.max(zoom-0.2,0.5); viewerImg.style.transform=`scale(${zoom})`; };
+    zoomReset.onclick=()=>{ zoom=1; viewerImg.style.transform='scale(1)'; };
+    window.addEventListener('keydown',e=>{ if(viewer.classList.contains('hidden')) return; if(e.key==='Escape') closeViewer(); if(e.key==='ArrowRight') navViewer(1); if(e.key==='ArrowLeft') navViewer(-1); });
+
+    /* ====== STATE ====== */
+    const state={
+      name:'DR Sakshi Waghmare',
+      username:'@Sakshi',
+      avatar:'https://i.pravatar.cc/160?img=5',
+      cover:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+      designations:['UI Engineer','Interaction Design','Prototyping'],
+      followers:1248,
+      following:321,
+      connections:560,
+      bio:['Design-leaning UI engineer passionate about delightful interactions.'],
+      experience:['UI Engineer @ WebArtifacts (2024–Present)','Designer @ SD Engineering (2022–2024)'],
+      education:['B.Tech – Computer Science, RTMNU'],
+      skills:['Tailwind','React','Node','UI Prototyping'],
+      contact:['Email: sakshi@example.com','Phone: +91-90000-00000'],
+      customTabs:[],
+      posts:[]
+    };
+
+    function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+    let deleteModeKey=null;
+
+    function toggleDeleteMode(key){
+      deleteModeKey = (deleteModeKey===key) ? null : key;
+      render();
+      toast(deleteModeKey ? 'Delete mode: tap trash icons' : 'Delete mode off');
+    }
+    function deleteItem(key, idx){ const arr=state[key]; if(!Array.isArray(arr)) return; arr.splice(idx,1); render(); toast('Deleted'); }
+
+    /* skill helpers */
+    function skillIcon(name){
+      const n=(name||'').toLowerCase();
+      const wrap=(svg,bg='bg-slate-100')=>`<span class="inline-flex items-center justify-center h-7 w-7 rounded-xl ${bg} ring-1 ring-slate-200/70 mr-2">${svg}</span>`;
+      if(n.includes('react')) return wrap(`<svg viewBox="0 0 24 24" class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><ellipse cx="12" cy="12" rx="9" ry="3.5"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(-60 12 12)"></ellipse></svg>`, 'bg-cyan-50');
+      if(n.includes('tailwind')) return wrap(`<svg viewBox="0 0 24 24" class="w-5 h-5 text-sky-500" fill="currentColor"><path d="M3 10c2-4 6-5 9-2 3 3 5 2 9 0-2 4-6 5-9 2-3-3-5-2-9 0z"></path><path d="M3 16c2-4 6-5 9-2 3 3 5 2 9 0-2 4-6 5-9 2-3-3-5-2-9 0z" opacity=".9"></path></svg>`, 'bg-sky-50');
+      if(n.includes('node')) return wrap(`<svg viewBox="0 0 24 24" class="w-5 h-5 text-emerald-600" fill="currentColor"><path d="M12 2l8 4.6v10.8L12 22l-8-4.6V6.6L12 2z"></path><path d="M9 15V9l6 6V9" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>`, 'bg-emerald-50');
+      const svgDefault=`<svg viewBox="0 0 24 24" class="w-4 h-4 text-slate-600" fill="currentColor"><path d="M12 3l2.6 5.3L20 9.2l-4 3.9.9 5.8L12 16.8 7.1 19l.9-5.8-4-3.9 5.4-1z"></path></svg>`;
+      return wrap(svgDefault);
+    }
+    let skillSort='name', skillFilter='';
+    function asSkill(s){ if(typeof s === 'string'){ return { name:s, level:70, months:12, endorsements:0, verified:false }; }
+      const months = s.months != null ? Number(s.months) : (s.years != null ? Math.round(Number(s.years)*12) : 12);
+      return { name: s.name || 'Skill', level: Math.max(0, Math.min(100, Number(s.level ?? 70))), months: Math.max(0, months||0), endorsements: Number(s.endorsements ?? 0), verified: !!s.verified }; }
+    function normalizeSkills(){ state.skills = (state.skills || []).map(asSkill); }
+    function expLabel(months){ const y=Math.floor(months/12), m=months%12; if(y && m) return `${y} yr${y>1?'s':''} ${m} mo`; if(y) return `${y} yr${y>1?'s':''}`; return `${m} mo`; }
+    function setSkillSort(v){ skillSort=v; render(); }
+    function setSkillFilter(v){ skillFilter=v.toLowerCase(); render(); }
+    function sortSkills(list){ if(skillSort==='level') return [...list].sort((a,b)=>b.level-a.level||a.name.localeCompare(b.name)); if(skillSort==='endorse') return [...list].sort((a,b)=>b.endorsements-a.endorsements||a.name.localeCompare(b.name)); return [...list].sort((a,b)=>a.name.localeCompare(b.name)); }
+    function filterSkills(list){ if(!skillFilter) return list; return list.filter(s=>s.name.toLowerCase().includes(skillFilter)); }
+
+    function detectContact(item){
+      const s=item.trim();
+      const emailMatch = s.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+      const phoneMatch = s.match(/(\+?\d[\d\s\-]{6,}\d)/);
+      const urlMatch = s.match(/(https?:\/\/[^\s]+)/i);
+      if(emailMatch) return {type:'email', label:s, href:`mailto:${emailMatch[0]}`};
+      if(phoneMatch) return {type:'phone', label:s, href:`tel:${phoneMatch[0].replace(/\s|-/g,'')}`};
+      if(urlMatch) return {type:'link', label:s, href:urlMatch[0]};
+      return {type:'text', label:s, href:null};
+    }
+    function contactIcon(t){
+      if(t==='email') return `<svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2 2 0 012-2h16a2 2 0 012 2v.4l-10 6.25L2 6.4V6z"/><path d="M2 8.2l10 6.25L22 8.2V18a2 2 0 01-2 2H4a2 2 0 01-2-2V8.2z"/></svg>`;
+      if(t==='phone') return `<svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a2 2 0 012-2h2a1 1 0 011 .8l1 4a1 1 0 01-.3 1L7.9 11a13 13 0 006.2 6.2l2.2-1.8a1 1 0 011-.2l4 1a1 1 0 01.7 1V20a2 2 0 01-2 2h-1C9.16 22 2 14.84 2 6V5z"/></svg>`;
+      if(t==='link')  return `<svg class="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="currentColor"><path d="M10.6 13.4a4 4 0 005.7 0l2.3-2.3a4 4 0 10-5.7-5.7l-1 1"/><path d="M13.4 10.6a4 4 0 00-5.7 0l-2.3 2.3a4 4 0 105.7 5.7l1-1"/></svg>`;
+      return `<svg class="w-4 h-4 text-slate-600" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="3"/></svg>`;
+    }
+
+    /* ---------- RENDER ---------- */
+    function render(){
+      // main profile
+      document.getElementById('profileName').textContent=state.name;
+      document.getElementById('profileUser').textContent=state.username;
+      document.getElementById('avatarImg').src=state.avatar;
+      document.getElementById('coverImg').src=state.cover;
+
+      // left mini card mirrors
+      const ln=document.getElementById('leftName');
+      const lu=document.getElementById('leftUser');
+      const la=document.getElementById('leftAvatar');
+      if(ln) ln.textContent = state.name;
+      if(lu) lu.textContent = state.username;
+      if(la) la.src = state.avatar;
+
+      // designations chips
+      const dHost=document.getElementById('designationRow');
+      dHost.innerHTML = (state.designations||[]).map(d=>`<span class="profile-chip">${escapeHTML(d)}</span>`).join('');
+
+      // stats
+      document.getElementById('statFollowers').textContent = state.followers.toLocaleString();
+      document.getElementById('statFollowing').textContent = state.following.toLocaleString();
+      document.getElementById('statConnections').textContent = state.connections.toLocaleString();
+
+      const trashBtn=(key,idx)=> deleteModeKey===key
+        ? `<button onclick="deleteItem('${key}',${idx})" class="p-1 hover:bg-red-100 rounded text-red-600" title="Delete">
+             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3a1 1 0 00-1 1v1H5.5a1 1 0 100 2H6v12a2 2 0 002 2h8a2 2 0 002-2V7h.5a1 1 0 100-2H16V4a1 1 0 00-1-1H9zm2 3V4h4v2h-4zM9 9a1 1 0 012 0v8a1 1 0 11-2 0V9zm6 0a1 1 0 10-2 0v8a1 1 0 102 0V9z"/></svg>
+           </button>` : '';
+
+      /* Bio */
+      document.getElementById('content-bio').innerHTML =
+        (state.bio&&state.bio.length)
+          ? state.bio.map((x,i)=>`
+              <div class="p-3 rounded-xl nt-border bg-gradient-to-br from-slate-50 to-white flex justify-between items-center">
+                <span class="inline-flex items-start gap-2"><span class="mt-1 text-blue-600">❝</span><span>${escapeHTML(x)}</span></span>
+                ${trashBtn('bio',i)}
+              </div>`).join('')
+          : `<div class="p-3 rounded-xl nt-border bg-slate-50 text-slate-500">No bio items yet.</div>`;
+
+      /* Education */
+      document.getElementById('content-edu').innerHTML =
+        (state.education||[]).map((x,i)=>`
+          <div class="p-3 rounded-xl nt-border bg-white flex justify-between items-start">
+            <div class="flex items-start gap-3">
+              <span class="inline-grid place-items-center h-8 w-8 rounded-xl bg-indigo-50 ring-1 ring-indigo-100 text-indigo-600">🎓</span>
+              <div>
+                <div class="font-medium">${escapeHTML(x)}</div>
+                <div class="text-xs text-slate-500">Education</div>
+              </div>
+            </div>
+            ${trashBtn('education',i)}
+          </div>`).join('') || `<div class="p-3 rounded-xl nt-border bg-slate-50 text-slate-500">No education added.</div>`;
+
+      /* Skills */
+      normalizeSkills();
+      const skillsToolbar = `
+        <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
+          <input id="skillSearch" class="rounded-lg nt-border bg-white px-3 py-1.5" placeholder="Search skills…" value="${escapeHTML(skillFilter)}" />
+          <select id="skillSort" class="rounded-lg nt-border bg-white px-2 py-1.5">
+            <option value="name" ${skillSort==='name'?'selected':''}>Sort: Name (A–Z)</option>
+            <option value="level" ${skillSort==='level'?'selected':''}>Sort: Level (High→Low)</option>
+            <option value="endorse" ${skillSort==='endorse'?'selected':''}>Sort: Endorsements</option>
+          </select>
+        </div>`;
+      const prettySkill = (s, idx) => `
+        <div class="p-3 rounded-xl nt-border bg-white flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            ${skillIcon(s.name)}
+            <div>
+              <div class="font-medium text-[15px] flex items-center gap-2">
+                ${escapeHTML(s.name)}
+                ${s.verified ? `<span class="badge-verified"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.3 2.1 3.2-.2 1.3 2.9 2.8 1-1 3 1 3-2.8 1-1.3 2.9-3.2-.2L12 22l-2.3-2.1-3.2.2L5.2 17 2.4 16l1-3-1-3 2.8-1 1.3-2.9 3.2.2L12 2z" fill="#3b82f6" opacity=".18"/><path d="M9.2 12l2 2 4-4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Verified</span>`:''}
+                <span class="text-slate-500 text-xs">• ${expLabel(s.months)} exp</span>
+              </div>
+              <div class="mt-2 w-48 skill-meter"><span style="width:${s.level}%;"></span></div>
+              <div class="mt-1 text-xs text-slate-500">${s.level}% proficiency • ${s.endorsements||0} endorsement${(s.endorsements||0)===1?'':'s'}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            ${trashBtn('skills', idx)}
+          </div>
+        </div>`;
+      const filteredSorted = sortSkills(filterSkills(state.skills));
+      document.getElementById('content-skill').innerHTML =
+        skillsToolbar +
+        (filteredSorted.length
+           ? filteredSorted.map(s => prettySkill(s, state.skills.indexOf(s))).join('')
+           : `<div class="p-3 rounded-xl nt-border bg-slate-50 text-slate-500">No matching skills.</div>`);
+      document.getElementById('skillSort')?.addEventListener('change', e => setSkillSort(e.target.value));
+      document.getElementById('skillSearch')?.addEventListener('input', e => setSkillFilter(e.target.value));
+
+      /* Experience */
+      document.getElementById('content-exp').innerHTML =
+        (state.experience||[]).map((x,i)=>`
+          <div class="p-3 rounded-xl nt-border bg-white flex justify-between items-start">
+            <div class="flex items-start gap-3">
+              <span class="inline-grid place-items-center h-8 w-8 rounded-xl bg-emerald-50 ring-1 ring-emerald-100 text-emerald-600">💼</span>
+              <div>
+                <div class="font-medium">${escapeHTML(x)}</div>
+                <div class="text-xs text-slate-500">Experience</div>
+              </div>
+            </div>
+            ${trashBtn('experience',i)}
+          </div>`).join('') || `<div class="p-3 rounded-xl nt-border bg-slate-50 text-slate-500">No experience added.</div>`;
+
+      /* Contact */
+      document.getElementById('content-contact').innerHTML =
+        (state.contact||[]).map((x,i)=>{
+          const c = detectContact(x);
+          const label = c.href ? `<a href="${c.href}" class="hover:underline" target="_blank" rel="noopener">${escapeHTML(c.label)}</a>` : escapeHTML(c.label);
+          return `<div class="p-3 rounded-xl nt-border bg-white flex justify-between items-center">
+            <span class="inline-flex items-center gap-2">${contactIcon(c.type)} <span>${label}</span></span>
+            ${trashBtn('contact',i)}
+          </div>`;
+        }).join('');
+
+      /* Custom tabs */
+      document.getElementById('content-custom').innerHTML =
+        (state.customTabs||[]).length
+        ? state.customTabs.map((t,i)=>`
+            <div class="p-3 rounded-xl nt-border bg-white flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <div class="font-semibold text-[15px] break-words">${escapeHTML(t.title||'Untitled')}</div>
+                ${t.text ? `<p class="text-sm text-slate-600 mt-1 whitespace-pre-wrap break-words">${escapeHTML(t.text)}</p>`:''}
+                ${t.image ? `<img src="${t.image}" alt="custom" class="mt-2 rounded-lg border max-h-56 object-cover">` : ''}
+              </div>
+              ${trashBtn('custom',i)}
+            </div>
+          `).join('')
+        : `<div class="p-3 rounded-xl nt-border bg-slate-50 text-slate-500">No custom tabs yet. Click the pencil to add one.</div>`;
+
+      /* profile completeness */
+      let score = 0;
+      if((state.bio||[]).length) score+=15;
+      if((state.education||[]).length) score+=20;
+      if((state.experience||[]).length) score+=25;
+      if((state.skills||[]).length) score+=30;
+      if((state.contact||[]).length) score+=10;
+      if((state.customTabs||[]).length) score+=0;
+      score = Math.min(100, score);
+      const pbar=document.getElementById('pbar'), ptext=document.getElementById('ptext');
+      if(pbar) pbar.style.width = score+'%';
+      if(ptext) ptext.textContent = score+'% complete';
+    }
+
+    /* init */
+    normalizeSkills(); render();
+
+    /* iframe auto-size + hide internal scrollbars */
+    const postsFrame = document.getElementById('postsFrame');
+    function hideIFScroll(){
+      try{
+        const doc = postsFrame.contentDocument;
+        if(!doc) return;
+        doc.documentElement.style.overflow = 'hidden';
+        doc.body.style.overflow = 'hidden';
+      }catch(e){}
+    }
+    function resizeIF(){
+      try{
+        const h = postsFrame.contentDocument.body.scrollHeight;
+        postsFrame.style.height = Math.max(h, 1200) + 'px';
+        hideIFScroll();
+      }catch(e){}
+    }
+    postsFrame.addEventListener('load', resizeIF);
+    window.addEventListener('resize', resizeIF);
+
+    /* editors */
+    function openEdit(kind){
+      const modal=document.getElementById('editModal');
+      const editTitle=document.getElementById('editTitle');
+      const editSlot=document.getElementById('editSlot');
+      const save=document.getElementById('editSaveBtn');
+      modal.classList.remove('hidden');
+
+      function filePicker(label,id,previewSrc){
+        return `
+          <div>
+            <div class="text-sm mb-1 font-medium">${label}</div>
+            <img id="${id}-preview" src="${previewSrc}" class="w-full max-w-md rounded-lg border mb-2">
+            <input id="${id}-file" type="file" accept="image/*" class="block">
+          </div>`;
+      }
+
+      if(kind==='cover'){
+        editTitle.textContent='Edit Cover';
+        editSlot.innerHTML=filePicker('Cover Image','cover',state.cover);
+        save.onclick=()=>{
+          const f=document.getElementById('cover-file').files[0];
+          if(!f){ closeEdit(); return; }
+          const fr=new FileReader();
+          fr.onload=()=>{ state.cover=fr.result; render(); toast('Cover updated'); closeEdit(); };
+          fr.readAsDataURL(f);
+        };
+      }else if(kind==='avatar'){
+        editTitle.textContent='Edit Profile Photo';
+        editSlot.innerHTML=filePicker('Avatar Image','avatar',state.avatar);
+        save.onclick=()=>{
+          const f=document.getElementById('avatar-file').files[0];
+          if(!f){ closeEdit(); return; }
+          const fr=new FileReader();
+          fr.onload=()=>{ state.avatar=fr.result; render(); toast('Avatar updated'); closeEdit(); };
+          fr.readAsDataURL(f);
+        };
+      }else if(kind==='nameUser'){
+        editTitle.textContent='Edit Name & Username';
+        editSlot.innerHTML=`
+          <div class="grid gap-3">
+            <div><div class="text-sm mb-1 font-medium">Name</div>
+              <input id="editName" class="w-full border rounded px-3 py-2" value="${escapeHTML(state.name)}"></div>
+            <div><div class="text-sm mb-1 font-medium">Username</div>
+              <input id="editUser" class="w-full border rounded px-3 py-2" value="${escapeHTML(state.username)}" placeholder="@username"></div>
+          </div>`;
+        save.onclick=()=>{
+          const n=document.getElementById('editName').value.trim();
+          const u=document.getElementById('editUser').value.trim();
+          if(n) state.name=n;
+          if(u) state.username=u.startsWith('@')?u:'@'+u;
+          render(); toast('Profile updated'); closeEdit();
+        };
+      }
+    }
+
+    function openListEditor(key, label, placeholder='Type item…') {
+      const modal=document.getElementById('editModal');
+      const editTitle=document.getElementById('editTitle');
+      const editSlot=document.getElementById('editSlot');
+      const editSave=document.getElementById('editSaveBtn');
+      modal.classList.remove('hidden');
+      editTitle.textContent = `Edit ${label}`;
+      const list = Array.isArray(state[key]) ? state[key] : [];
+      const rows = list.map((val, i) => `
+        <div class="editor-row p-2 rounded-lg border">
+          <input class="border rounded px-3 py-2" value="${escapeHTML(val)}" data-i="${i}">
+          <div class="text-xs text-slate-500">—</div>
+          <div class="text-xs text-slate-500">—</div>
+          <div class="text-xs text-slate-500">—</div>
+          <div class="text-xs text-slate-500">—</div>
+          <button class="px-2 py-2 rounded bg-red-50 text-red-600 text-sm" onclick="deleteItem('${key}', ${i})">Remove</button>
+        </div>`).join('');
+      editSlot.innerHTML = `
+        <div class="editor-head px-2 py-2">
+          <div class="editor-grid text-xs font-semibold text-slate-600">
+            <div>Item</div><div></div><div></div><div></div><div></div><div></div>
+          </div>
+        </div>
+        <div class="space-y-2">${rows || '<div class="text-slate-500 text-sm">No items yet.</div>'}</div>
+        <div class="grid grid-cols-12 gap-2 items-center mt-2">
+          <input id="newRow" class="col-span-10 border rounded px-3 py-2" placeholder="${placeholder}">
+          <button class="col-span-2 px-3 py-2 rounded-lg border" onclick="(state['${key}']||(state['${key}']=[])).push(document.getElementById('newRow').value||''); openListEditor('${key}','${label}','${placeholder}')">+ Add</button>
+        </div>`;
+      editSave.onclick = () => {
+        const inputs = editSlot.querySelectorAll('input[data-i]');
+        const next = []; inputs.forEach(el => { const v = el.value.trim(); if(v) next.push(v); });
+        state[key] = next; modal.classList.add('hidden'); render(); toast(label+' updated');
+      };
+    }
+
+    function openSkillEditor(){
+      normalizeSkills();
+      const modal=document.getElementById('editModal');
+      const title=document.getElementById('editTitle');
+      const slot=document.getElementById('editSlot');
+      const save=document.getElementById('editSaveBtn');
+      modal.classList.remove('hidden');
+      title.textContent='Edit Skills';
+
+      const head = `
+        <div class="editor-head px-2 py-2">
+          <div class="editor-grid text-xs font-semibold text-slate-600">
+            <div>Skill</div><div>Level (0–100)</div><div>Months</div><div>Verified</div><div>Endorsements</div><div></div>
+          </div>
+        </div>`;
+
+      const rowHTML = (s, i) => `
+        <div class="editor-row p-2 rounded-lg border" data-i="${i}">
+          <input class="border rounded px-3 py-2" value="${escapeHTML(s.name)}" data-field="name">
+          <input type="number" min="0" max="100" class="border rounded px-3 py-2" value="${s.level}" data-field="level">
+          <input type="number" min="0" class="border rounded px-3 py-2" value="${s.months}" data-field="months">
+          <select class="border rounded px-3 py-2" data-field="verified">
+            <option value="false" ${!s.verified?'selected':''}>No</option>
+            <option value="true" ${s.verified?'selected':''}>Yes</option>
+          </select>
+          <input type="number" min="0" class="border rounded px-3 py-2" value="${s.endorsements||0}" data-field="endorsements">
+          <button class="px-3 py-2 rounded bg-red-50 text-red-600" onclick="state.skills.splice(${i},1); openSkillEditor();">Remove</button>
+        </div>`;
+
+      const rows = state.skills.map(rowHTML).join('');
+      slot.innerHTML = head + `<div class="space-y-2" id="skillRows">${rows}</div>
+        <div class="mt-3"><button class="px-3 py-2 rounded-lg border" onclick="state.skills.push({name:'New Skill',level:50,months:12,verified:false,endorsements:0}); openSkillEditor();">+ Add Skill</button></div>`;
+
+      save.onclick = () => {
+        const rows = Array.from(document.querySelectorAll('.editor-row'));
+        const next = rows.map(r => {
+          const get = f => r.querySelector(`[data-field="${f}"]`);
+          return {
+            name:(get('name').value||'').trim() || 'Skill',
+            level:Math.max(0,Math.min(100,Number(get('level').value||0))),
+            months:Math.max(0,Number(get('months').value||0)),
+            verified:get('verified').value==='true',
+            endorsements:Math.max(0,Number(get('endorsements').value||0)),
+          };
+        });
+        state.skills = next;
+        render(); toast('Skills updated'); closeEdit();
+      };
+    }
+
+    function openCustomEditor(){
+      const modal=document.getElementById('editModal');
+      const title=document.getElementById('editTitle');
+      const slot=document.getElementById('editSlot');
+      const save=document.getElementById('editSaveBtn');
+      modal.classList.remove('hidden');
+      title.textContent='Add your own tab';
+
+      const local = (state.customTabs||[]).map(x=>({...x}));
+      const header = `
+        <div class="editor-head px-2 py-2">
+          <div class="grid grid-cols-12 gap-2 text-xs font-semibold text-slate-600">
+            <div class="col-span-3">Heading</div>
+            <div class="col-span-6">Text</div>
+            <div class="col-span-3">Image</div>
+          </div>
+        </div>`;
+
+      function row(t,i){
+        return `
+          <div class="grid grid-cols-12 gap-2 p-2 rounded-lg border items-start" data-i="${i}">
+            <input class="col-span-3 border rounded px-3 py-2" placeholder="Tab heading" value="${escapeHTML(t.title||'')}">
+            <textarea class="col-span-6 border rounded px-3 py-2 min-h-[70px]" placeholder="Write some text...">${escapeHTML(t.text||'')}</textarea>
+            <div class="col-span-3">
+              <div class="flex items-center gap-2">
+                <img src="${t.image||''}" class="h-16 w-24 object-cover rounded border ${t.image?'':'hidden'}" id="ct-prev-${i}" alt="">
+                <input type="file" accept="image/*" id="ct-file-${i}">
+                <button class="px-2 py-1 rounded bg-red-50 text-red-600 text-xs" onclick="this.closest('[data-i]').remove()">Remove</button>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      slot.innerHTML = header + `<div id="ct-rows" class="space-y-2">${local.map(row).join('') || ''}</div>
+        <div class="mt-3"><button id="ct-add" class="px-3 py-2 rounded-lg border">+ Add Tab</button></div>`;
+
+      function wire(){
+        document.querySelectorAll('[id^="ct-file-"]').forEach(inp=>{
+          inp.onchange = (e)=>{
+            const i = Number(inp.id.split('-').pop());
+            const file = e.target.files?.[0]; if(!file) return;
+            const fr = new FileReader();
+            fr.onload = ()=> {
+              const prev = document.getElementById(`ct-prev-${i}`);
+              if(prev){ prev.src = fr.result; prev.classList.remove('hidden'); }
+            };
+            fr.readAsDataURL(file);
+          };
+        });
+      }
+      wire();
+
+      document.getElementById('ct-add').onclick = ()=>{
+        const rows = document.getElementById('ct-rows');
+        const i = rows.children.length;
+        rows.insertAdjacentHTML('beforeend', row({title:'',text:'',image:''}, i));
+        wire();
+      };
+
+      save.onclick = ()=>{
+        const rows = Array.from(document.querySelectorAll('#ct-rows > .grid'));
+        const next = rows.map((r,idx)=>{
+          const [titleIn, textIn] = r.querySelectorAll('input,textarea');
+          const img = r.querySelector(`#ct-prev-${idx}`)?.src || '';
+          return { title: (titleIn.value||'').trim(), text: (textIn.value||'').trim(), image: img.startsWith('data:') ? img : '' };
+        }).filter(x => x.title || x.text || x.image);
+        state.customTabs = next;
+        render(); toast('Custom tabs updated'); closeEdit();
+      };
+    }
+
+    function closeEdit(){ document.getElementById('editModal').classList.add('hidden'); }
+
+    /* Smooth scroll from left nav */
+    function scrollToSection(key){
+      const container = document.getElementById('profile');
+      let target = null;
+      if(key==='overview') target = document.getElementById('section-overview');
+      if(key==='designations') target = document.getElementById('designationRow');
+      if(key==='education') target = document.getElementById('section-education');
+      if(key==='skills') target = document.getElementById('section-skills');
+      if(key==='experience') target = document.getElementById('section-experience');
+
+      if(!container || !target) return;
+
+      const cRect = container.getBoundingClientRect();
+      const tRect = target.getBoundingClientRect();
+      const offset = tRect.top - cRect.top + container.scrollTop - 8;
+      container.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
+    }
+
+    /* left nav actions */
+    document.getElementById('leftNav')?.addEventListener('click', (e)=>{
+      const a=e.target.closest('a'); if(!a) return;
+      e.preventDefault();
+
+      if(a.dataset.section){
+        document.querySelectorAll('#leftNav .lnav-item').forEach(x=>x.removeAttribute('aria-current'));
+        a.setAttribute('aria-current','page');
+        scrollToSection(a.dataset.section);
+        return;
+      }
+
+      if(a.dataset.action==='openResume'){ document.getElementById('resumeInput').click(); return; }
+      if(a.dataset.action==='share'){ shareProfile(); return; }
+      if(a.dataset.action==='settings'){ toast('Settings coming soon'); return; }
+    });
+
+    /* resume picker */
+    document.getElementById('resumeInput')?.addEventListener('change', (e)=>{
+      const f=e.target.files?.[0]; if(!f) return;
+      toast('Resume uploaded: '+f.name);
+    });
+
+    /* share */
+    async function shareProfile(){
+      const url=location.href;
+      try{
+        if(navigator.share){ await navigator.share({title:'My NxtTurn Profile', url}); }
+        else { await navigator.clipboard.writeText(url); toast('Profile link copied'); }
+      }catch{}
+    }
+
+    /* right column interactions */
+    const viewMoreBtn = document.getElementById('viewMorePYMK');
+    if(viewMoreBtn){ viewMoreBtn.addEventListener('click', (e)=> e.preventDefault()); }
+
+    /* Sponsored carousel */
+    const sItems = [
+      { img:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=800&auto=format&fit=crop',
+        title:'Executive MBA (Online)',
+        href:'#',
+        desc:'Earn an accredited MBA while you work. Scholarships available—apply soon.' },
+      { img:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop',
+        title:'Start & Register Your Company',
+        href:'#',
+        desc:'Incorporation + GST + compliance toolkit. Launch your startup in 7 days.' },
+      { img:'https://images.unsplash.com/photo-1535320404287-416e2c6d2b80?q=80&w=800&auto=format&fit=crop',
+        title:'Stock Market Mastery',
+        href:'#',
+        desc:'Live trading classes, risk management, and options basics for beginners.' },
+      { img:'https://images.unsplash.com/photo-1519494080410-f9aa76cb4283?q=80&w=800&auto=format&fit=crop',
+        title:'Consult a Doctor Online',
+        href:'#',
+        desc:'24×7 telemedicine—connect with verified MDs in under 2 minutes.' },
+      { img:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=800&auto=format&fit=crop',
+        title:'IELTS / TOEFL Sprint',
+        href:'#',
+        desc:'Target Band 7+. Mock tests, feedback, and speaking rooms.' },
+      { img:'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop',
+        title:'Business Analytics: Excel → SQL',
+        href:'#',
+        desc:'Weekend cohort with case studies, dashboards, and job-ready projects.' },
+      { img:'https://images.unsplash.com/photo-1523287562758-66c7fc58967e?q=80&w=800&auto=format&fit=crop',
+        title:'Zero-Brokerage Demat Account',
+        href:'#',
+        desc:'Open in 10 minutes. Free ETF for first-time investors.' },
+      { img:'https://images.unsplash.com/photo-1580281657527-47cf1e991dd0?q=80&w=800&auto=format&fit=crop',
+        title:'Medical PG Prep (NEET-PG)',
+        href:'#',
+        desc:'Video lectures, Q-banks, and revision notes by top faculty.' }
+    ];
+
+    let sIdx = 0;
+    const sCard  = document.getElementById('sCard');
+    const sImg   = document.getElementById('sImg');
+    const sTitle = document.getElementById('sTitle');
+    const sDesc  = document.getElementById('sDesc');
+    function renderSponsored(idx){
+      const item = sItems[(idx + sItems.length) % sItems.length];
+      if(!sCard) return;
+      sCard.style.opacity = 0;
+      setTimeout(()=>{
+        if(sImg) sImg.src = item.img;
+        if(sTitle){ sTitle.textContent = item.title; sTitle.href = item.href || '#'; }
+        if(sDesc) sDesc.textContent = item.desc;
+        sCard.style.opacity = 1;
+      }, 180);
+    }
+    const ROTATE_MS = 5000;
+    let rotateTimer = null;
+    function startAuto(){ stopAuto(); rotateTimer = setInterval(()=>{ sIdx = (sIdx + 1) % sItems.length; renderSponsored(sIdx); }, ROTATE_MS); }
+    function stopAuto(){ if(rotateTimer){ clearInterval(rotateTimer); rotateTimer = null; } }
+    function resetAuto(){ startAuto(); }
+    document.getElementById('sPrev')?.addEventListener('click', ()=>{ sIdx = (sIdx - 1 + sItems.length) % sItems.length; renderSponsored(sIdx); resetAuto(); });
+    document.getElementById('sNext')?.addEventListener('click', ()=>{ sIdx = (sIdx + 1) % sItems.length; renderSponsored(sIdx); resetAuto(); });
+    renderSponsored(sIdx); startAuto();
+  </script>
+</body>
+</html>

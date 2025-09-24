@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NxtTurn • Right Rail</title>
+
+  <!-- Tailwind (CDN for quick standalone preview) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Your original compiled CSS (kept as-is) -->
+  <link href="dist/output.css" rel="stylesheet">
+
+  <style>
+    /* ===== pulled (unchanged) pieces needed by the right rail ===== */
+    :root{
+      --nt-shadow: 0 0 12px rgba(2,6,23,.08);
+      --text:#0f172a; --muted:#64748b; --border:#e5e7eb;
+    }
+    .nt-shadow{ box-shadow: var(--nt-shadow) !important; }
+    .nt-border{ border:1px solid rgba(226,232,240,.9) }
+
+    /* hide scrollbar visuals for the right rail */
+    aside.col-scroll{
+      height: calc(100vh - 24px) !important;
+      overflow-y: auto !important;
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    aside.col-scroll::-webkit-scrollbar{width:0;height:0}
+
+    /* card + link look */
+    .card{background:#fff;border:1px solid var(--border)}
+    .link{color:#2563eb;font-weight:600}
+
+    /* Turn “Connect/Follow/Enroll/Apply” into blue buttons with white text in the RIGHT column only */
+    aside.col-scroll a.link{
+      background:#2563eb;
+      color:#fff !important;
+      border:1px solid #1d4ed8;
+      padding:6px 12px;
+      border-radius:9999px;
+      display:inline-flex;align-items:center;justify-content:center;
+      text-decoration:none;
+    }
+    aside.col-scroll a.link:hover{ background:#1d4ed8; }
+    aside.col-scroll a.link:active{ background:#1e40af; }
+
+    .subtle{color:var(--muted)}
+    .side-title{font-size:16px;line-height:1.02;font-weight:700;color:var(--text)}
+    .right-name{font-size:14px;font-weight:600}
+    .right-role{font-size:12px}
+
+    .nav-arrow{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:34px;height:34px;border-radius:9999px;border:1.5px solid (var(--border));
+      background:#fff;color:inherit;font-weight:800;line-height:1;user-select:none;
+      transition:background .15s ease, box-shadow .15s ease, transform .05s ease;
+    }
+    .nav-arrow:hover{ background:#f8fafc; box-shadow:0 0 0 4px rgba(2,6,23,.06) }
+    .nav-arrow:active{ transform:translateY(1px) }
+
+    /* optional gradient mini-card (not used here but harmless to keep) */
+    .mini-card{
+      background: linear-gradient(135deg,#e7f0ff, #ffffff);
+      border:1px solid #e5e7eb;
+    }
+    body{ background:#f8fafc; color:#0f172a; }
+  </style>
+</head>
+<body>
+
+  <!-- RIGHT RAIL (unchanged markup) -->
+  <aside class="col-scroll space-y-4 py-1">
+    <main class="mx-auto max-w-sm px-0 py-0">
+      <div class="space-y-4">
+        <!-- People You May Know -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <h2 class="side-title mb-3">People You May Know</h2>
+          <div class="h-px bg-slate-200 mb-3"></div>
+          <ul id="pymkList" class="space-y-4">
+            <li class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya Sharma">
+                <div><div class="right-name">Priya Sharma</div><div class="right-role subtle">Software Engineer</div></div>
+              </div><a href="#" class="link text-[14px]">Connect</a>
+            </li>
+            <li class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rohan Verma">
+                <div><div class="right-name">Rohan Verma</div><div class="right-role subtle">Data Scientist</div></div>
+              </div><a href="#" class="link text-[14px]">Connect</a>
+            </li>
+            <li class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Anjali Mehta">
+                <div><div class="right-name">Anjali Mehta</div><div class="right-role subtle">UX Designer</div></div>
+              </div><a href="#" class="link text-[14px]">Connect</a>
+            </li>
+          </ul>
+          <div class="mt-3">
+            <button id="viewMorePYMK" class="rounded-full px-3 py-1.5 text-[13px] font-semibold bg-slate-100 hover:bg-slate-200 border border-slate-200">View More</button>
+          </div>
+        </section>
+
+        <!-- Sponsored (Carousel) -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-[18px] font-semibold">Sponsored</h3>
+            <div class="flex items-center gap-2">
+              <span class="text-[13px] subtle select-none">Ad</span>
+              <div class="flex items-center">
+                <button id="sPrev" class="nav-arrow" aria-label="Previous ad" title="Previous">&lt;</button>
+                <button id="sNext" class="nav-arrow ml-1" aria-label="Next ad" title="Next">&gt;</button>
+              </div>
+            </div>
+          </div>
+          <div class="h-px bg-slate-200 mb-3"></div>
+          <div id="sCard">
+            <img id="sImg" class="w-full h-44 object-cover rounded-xl" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" alt="Sponsored">
+            <a id="sTitle" href="#" target="_blank" rel="noopener" class="block mt-3 text-[18px] font-semibold leading-tight hover:underline">Master the Vue 3 Composition API</a>
+            <p id="sDesc" class="text-[14px] text-slate-600 leading-6">The ultimate course for building scalable and maintainable Vue applications. Enroll now!</p>
+          </div>
+        </section>
+
+        <!-- Featured Institutes -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <h3 class="side-title mb-2">Featured Institutes</h3>
+          <div class="h-px bg-slate-200 mb-2"></div>
+          <ul class="divide-y divide-slate-100">
+            <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IITB</span><span class="font-semibold text-[14px]">IIT Bombay</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+            <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IIMA</span><span class="font-semibold text-[14px]">IIM Ahmedabad</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+            <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">NITT</span><span class="font-semibold text-[14px]">NIT Trichy</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+          </ul>
+        </section>
+
+        <!-- Full-Stack Web Dev (React + Node) -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <div class="overflow-hidden rounded-xl border border-slate-200">
+            <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=800&auto=format&fit=crop" alt="Full-Stack Web Development Poster">
+            <div class="p-3">
+              <div class="flex items-center justify-between">
+                <div class="text-[15px] font-semibold leading-tight">Full-Stack Web Dev (React + Node)</div>
+                <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+              </div>
+              <div class="text-[12px] subtle mt-0.5">ByteCraft Labs</div>
+              <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Job Openings -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <h3 class="text-[18px] font-semibold mb-2">Job Openings</h3>
+          <div class="h-px bg-slate-200 mb-3"></div>
+          <ul class="space-y-3">
+            <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Backend Engineer</div><div class="text-[12px] subtle -mt-0.5">Flipkart • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+            <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">iOS Developer</div><div class="text-[12px] subtle -mt-0.5">Swiggy • Remote</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+            <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Data Analyst</div><div class="text-[12px] subtle -mt-0.5">Razorpay • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+          </ul>
+        </section>
+
+        <!-- Python for Data Science -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <div class="overflow-hidden rounded-xl border border-slate-200">
+            <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" alt="Python for Data Science Poster">
+            <div class="p-3">
+              <div class="flex items-center justify-between">
+                <div class="text-[15px] font-semibold leading-tight">Python for Data Science</div>
+                <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+              </div>
+              <div class="text-[12px] subtle mt-0.5">PyMasters Academy</div>
+              <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- IT Internships -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <h3 class="text-[18px] font-semibold mb-2">IT Internships</h3>
+          <div class="h-px bg-slate-200 mb-3"></div>
+          <ul class="space-y-3">
+            <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">SDE Intern</div><div class="text-[12px] subtle -mt-0.5">Google • Hyderabad</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+            <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">ML Intern</div><div class="text-[12px] subtle -mt-0.5">NVIDIA • Pune</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+            <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Frontend Intern</div><div class="text-[12px] subtle -mt-0.5">Zoho • Chennai</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+          </ul>
+        </section>
+
+        <!-- AI & ML Foundations -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <div class="overflow-hidden rounded-xl border border-slate-200">
+            <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" alt="AI & ML Foundations Poster">
+            <div class="p-3">
+              <div class="flex items-center justify-between">
+                <div class="text-[15px] font-semibold leading-tight">AI & ML Foundations</div>
+                <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+              </div>
+              <div class="text-[12px] subtle mt-0.5">DeepLearn Hub</div>
+              <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Small Sponsored -->
+        <section class="card rounded-xl p-4 nt-shadow">
+          <div class="flex items-center justify-between mb-1"><h3 class="text-[16px] font-semibold">Sponsored</h3><span class="text-[12px] subtle">Ad</span></div>
+          <div class="h-px bg-slate-200 mb-3"></div>
+          <div class="text-[15px] font-medium leading-snug">Build a career in Cloud with IBM SkillsBuild.</div>
+          <p class="text-[13px] text-slate-600 mt-1">Free labs and badges. Start today.</p>
+        </section>
+      </div>
+    </main>
+  </aside>
+
+  <!-- right column interactions (unchanged logic) -->
+  <script>
+    const viewMoreBtn = document.getElementById('viewMorePYMK');
+    if(viewMoreBtn){ viewMoreBtn.addEventListener('click', (e)=> e.preventDefault()); }
+
+    const sItems = [
+  // Education
+  { img:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=800&auto=format&fit=crop',
+    title:'Executive MBA (Online)',
+    href:'#',
+    desc:'Earn an accredited MBA while you work. Scholarships available—apply soon.' },
+
+  // Business / Startup
+  { img:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop',
+    title:'Start & Register Your Company',
+    href:'#',
+    desc:'Incorporation + GST + compliance toolkit. Launch your startup in 7 days.' },
+
+  // Share market / Investing
+  { img:'https://images.unsplash.com/photo-1535320404287-416e2c6d2b80?q=80&w=800&auto=format&fit=crop',
+    title:'Stock Market Mastery',
+    href:'#',
+    desc:'Live trading classes, risk management, and options basics for beginners.' },
+
+  // Healthcare / Doctor
+  { img:'https://images.unsplash.com/photo-1519494080410-f9aa76cb4283?q=80&w=800&auto=format&fit=crop',
+    title:'Consult a Doctor Online',
+    href:'#',
+    desc:'24×7 telemedicine—connect with verified MDs in under 2 minutes.' },
+
+  // Test prep / Language
+  { img:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=800&auto=format&fit=crop',
+    title:'IELTS / TOEFL Sprint',
+    href:'#',
+    desc:'Target Band 7+. Mock tests, feedback, and speaking rooms.' },
+
+  // Business analytics
+  { img:'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop',
+    title:'Business Analytics: Excel → SQL',
+    href:'#',
+    desc:'Weekend cohort with case studies, dashboards, and job-ready projects.' },
+
+  // Brokerage / Demat
+  { img:'https://images.unsplash.com/photo-1523287562758-66c7fc58967e?q=80&w=800&auto=format&fit=crop',
+    title:'Zero-Brokerage Demat Account',
+    href:'#',
+    desc:'Open in 10 minutes. Free ETF for first-time investors.' },
+
+  // Medical exam prep
+  { img:'https://images.unsplash.com/photo-1580281657527-47cf1e991dd0?q=80&w=800&auto=format&fit=crop',
+    title:'Medical PG Prep (NEET-PG)',
+    href:'#',
+    desc:'Video lectures, Q-banks, and revision notes by top faculty.' }
+];
+
+    let sIdx = 0;
+    const sCard  = document.getElementById('sCard');
+    const sImg   = document.getElementById('sImg');
+    const sTitle = document.getElementById('sTitle');
+    const sDesc  = document.getElementById('sDesc');
+
+    function renderSponsored(idx){
+      const item = sItems[(idx + sItems.length) % sItems.length];
+      if(!sCard) return;
+      sCard.style.opacity = 0;
+      setTimeout(()=>{
+        if(sImg) sImg.src = item.img;
+        if(sTitle){ sTitle.textContent = item.title; sTitle.href = item.href || '#'; }
+        if(sDesc) sDesc.textContent = item.desc;
+        sCard.style.opacity = 1;
+      }, 180);
+    }
+
+    const ROTATE_MS = 5000;
+    let rotateTimer = null;
+    function startAuto(){ stopAuto(); rotateTimer = setInterval(()=>{ sIdx = (sIdx + 1) % sItems.length; renderSponsored(sIdx); }, ROTATE_MS); }
+    function stopAuto(){ if(rotateTimer){ clearInterval(rotateTimer); rotateTimer = null; } }
+    function resetAuto(){ startAuto(); }
+
+    document.getElementById('sPrev')?.addEventListener('click', ()=>{ sIdx = (sIdx - 1 + sItems.length) % sItems.length; renderSponsored(sIdx); resetAuto(); });
+    document.getElementById('sNext')?.addEventListener('click', ()=>{ sIdx = (sIdx + 1) % sItems.length; renderSponsored(sIdx); resetAuto(); });
+
+    renderSponsored(sIdx); startAuto();
+  </script>
+</body>
+</html>
+
+
+

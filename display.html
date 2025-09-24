@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Display & Accessibility</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#faf6ff',
+                            100: '#f2e9ff',
+                            200: '#e5d5ff',
+                            300: '#d2b3ff',
+                            400: '#b885ff',
+                            500: '#9a5aff',
+                            600: '#8338ec',
+                            700: '#6b21cf',
+                            800: '#561aa9',
+                            900: '#471587',
+                        },
+                        accent: {
+                            50: '#fef2f8',
+                            100: '#fee6f1',
+                            200: '#fecae4',
+                            300: '#fd9dc8',
+                            400: '#fb609f',
+                            500: '#f53178',
+                            600: '#e11d55',
+                            700: '#be1239',
+                            800: '#9f122c',
+                            900: '#881325',
+                        },
+                        brand:{50:'#eef5ff',100:'#e0edff',200:'#cfe0ff',300:'#a8cbff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde',800:'#1a4bb8',900:'#1a4090'},
+          ink:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'},
+          explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+          seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+          exams: { DEFAULT: '#10B981', light: '#D1FAE5' },
+          network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+          research: { DEFAULT: '#3B82F6', light: '#DBEAFE' },
+          messages: { DEFAULT: '#EF4444', light: '#FEE2E2' },
+          notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+        boxShadow:{
+          soft: '0 6px 20px rgba(2,6,23,.08)',
+          'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+          'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+        },
+        animation: {
+          'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'bounce-subtle': 'bounce-subtle 1s infinite',
+        },
+        keyframes: {
+          'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity: .85} },
+          'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+        }
+                }
+            }
+        }
+    </script>
+    <style>
+
+        *{ box-sizing:border-box }
+  body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+  :root{
+    --icon-sm: 22px;
+    --icon-lg: 24px;
+    --svg-stroke: 2.2;
+    --nav-h: 68px;
+    --logo-h: 22px; /* tweak this to make the logo bigger/smaller */
+  }
+
+  .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+  .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+  .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+  .nav-btn.active{ background:rgba(207,224,255,.4) }
+  .nav-btn .icon{ transition:all .2s ease }
+  .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; stroke-linecap:round; stroke-linejoin:round }
+
+  .fa-solid.icon-fa{ font-size: calc(var(--icon-sm) + 1px); text-shadow: 0 .2px 0 currentColor }
+  @media (min-width:640px){ .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) } }
+
+  .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+  .nav-label{ font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap; transition:all .2s ease; font-weight:500; margin-top:2px }
+  .nav-btn:hover .nav-label{ color:#0f172a }
+  .nav-btn.active .nav-label{ font-weight:600 }
+
+  .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle }
+  @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) } }
+
+  .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+  .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+  .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+  .no-scrollbar::-webkit-scrollbar{ display:none }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+  .toggle::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2) }
+  input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+  input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+  .dark .nt-glass{ background:rgba(15,23,42,.88); border-bottom-color:rgba(30,41,59,.6) }
+  .dark #profileMenu, .dark .menu-panel{ background:#0f172a; border-color:#1e293b }
+  .dark .nav-btn .icon{ color:#94a3b8 }
+  .dark .nav-btn:hover .nav-label{ color:#e2e8f0 }
+  .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+  .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+  .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+
+  .profile-ico{ font-size:16px; color:#475569; transition:all .2s ease }
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{ color:#2f78f0; transform:translateY(-1px) }
+  .dark .profile-ico{ color:#94a3b8 }
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{ color:#93c5fd }
+
+  html,body{ max-width:100%; overflow-x:hidden }
+  body{ padding-top:var(--nav-h); background:linear-gradient(to bottom,#f8fafc,#f1f5f9); color:#0f172a }
+
+  .nav-scroller{ overflow-x:visible!important }
+  .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+  header, header.nt-glass, header nav{ overflow:visible!important }
+
+  .menu-panel{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top center }
+  .menu-item{ display:flex; align-items:center; gap:.65rem; padding:.75rem 1rem; transition:all .15s ease }
+  .menu-item .menu-ico{ width:18px; min-width:18px; text-align:center; color:#64748b }
+  .menu-item:hover{ background:#f5f8ff }
+  .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+  /* Profile dropdown */
+  #profileMenu{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top right }
+
+  .search-container{ position:relative; transition:all .3s ease }
+  .search-container:focus-within{ transform:translateY(-1px) }
+
+  .notification-badge{
+    position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+    background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite
+  }
+  .dark .notification-badge{ border-color:#0f172a }
+
+  .icon-explore{ color:#8B5CF6 }
+  .icon-seekers{ color:#EC4899 }
+  .icon-network{ color:#F59E0B }
+  .icon-messages{ color:#3dcb38 }
+  .icon-notifications{ color:#6366F1 }
+
+  .nav-btn:hover .icon-explore{ color:#7C3AED }
+  .nav-btn:hover .icon-seekers{ color:#DB2777 }
+  .nav-btn:hover .icon-network{ color:#D97706 }
+  .nav-btn:hover .icon-messages{ color:#48ee42 }
+  .nav-btn:hover .icon-notifications{ color:#4F46E5 }
+
+  .nav-label-explore,
+  .nav-label-seekers,
+  .nav-label-network,
+  .nav-label-messages,
+  .nav-label-notifications{ color:black }
+
+  .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+  .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+  .nav-btn:hover .nav-label-network{ color:#D97706 }
+  .nav-btn:hover .nav-label-messages{ color:#39ca34 }
+  .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+  .nav-btn.active .nav-label-explore{ color:#7C3AED }
+  .nav-btn.active .nav-label-seekers{ color:#DB2777 }
+  .nav-btn.active .nav-label-network{ color:#D97706 }
+  .nav-btn.active .nav-label-messages{ color:#39ca34 }
+  .nav-btn.active .nav-label-notifications{ color:#4F46E5 }
+
+
+
+
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&family=Fira+Code:wght@300;400;500&display=swap');
+        
+        :root {
+            --text-size: 1rem;
+            --line-height: 1.6;
+            --letter-spacing: 0.5px;
+            --font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            font-size: var(--text-size);
+            line-height: var(--line-height);
+            letter-spacing: var(--letter-spacing);
+            font-family: var(--font-family);
+            transition: all 0.3s ease;
+        }
+        
+        .accessibility-mode {
+            --text-size: 1.15rem;
+            --line-height: 1.8;
+            --letter-spacing: 0.5px;
+        }
+        
+        .dyslexia-mode {
+            --font-family: 'Comic Sans MS', cursive;
+            --letter-spacing: 1.2px;
+        }
+        
+        .high-contrast {
+            --bg-color: #000;
+            --text-color: #fff;
+            --primary-color: #ffff00;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        .high-contrast .bg-white {
+            background-color: #000 !important;
+            color: #fff !important;
+            border-color: #fff !important;
+        }
+        
+        .high-contrast .text-gray-600, .high-contrast .text-gray-700 {
+            color: #ddd !important;
+        }
+        
+        .high-contrast .bg-gray-100 {
+            background-color: #222 !important;
+            color: #fff !important;
+        }
+        
+        .reading-guide {
+            position: absolute;
+            height: 100vh;
+            width: 2px;
+            background-color: rgba(255, 0, 0, 0.6);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            pointer-events: none;
+            display: none;
+        }
+        
+        .text-outline {
+            color: white;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        
+        .focus-highlight:focus {
+            outline: 3px solid #f59e0b;
+            outline-offset: 2px;
+        }
+        
+        /* Animation for toggle switches */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #0ea5e9;
+        }
+        .toggle-checkbox + .toggle-label {
+            transition: all 0.3s ease;
+        }
+        
+        /* Custom scrollbar for accessibility */
+        .accessible-scrollbar::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        .accessible-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .accessible-scrollbar::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+        
+        .accessible-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+        
+        .dark .accessible-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        .dark .accessible-scrollbar::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border: 2px solid #1e293b;
+        }
+        
+        /* Animation for notifications */
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .notification {
+            animation: slideIn 0.3s forwards, slideOut 0.3s forwards 2.7s;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen theme-transition">
+
+    <header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <!-- container pushed in -->
+  <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="Homepage.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+      </a>
+      <!-- Search -->
+      <div class="search-container relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-solid fa-compass icon-explore icon-fa" aria-hidden="true"></i>
+              <span class="nav-label nav-label-explore">Explore</span>
+            </a>
+
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="school.html">
+                    <i class="menu-ico fa-solid fa-school"></i>
+                    <span>Schools</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="institute.html">
+                    <i class="menu-ico fa-solid fa-building-columns"></i>
+                    <span>Institutes</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="enterprises.html">
+                    <i class="menu-ico fa-solid fa-briefcase"></i>
+                    <span>Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="government.html">
+                    <i class="menu-ico fa-solid fa-landmark"></i>
+                    <span>Government Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="">
+                    <i class="menu-ico fa-solid fa-pen-to-square"></i>
+                    <span>Exams</span>
+                  </a>
+                </li>
+                <li class="pl-10 pr-4 py-2 flex gap-2">
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test
+                  </a>
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Calendar
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="research.html">
+                    <i class="menu-ico fa-solid fa-flask"></i>
+                    <span>Research</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <span class="icon icon-seekers" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-seekers">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <span class="icon icon-network" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              </span>
+              <span class="nav-label nav-label-network">Network</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li class="relative">
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <span class="icon icon-messages" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-messages">Messages</span>
+              <span class="notification-badge">3</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li class="relative">
+            <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <span class="icon icon-notifications" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-notifications">Alerts</span>
+              <span class="notification-badge">12</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE (nudged up) -->
+          <li class="relative">
+            <button id="profileBtn"
+              class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                     hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                     focus:outline-none transition-all duration-200
+                     -translate-y-0.5 sm:-translate-y-1">
+              <div class="relative -mt-0.5 sm:-mt-1">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white" alt="Profile"/>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white"></span>
+              </div>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-soft-lg border border-slate-100 opacity-0 transition-all duration-200 scale-95">
+              
+              <div class="p-4 border-b border-slate-100">
+              <a href="profile.html" target="_self"
+                class="block p-4 border-b border-slate-100 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-t-xl"
+                id="profileHeaderLink">
+                <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+              <div>
+                <p class="font-medium text-ink-900">Alex Morgan</p>
+                <p class="text-xs text-slate-500">Premium Member</p>
+              </div>
+              </div>
+                </a>      
+              </div>
+
+
+              <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
+                <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="games.html"><i class="menu-ico fa-solid fa-gamepad"></i><span>Games</span></a></li>
+                <li class="px-4">
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                  
+                </li>
+                <li class="border-t border-slate-100 mt-2">
+                  <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
+                    <i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+    <!-- Reading Guide Line -->
+    <div id="readingGuide" class="reading-guide"></div>
+    
+    <!-- Notification Area -->
+    <div id="notificationArea" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- (Header removed as requested) -->
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-2xl p-8 mb-12 shadow-lg relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mt-16 -mr-16 w-40 h-40 rounded-full bg-white opacity-10"></div>
+            <div class="absolute bottom-0 left-0 -mb-16 -ml-16 w-40 h-40 rounded-full bg-accent-500 opacity-10"></div>
+            
+            <div class="max-w-2xl relative z-10">
+                <h2 class="text-4xl font-bold mb-4">Beautiful Design Meets Universal Accessibility</h2>
+                <p class="text-xl mb-6">Experience the perfect combination of aesthetic appeal and inclusive design. Our platform ensures everyone can enjoy a seamless digital experience.</p>
+                <div class="flex flex-wrap gap-4">
+                    <button class="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold flex items-center focus-highlight">
+                        <i class="fas fa-play-circle mr-2"></i> Watch Demo
+                    </button>
+                    <button class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold flex items-center focus-highlight">
+                        <i class="fas fa-book-open mr-2"></i> Documentation
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Settings Panel -->
+        <section class="bg-white rounded-2xl shadow-md p-6 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2">Quick Accessibility Settings</h2>
+            <p class="text-gray-600 text-center mb-8">Customize your experience with these quick settings</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold">Text Size</h3>
+                        <i class="fas fa-text-height text-primary-600"></i>
+                    </div>
+                    <input id="textSizeSlider" type="range" min="0.8" max="1.5" step="0.1" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600">
+                    <div class="flex justify-between text-sm text-gray-500 mt-1">
+                        <span>Small</span>
+                        <span>Default</span>
+                        <span>Large</span>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold">Dyslexia Font</h3>
+                        <i class="fas fa-font text-primary-600"></i>
+                    </div>
+                    <div class="relative inline-block w-16 align-middle select-none">
+                        <input type="checkbox" name="dyslexiaFont" id="dyslexiaToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-2 border-gray-300 appearance-none cursor-pointer"/>
+                        <label for="dyslexiaToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Easier reading</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold">Text Spacing</h3>
+                        <i class="fas fa-text-width text-primary-600"></i>
+                    </div>
+                    <input id="textSpacingSlider" type="range" min="0.5" max="2" step="0.1" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600">
+                    <div class="flex justify-between text-sm text-gray-500 mt-1">
+                        <span>Tight</span>
+                        <span>Normal</span>
+                        <span>Wide</span>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold">Focus Highlight</h3>
+                        <i class="fas fa-bullseye text-primary-600"></i>
+                    </div>
+                    <div class="relative inline-block w-16 align-middle select-none">
+                        <input type="checkbox" name="focusHighlight" id="focusToggle" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-2 border-gray-300 appearance-none cursor-pointer"/>
+                        <label for="focusToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Enhanced focus</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2">Advanced Features</h2>
+            <p class="text-gray-600 text-center mb-8">Our platform combines beautiful design with cutting-edge accessibility features</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary-600 text-2xl mb-4">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Beautiful Display</h3>
+                    <p class="text-gray-600 mb-4">Elegant design with carefully chosen colors, typography, and spacing for an enjoyable visual experience.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Responsive layouts</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Adaptive color schemes</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Smooth animations</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center text-primary-600 text-2xl mb-4">
+                        <i class="fas fa-universal-access"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Accessibility</h3>
+                    <p class="text-gray-600 mb-4">Compliant with WCAG 2.1 guidelines, featuring screen reader support, keyboard navigation, and more.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Screen reader optimized</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Keyboard navigation</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> ARIA landmarks</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center text-primary-600 text-2xl mb-4">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Customization</h3>
+                    <p class="text-gray-600 mb-4">Adjust text size, contrast, and other settings to meet your specific needs and preferences.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Text size adjustment</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Color contrast options</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Reading preferences</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Options -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Detailed Preferences</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Color Theme</h3>
+                    <p class="text-gray-600 mb-4">Choose a color theme that works best for you. Different colors can improve readability for some users.</p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+                        <button class="theme-option h-16 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500" data-theme="default"></button>
+                        <button class="theme-option h-16 rounded-lg bg-gradient-to-r from-green-500 to-teal-500" data-theme="green"></button>
+                        <button class="theme-option h-16 rounded-lg bg-gradient-to-r from-red-500 to-orange-500" data-theme="warm"></button>
+                        <button class="theme-option h-16 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900" data-theme="dark"></button>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2">Preview Text</h4>
+                        <p class="text-gray-700">This is how text will appear with your selected theme. The quick brown fox jumps over the lazy dog.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Reading Preferences</h3>
+                    <p class="text-gray-600 mb-4">Customize how content is presented to improve your reading experience.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Line Height</label>
+                            <input id="lineHeightSlider" type="range" min="1.4" max="2.2" step="0.1" value="1.6" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600">
+                            <div class="flex justify-between text-sm text-gray-500 mt-1">
+                                <span>Compact</span>
+                                <span>Standard</span>
+                                <span>Spacious</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2">Letter Spacing</label>
+                            <input id="letterSpacingSlider" type="range" min="0" max="1.5" step="0.1" value="0.5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600">
+                            <div class="flex justify-between text-sm text-gray-500 mt-1">
+                                <span>Tight</span>
+                                <span>Standard</span>
+                                <span>Wide</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Text Alignment</label>
+                                <div class="flex space-x-2">
+                                    <button class="text-align-option p-2 border rounded" data-align="left">
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="text-align-option p-2 border rounded" data-align="center">
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="text-align-option p-2 border rounded" data-align="right">
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                    <button class="text-align-option p-2 border rounded" data-align="justify">
+                                        <i class="fas fa-align-justify"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accessibility Tools -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Advanced Tools</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-primary-600 text-xl mr-4">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Screen Reader</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Our page is fully compatible with screen readers. Proper ARIA labels and semantic HTML are used throughout.</p>
+                    <div class="space-y-3">
+                        <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg w-full text-left flex items-center justify-between focus-highlight">
+                            Test Screen Reader <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="border border-primary-600 text-primary-600 hover:bg-primary-50 px-4 py-2 rounded-lg w-full text-left flex items-center justify-between focus-highlight">
+                            ARIA Landmarks <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-primary-600 text-xl mr-4">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Reading Assistance</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Enable tools to help focus on content. These can help users with dyslexia, ADHD, and visual impairments.</p>
+                    <div class="space-y-3">
+                        <button id="readingGuideToggle" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg w-full text-left flex items-center justify-between focus-highlight">
+                            Toggle Reading Guide <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button id="textToSpeech" class="border border-primary-600 text-primary-600 hover:bg-primary-50 px-4 py-2 rounded-lg w-full text-left flex items-center justify-between focus-highlight">
+                            Text-to-Speech <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section class="bg-primary-50 rounded-2xl p-8 mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2">Accessibility Tips</h2>
+            <p class="text-gray-700 text-center mb-8">Best practices for creating accessible web content</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-primary-600 text-lg mb-3">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Color Contrast</h3>
+                    <p class="text-gray-600 text-sm">Ensure text has sufficient contrast against background colors (at least 4.5:1 for normal text).</p>
+                </div>
+                
+                <div class="bg-white p-5 rounded-xl shadow-sm">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-primary-600 text-lg mb-3">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Keyboard Navigation</h3>
+                    <p class="text-gray-600 text-sm">All interactive elements should be accessible using only a keyboard.</p>
+                </div>
+                
+                <div class="bg-white p-5 rounded-xl shadow-sm">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-primary-600 text-lg mb-3">
+                        <i class="fas fa-alt"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Alt Text</h3>
+                    <p class="text-gray-600 text-sm">Provide descriptive alt text for all informative images.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- (Footer removed as requested) -->
+
+    <script>
+
+
+         // navigation menu panel functions
+
+      function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    li.classList.remove('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  function togglePanel(li){
+    if(li.classList.contains('open')){ hidePanel(li) }
+    else{
+      document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
+      showPanel(li);
+    }
+  }
+
+  function toggleProfileMenu(){
+    const menu=document.getElementById('profileMenu');
+    const chevron=document.getElementById('profileChevron');
+    const expanded=menu.classList.contains('visible');
+    if(expanded){
+      menu.classList.remove('visible','opacity-100','scale-100');
+      menu.classList.add('invisible','opacity-0','scale-95');
+      chevron.classList.remove('rotate-180');
+    }else{
+      menu.classList.remove('invisible','opacity-0','scale-95');
+      menu.classList.add('visible','opacity-100','scale-100');
+      chevron.classList.add('rotate-180');
+    }
+    document.getElementById('profileBtn').setAttribute('aria-expanded', String(!expanded));
+  }
+
+  function setupThemeToggle(){
+    const toggle=document.getElementById('themeToggle');
+    const themeRow=document.getElementById('themeRow');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme=localStorage.getItem('theme');
+    if(storedTheme==='dark'||(!storedTheme&&prefersDark)){
+      document.documentElement.classList.add('dark'); toggle.checked=true;
+    }else{
+      document.documentElement.classList.remove('dark'); toggle.checked=false;
+    }
+    toggle.addEventListener('change',function(){
+      if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+      else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+    });
+    themeRow.addEventListener('click',function(e){ if(e.target!==toggle){ toggle.click() }});
+  }
+
+  function setupClickOutside(){
+    document.addEventListener('click',function(e){
+      document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+      const profileMenu=document.getElementById('profileMenu');
+      const profileBtn=document.getElementById('profileBtn');
+      if(profileMenu.classList.contains('visible') && !profileMenu.contains(e.target) && !profileBtn.contains(e.target)){ toggleProfileMenu() }
+    });
+  }
+
+  function setupMobileBehavior(){
+  document.querySelectorAll('li[data-menu]').forEach(li=>{
+    const btn = li.querySelector('.nav-btn'); // works for <a> or <button>
+    if (!btn) return;
+
+    btn.addEventListener('click', function(e){
+      // prevent navigation for anchor menus
+      if (btn.tagName === 'A') e.preventDefault();
+      // on mobile, tap toggles the panel; on desktop, hover already handles it
+      if (window.innerWidth < 768) togglePanel(li);
+    });
+  });
+}
+
+  function setupKeyboardNav(){
+    // open with Enter/Space, close with Escape
+    document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{
+      btn.addEventListener('keydown', (e)=>{
+        const li=btn.closest('li[data-menu]');
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); togglePanel(li) }
+        if(e.key==='Escape'){ hidePanel(li) }
+      });
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        // close any open panels
+        document.querySelectorAll('li[data-menu].open').forEach(li=> hidePanel(li));
+        const pm=document.getElementById('profileMenu');
+        if(pm.classList.contains('visible')) toggleProfileMenu();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setupThemeToggle();
+    setupClickOutside();
+    setupMobileBehavior();
+    setupKeyboardNav();
+    document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+    document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+  });
+
+
+        // DOM Elements
+        const accessibilityToggle = document.getElementById('accessibilityToggle');
+        const contrastToggle = document.getElementById('contrastToggle');
+        const textSizeSlider = document.getElementById('textSizeSlider');
+        const textSpacingSlider = document.getElementById('textSpacingSlider');
+        const lineHeightSlider = document.getElementById('lineHeightSlider');
+        const letterSpacingSlider = document.getElementById('letterSpacingSlider');
+        const dyslexiaToggle = document.getElementById('dyslexiaToggle');
+        const focusToggle = document.getElementById('focusToggle');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const readingGuideToggle = document.getElementById('readingGuideToggle');
+        const readingGuide = document.getElementById('readingGuide');
+        const themeOptions = document.querySelectorAll('.theme-option');
+        const textAlignOptions = document.querySelectorAll('.text-align-option');
+        const body = document.body;
+        const toggleText = document.getElementById('toggleText');
+        const notificationArea = document.getElementById('notificationArea');
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification p-4 rounded-lg shadow-lg ${type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'} text-white`;
+            notification.textContent = message;
+            notificationArea.appendChild(notification);
+            setTimeout(() => { notification.remove(); }, 3000);
+        }
+
+        // Accessibility Mode Toggle (guarded in case header controls were removed)
+        let accessibilityMode = false;
+        if (accessibilityToggle) {
+            accessibilityToggle.addEventListener('click', () => {
+                accessibilityMode = !accessibilityMode;
+                if (accessibilityMode) {
+                    body.classList.add('accessibility-mode');
+                    if (toggleText) toggleText.textContent = 'Standard Mode';
+                    accessibilityToggle.classList.add('bg-secondary-600');
+                    showNotification('Accessibility mode enabled', 'success');
+                } else {
+                    body.classList.remove('accessibility-mode');
+                    if (toggleText) toggleText.textContent = 'Accessibility Mode';
+                    accessibilityToggle.classList.remove('bg-secondary-600');
+                    showNotification('Accessibility mode disabled', 'info');
+                }
+            });
+        }
+
+        // High Contrast Mode Toggle (guarded)
+        let highContrastMode = false;
+        if (contrastToggle) {
+            contrastToggle.addEventListener('click', () => {
+                highContrastMode = !highContrastMode;
+                if (highContrastMode) {
+                    body.classList.add('high-contrast');
+                    contrastToggle.classList.add('bg-yellow-300', 'text-black');
+                    showNotification('High contrast mode enabled', 'success');
+                } else {
+                    body.classList.remove('high-contrast');
+                    contrastToggle.classList.remove('bg-yellow-300', 'text-black');
+                    showNotification('High contrast mode disabled', 'info');
+                }
+            });
+        }
+
+        // Dark Mode Toggle (guarded)
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', () => {
+                if (darkModeToggle.checked) {
+                    body.classList.add('dark');
+                    document.documentElement.style.setProperty('color-scheme', 'dark');
+                    showNotification('Dark mode enabled', 'success');
+                } else {
+                    body.classList.remove('dark');
+                    document.documentElement.style.setProperty('color-scheme', 'light');
+                    showNotification('Dark mode disabled', 'info');
+                }
+            });
+        }
+
+        // Text Size Adjustment
+        if (textSizeSlider) {
+            textSizeSlider.addEventListener('input', () => {
+                const size = textSizeSlider.value;
+                document.documentElement.style.setProperty('--text-size', size + 'rem');
+                showNotification(`Text size adjusted to ${size}rem`);
+            });
+        }
+
+        // Text Spacing Adjustment
+        if (textSpacingSlider) {
+            textSpacingSlider.addEventListener('input', () => {
+                const spacing = textSpacingSlider.value;
+                document.documentElement.style.setProperty('--letter-spacing', spacing + 'px');
+            });
+        }
+
+        // Line Height Adjustment
+        if (lineHeightSlider) {
+            lineHeightSlider.addEventListener('input', () => {
+                const height = lineHeightSlider.value;
+                document.documentElement.style.setProperty('--line-height', height);
+            });
+        }
+
+        // Letter Spacing Adjustment
+        if (letterSpacingSlider) {
+            letterSpacingSlider.addEventListener('input', () => {
+                const spacing = letterSpacingSlider.value;
+                document.documentElement.style.setProperty('--letter-spacing', spacing + 'px');
+            });
+        }
+
+        // Dyslexia Mode Toggle
+        if (dyslexiaToggle) {
+            dyslexiaToggle.addEventListener('change', () => {
+                if (dyslexiaToggle.checked) {
+                    body.classList.add('dyslexia-mode');
+                    showNotification('Dyslexia-friendly font enabled', 'success');
+                } else {
+                    body.classList.remove('dyslexia-mode');
+                    showNotification('Dyslexia-friendly font disabled', 'info');
+                }
+            });
+        }
+
+        // Focus Highlight Toggle
+        if (focusToggle) {
+            focusToggle.addEventListener('change', () => {
+                const focusElements = document.querySelectorAll('button, a, input, select, textarea');
+                if (focusToggle.checked) {
+                    focusElements.forEach(el => el.classList.add('focus-highlight'));
+                    showNotification('Focus highlighting enabled', 'success');
+                } else {
+                    focusElements.forEach(el => el.classList.remove('focus-highlight'));
+                    showNotification('Focus highlighting disabled', 'info');
+                }
+            });
+        }
+
+        // Reading Guide Toggle
+        let guideVisible = false;
+        if (readingGuideToggle) {
+            readingGuideToggle.addEventListener('click', () => {
+                guideVisible = !guideVisible;
+                if (readingGuide) readingGuide.style.display = guideVisible ? 'block' : 'none';
+                showNotification(guideVisible ? 'Reading guide enabled' : 'Reading guide disabled');
+            });
+        }
+
+        // Move reading guide with mouse
+        document.addEventListener('mousemove', (e) => {
+            if (guideVisible && readingGuide) {
+                readingGuide.style.left = e.pageX + 'px';
+            }
+        });
+
+        // Theme Options
+        themeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const theme = option.getAttribute('data-theme');
+                body.classList.remove('theme-default', 'theme-green', 'theme-warm', 'theme-dark');
+                body.classList.add('theme-' + theme);
+                showNotification(`Theme changed to ${theme} mode`);
+            });
+        });
+
+        // Text Alignment Options
+        textAlignOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const align = option.getAttribute('data-align');
+                const mainContent = document.querySelector('main');
+                mainContent.classList.remove('text-left', 'text-center', 'text-right', 'text-justify');
+                mainContent.classList.add('text-' + align);
+                showNotification(`Text alignment set to ${align}`);
+            });
+        });
+
+        // Text-to-Speech Functionality
+        const ttsBtn = document.getElementById('textToSpeech');
+        if (ttsBtn) {
+            ttsBtn.addEventListener('click', () => {
+                if ('speechSynthesis' in window) {
+                    const mainContent = document.querySelector('main').textContent;
+                    const utterance = new SpeechSynthesisUtterance(mainContent.substring(0, 200) + '... Text too long to read entirely. Please use the reading guide for specific content.');
+                    window.speechSynthesis.speak(utterance);
+                    showNotification('Text-to-speech activated');
+                } else {
+                    showNotification('Text-to-speech not supported in your browser', 'error');
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Press 'Escape' to hide reading guide
+            if (e.key === 'Escape' && guideVisible) {
+                guideVisible = false;
+                if (readingGuide) readingGuide.style.display = 'none';
+                showNotification('Reading guide disabled');
+            }
+            
+            // Press 'Ctrl + Alt + A' to toggle accessibility mode (works only if button existed)
+            if (e.ctrlKey && e.altKey && e.key === 'a' && accessibilityToggle) {
+                e.preventDefault();
+                accessibilityToggle.click();
+            }
+        });
+
+        // Initialize focus highlighting
+        const focusElements = document.querySelectorAll('button, a, input, select, textarea');
+        focusElements.forEach(el => el.classList.add('focus-highlight'));
+    </script>
+</body>
+</html>

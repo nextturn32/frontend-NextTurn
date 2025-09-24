@@ -1,0 +1,1718 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NxtTurn • Home Feed</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'sans-serif'] },
+        colors: {
+          brand:{50:'#eef5ff',100:'#e0edff',200:'#cfe0ff',300:'#a8cbff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde',800:'#1a4bb8',900:'#1a4090'},
+          ink:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'},
+          explore: { DEFAULT: '#8B5CF6', light: '#EDE9FE' },
+          seekers: { DEFAULT: '#EC4899', light: '#FCE7F3' },
+          exams: { DEFAULT: '#10B981', light: '#D1FAE5' },
+          network: { DEFAULT: '#F59E0B', light: '#FEF3C7' },
+          research: { DEFAULT: '#3B82F6', light: '#DBEAFE' },
+          messages: { DEFAULT: '#EF4444', light: '#FEE2E2' },
+          notifications: { DEFAULT: '#6366F1', light: '#E0E7FF' }
+        },
+        boxShadow:{
+          soft: '0 6px 20px rgba(2,6,23,.08)',
+          'soft-lg': '0 10px 30px rgba(2,6,23,.12)',
+          'inner-brand': 'inset 0 2px 4px 0 rgba(79, 145, 255, 0.15)'
+        },
+        animation: {
+          'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'bounce-subtle': 'bounce-subtle 1s infinite',
+        },
+        keyframes: {
+          'pulse-soft': { '0%,100%': {opacity:1}, '50%': {opacity: .85} },
+          'bounce-subtle': { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-3px)'} }
+        }
+      }
+    }
+  }
+</script>
+
+  <style>
+    
+
+:root { --nav-gap: 16px; } /* adjust as you like */
+
+body{
+  padding-top: calc(var(--nav-h) + var(--nav-gap)) !important;
+}
+
+/* keep the internal scrollers sized correctly after adding the gap */
+#midCol,
+#rightCol{
+  height: calc(100vh - (24px + var(--nav-gap))) !important;
+}
+
+
+    /* navbar */
+
+
+      *{ box-sizing:border-box }
+  body{ font-family:'Inter',sans-serif; font-weight:400 }
+
+  :root{
+    --icon-sm: 22px;
+    --icon-lg: 24px;
+    --svg-stroke: 2.2;
+    --nav-h: 68px;
+    --logo-h: 22px; /* tweak this to make the logo bigger/smaller */
+  }
+
+  .nt-glass{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px) }
+
+  .nav-btn{ padding:.5rem; border-radius:10px; transition:all .2s ease }
+  .nav-btn:hover{ background:rgba(207,224,255,.3); transform:translateY(-1px) }
+  .nav-btn.active{ background:rgba(207,224,255,.4) }
+  .nav-btn .icon{ transition:all .2s ease }
+  .icon svg, .icon path, .icon circle, .icon line, .icon polyline, .icon rect { stroke-width: var(--svg-stroke) !important; stroke-linecap:round; stroke-linejoin:round }
+
+  .fa-solid.icon-fa{ font-size: calc(var(--icon-sm) + 1px); text-shadow: 0 .2px 0 currentColor }
+  @media (min-width:640px){ .fa-solid.icon-fa{ font-size: calc(var(--icon-lg) + 1px) } }
+
+  .nav-btn:hover .icon, .nav-btn.active .icon{ transform:scale(1.08) }
+  .nav-label{ font-size:11px; line-height:1rem; color:#64748b; white-space:nowrap; transition:all .2s ease; font-weight:500; margin-top:2px }
+  .nav-btn:hover .nav-label{ color:#0f172a }
+  .nav-btn.active .nav-label{ font-weight:600 }
+
+  .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle }
+  @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg) } }
+
+  .nt-scroll::-webkit-scrollbar{ width:6px; height:6px }
+  .nt-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px }
+  .nt-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+  .no-scrollbar::-webkit-scrollbar{ display:none }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle{ width:40px; height:22px; border-radius:9999px; background:#cbd5e1; position:relative; transition:background .2s ease }
+  .toggle::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:9999px; background:#fff; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.2) }
+  input[type="checkbox"].toggle-input:checked + .toggle{ background:#2f78f0 }
+  input[type="checkbox"].toggle-input:checked + .toggle::after{ transform:translateX(18px) }
+
+  .dark .nt-glass{ background:rgba(15,23,42,.88); border-bottom-color:rgba(30,41,59,.6) }
+  .dark #profileMenu, .dark .menu-panel{ background:#0f172a; border-color:#1e293b }
+  .dark .nav-btn .icon{ color:#94a3b8 }
+  .dark .nav-btn:hover .nav-label{ color:#e2e8f0 }
+  .dark .nav-btn:hover{ background:rgba(30,41,59,.4) }
+  .dark .nav-btn.active{ background:rgba(30,41,59,.6) }
+  .dark input[type="search"]{ background:rgba(2,6,23,.4)!important; color:#cbd5e1!important; border-color:#334155!important }
+
+  .profile-ico{ font-size:16px; color:#475569; transition:all .2s ease }
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{ color:#2f78f0; transform:translateY(-1px) }
+  .dark .profile-ico{ color:#94a3b8 }
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{ color:#93c5fd }
+
+  html,body{ max-width:100%; overflow-x:hidden }
+  body{ padding-top:var(--nav-h); background:linear-gradient(to bottom,#f8fafc,#f1f5f9); color:#0f172a }
+
+  .nav-scroller{ overflow-x:visible!important }
+  .nav-scroller>ul{ width:100%!important; max-width:100%!important; flex-wrap:wrap!important }
+  header, header.nt-glass, header nav{ overflow:visible!important }
+
+  .menu-panel{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top center }
+  .menu-item{ display:flex; align-items:center; gap:.65rem; padding:.75rem 1rem; transition:all .15s ease }
+  .menu-item .menu-ico{ width:18px; min-width:18px; text-align:center; color:#64748b }
+  .menu-item:hover{ background:#f5f8ff }
+  .menu-item:hover .menu-ico{ color:#2f78f0 }
+
+  /* Profile dropdown */
+  #profileMenu{ box-shadow:0 20px 40px rgba(2,6,23,.15); border:1px solid #e2e8f0; transform-origin:top right }
+
+  .search-container{ position:relative; transition:all .3s ease }
+  .search-container:focus-within{ transform:translateY(-1px) }
+
+  .notification-badge{
+    position:absolute; top:4px; right:4px; min-width:18px; height:18px; padding:0 4px;
+    background:#EF4444; color:#fff; border-radius:9px; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:2px solid #fff; animation:pulse-soft 2s infinite
+  }
+  .dark .notification-badge{ border-color:#0f172a }
+
+  .icon-explore{ color:#8B5CF6 }
+  .icon-seekers{ color:#EC4899 }
+  .icon-network{ color:#F59E0B }
+  .icon-messages{ color:#3dcb38 }
+  .icon-notifications{ color:#6366F1 }
+
+  .nav-btn:hover .icon-explore{ color:#7C3AED }
+  .nav-btn:hover .icon-seekers{ color:#DB2777 }
+  .nav-btn:hover .icon-network{ color:#D97706 }
+  .nav-btn:hover .icon-messages{ color:#48ee42 }
+  .nav-btn:hover .icon-notifications{ color:#4F46E5 }
+
+  .nav-label-explore,
+  .nav-label-seekers,
+  .nav-label-network,
+  .nav-label-messages,
+  .nav-label-notifications{ color:black }
+
+  .nav-btn:hover .nav-label-explore{ color:#7C3AED }
+  .nav-btn:hover .nav-label-seekers{ color:#DB2777 }
+  .nav-btn:hover .nav-label-network{ color:#D97706 }
+  .nav-btn:hover .nav-label-messages{ color:#39ca34 }
+  .nav-btn:hover .nav-label-notifications{ color:#4F46E5 }
+  .nav-btn.active .nav-label-explore{ color:#7C3AED }
+  .nav-btn.active .nav-label-seekers{ color:#DB2777 }
+  .nav-btn.active .nav-label-network{ color:#D97706 }
+  .nav-btn.active .nav-label-messages{ color:#39ca34 }
+  .nav-btn.active .nav-label-notifications{ color:#4F46E5 }
+
+
+
+    /* main */
+    html, body { height: 100%; overflow: hidden; }
+    body { overflow: hidden; background:#f8fafc; }
+
+
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  .gradient-bg{ background:linear-gradient(120deg,#2563eb,#4f46e5); }
+  .card-shadow{ box-shadow:0 4px 6px rgba(0,0,0,.05); }
+
+    :root{
+      --card-radius: 14px;
+      --card-shadow: 0 1px 2px rgba(15,23,42,.06), 0 2px 6px rgba(15,23,42,.06);
+      --card-border: 1px solid rgba(148,163,184,.18);
+      --nt-shadow: 0 0 12px rgba(2,6,23,.08);
+      --text:#0f172a; --muted:#64748b; --blue:#2563eb; --card:#f8fafc; --border:#e5e7eb;
+
+      --rail-w: 320px;
+      --sbw: 12px;
+      --page-pad: 0px;
+      --nudge-left: 8px;
+    }
+
+    .nt-card{
+      background:#fff;
+      border:var(--card-border);
+      border-radius:var(--card-radius);
+      box-shadow:var(--card-shadow);
+    }
+
+    /* LEFT NAV */
+    .left-nav .nav-link{
+      display:flex;align-items:center;gap:.75rem;
+      padding:.75rem 1rem;border-radius:12px;
+      font-weight:600;color:#334155;text-decoration:none;
+      transition:background .12s ease, border-color .12s ease, color .12s ease, box-shadow .12s ease;
+    }
+    .left-nav .nav-link .nav-ico{width:20px;height:20px;color:#475569;flex:0 0 auto}
+    .left-nav .nav-link:hover{background:#f1f5f9}
+    .left-nav .nav-link.active{
+      background:#eaf2ff;color:#1d4ed8;border:1px solid #bfdbfe;
+      box-shadow:0 0 0 2px rgba(59,130,246,.10) inset;
+    }
+    .left-nav .nav-link.active .nav-ico{color:#2563eb}
+
+    /* Middle+Right wrapper */
+    #centerWrap{
+      position: relative;
+      width: calc(100% + var(--page-pad) + var(--nudge-left));
+      margin-right: calc(-1 * var(--page-pad));
+      margin-left: calc(-1 * var(--nudge-left));
+    }
+
+    /* Middle column */
+    #midCol{
+      height: calc(100vh - 24px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      padding-right: var(--rail-w);
+    }
+    .nt-scroll::-webkit-scrollbar{width:10px;height:10px}
+    .nt-scroll::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:999px}
+    .nt-scroll:hover::-webkit-scrollbar-thumb{background:#cbd5e1}
+
+    /* Right rail */
+    #rightCol{
+      position: absolute; right:0; top:0;
+      width: var(--rail-w);
+      height: calc(100vh - 24px);
+      pointer-events: none;
+    }
+    #rightBody{
+      position: absolute; inset: 0 var(--sbw) 0 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      pointer-events: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #rightBody::-webkit-scrollbar{width:0;height:0}
+
+    .nt-shadow{ box-shadow: var(--nt-shadow) !important; }
+    .card{background:#fff;border:1px solid var(--border)}
+    .link{color:#2563eb;font-weight:600}
+    aside a.link{
+      background:#2563eb; color:#fff !important; border:1px solid #1d4ed8;
+      padding:6px 12px; border-radius:9999px; display:inline-flex;align-items:center;justify-content:center; text-decoration:none;
+    }
+    aside a.link:hover{ background:#1d4ed8; }
+    .subtle{color:var(--muted)}
+    .side-title{font-size:16px;line-height:1.02;font-weight:700;color:var(--text)}
+    .right-name{font-size:14px;font-weight:600}
+    .right-role{font-size:12px}
+    .nav-arrow{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:34px;height:34px;border-radius:9999px;border:1.5px solid (var(--border));
+      background:#fff;color:inherit;font-weight:800;line-height:1;user-select:none;
+      transition:background .15s ease, box-shadow .15s ease, transform .05s ease;
+    }
+    .nav-arrow:hover{ background:#f8fafc; box-shadow:0 0 0 4px rgba(2,6,23,.06) }
+    .nav-arrow:active{ transform:translateY(1px) }
+
+    /* ===== Posts page styles (mosaic, viewer, reactions, poll) ===== */
+    .mosaicWrap{background:#fff;border-radius:.5rem;overflow:hidden;margin-top:.75rem}
+    .mosaic{display:grid;gap:1px}
+    .mosaic.two{grid-template-columns:1fr 1fr;height:320px}
+    .mosaic.three{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:420px}
+    .mosaic.four{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:420px}
+    .mosaic-tile{position:relative;overflow:hidden;background:#000}
+    .mosaic-tile>img,.mosaic-tile>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+    .play-badge{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:1}
+    .play-badge span{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:rgba(0,0,0,.5)}
+    .play-badge svg{width:24px;height:24px;color:#fff;transform:translateX(1px)}
+
+    .more-badge{position:absolute;top:8px;right:8px;z-index:3;pointer-events:none}
+    .more-pill{padding:.25rem .6rem;font-size:14px;font-weight:700;color:#fff;border-radius:999px;background:rgba(15,23,42,.72);border:1px solid rgba(255,255,255,.28);box-shadow:0 6px 14px rgba(15,23,42,.35)}
+    .more-peek{position:absolute;right:8px;bottom:8px;z-index:3;display:none;grid-template-columns:repeat(3,28px);gap:4px;padding:6px;border-radius:.75rem;background:rgba(15,23,42,.82);border:1px solid rgba(255,255,255,.18);box-shadow:0 12px 28px rgba(15,23,42,.45);backdrop-filter:saturate(160%) blur(8px)}
+    .mosaic-tile.has-more:hover .more-peek{display:grid}
+    .more-peek img,.more-peek video,.more-peek .vthumb{width:28px;height:28px;object-fit:cover;border-radius:6px;display:block}
+    .vthumb{background:#0b1220;display:grid;place-items:center;font-size:12px;color:#93c5fd}
+
+    .rx-holder{position:relative;display:inline-block;vertical-align:middle;}
+    .btn-like{white-space:nowrap;position:relative;top:1px;}
+    .rx-tray{
+      position:absolute; bottom:calc(100% + 8px); left:0; z-index:30;
+      display:flex; gap:.35rem; padding:.35rem .45rem; border-radius:999px;
+      background:rgba(255,255,255,.75); border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 14px 36px rgba(15,23,42,.20);
+      backdrop-filter:saturate(160%) blur(10px);
+      transform-origin:bottom left; opacity:0; transform:translateY(6px) scale(.96);
+      pointer-events:none; transition:opacity .16s ease, transform .16s ease;
+    }
+    .rx-tray.hidden{display:none !important}
+    .rx-tray.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .rx-emoji{
+      position:relative;width:42px;height:42px;border-radius:999px;
+      display:grid;place-items:center;font-size:20px;line-height:1;
+      background:linear-gradient(#ffffff,#f8fafc); border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 2px 6px rgba(15,23,42,.08);
+      transform:translateY(0) scale(1);
+      transition:transform .12s ease, box-shadow .12s ease;
+      cursor:pointer; user-select:none;
+    }
+    .rx-emoji:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 10px 20px rgba(15,23,42,.12)}
+    .rx-emoji:active{transform:scale(.95)}
+    .rx-emoji[aria-selected="true"]{
+      box-shadow:0 0 0 2px #3b82f6 inset, 0 6px 18px rgba(59,130,246,.22);
+      background:linear-gradient(#eaf2ff,#ffffff);
+    }
+    .rx-emoji::after{
+      content:attr(data-label);
+      position:absolute;bottom:-26px;left:50%;transform:translateX(-50%) translateY(6px);
+      font-size:11px;background:#0f172a;color:#fff;padding:2px 6px;border-radius:999px;
+      opacity:0;pointer-events:none;white-space:nowrap;
+      transition:opacity .12s ease, transform .12s ease;
+    }
+    .rx-emoji:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    .poll{margin-top:.75rem}
+    .poll-opt{display:flex;align-items:center;gap:.5rem;border:1px solid #e5e7eb;border-radius:.9rem;padding:.625rem .75rem;cursor:pointer;background:#fff;position:relative;overflow:hidden}
+    .poll-opt:hover{background:#f8fafc}
+    .poll-fill{position:absolute;inset:0 auto 0 0;height:100%;background:rgba(59,130,246,.18);width:0;pointer-events:none}
+    .poll-chip{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:999px;background:#e2e8f0;font-weight:600;color:#334155}
+    .poll-right{margin-left:auto;display:flex;align-items:center;gap:.5rem}
+    .poll-check{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#2563eb}
+    .poll-check svg{width:14px;height:14px;color:#fff}
+
+    /* Viewer */
+    #viewer{backdrop-filter:saturate(120%) blur(2px)}
+    .viewer-grid{display:grid;grid-template-columns:1fr; height:100%; width:100%}
+    @media (min-width: 900px){ .viewer-grid{grid-template-columns:minmax(0,1fr) 420px} }
+    .viewer-left{position:relative;display:flex;align-items:center;justify-content:center;background:#000}
+    .viewer-media{max-height:82vh;max-width:92vw}
+    @media (min-width:900px){ .viewer-media{max-height:90vh;max-width:calc(100vw - 460px)} }
+    .viewer-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:34px;color:#ffffffcc}
+    .viewer-nav:hover{color:#fff}
+    .viewer-close{position:absolute;top:14px;right:14px;font-size:28px;color:#fff}
+    .viewer-panel{background:#fff;display:flex;flex-direction:column;min-height:0}
+    .viewer-panel .scroll{overflow:auto}
+
+    /* Composer icon button */
+    .tool-btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:38px;height:38px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;
+      transition: box-shadow .12s ease, transform .04s ease, background .12s ease;
+    }
+    .tool-btn:hover{ background:#f8fafc; box-shadow:0 2px 10px rgba(2,6,23,.06) }
+    .tool-btn:active{ transform: translateY(1px) }
+
+
+
+    
+  /* LEFT selectable items */
+  .side-item{
+    display:flex; align-items:center; gap:.75rem;
+    border:1px solid transparent;
+    border-radius:.5rem;
+    padding:.625rem .75rem;
+    font-weight:600;
+    color:#1f2937;
+    transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .side-item .si{ color:#1f2937; transition: color .18s ease; }
+  .side-item:hover{ background:#f8fafc; }
+  .side-item.active{
+    background:var(--side-active-bg);
+    border-color:var(--side-active-border);
+    color:var(--side-active-text);
+    box-shadow:0 0 0 3px rgba(47,120,240,.09) inset;
+  }
+  .side-item.active .si{ color:var(--side-active-text); }
+  </style>
+</head>
+<body>
+
+
+<header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <!-- container pushed in -->
+  <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
+
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="Homepage.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-5 w-auto object-contain" />
+      </a>
+      <!-- Search -->
+      <div class="search-container relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/80 px-9 py-2.5 text-sm text-ink-600 shadow-soft outline-none transition-all duration-300 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/15 placeholder:text-slate-400" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-1.5 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-solid fa-compass icon-explore icon-fa" aria-hidden="true"></i>
+              <span class="nav-label nav-label-explore">Explore</span>
+            </a>
+
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="school.html">
+                    <i class="menu-ico fa-solid fa-school"></i>
+                    <span>Schools</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="institute.html">
+                    <i class="menu-ico fa-solid fa-building-columns"></i>
+                    <span>Institutes</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="enterprises.html">
+                    <i class="menu-ico fa-solid fa-briefcase"></i>
+                    <span>Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="government.html">
+                    <i class="menu-ico fa-solid fa-landmark"></i>
+                    <span>Government Enterprises</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="">
+                    <i class="menu-ico fa-solid fa-pen-to-square"></i>
+                    <span>Exams</span>
+                  </a>
+                </li>
+                <li class="pl-10 pr-4 py-2 flex gap-2">
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="mocktest.html">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Mock Test
+                  </a>
+                  <a class="text-[13px] px-2 py-1 rounded hover:bg-exams-light text-exams" href="examcalendar.html">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Calendar
+                  </a>
+                </li>
+                <li>
+                  <a class="menu-item hover:bg-brand-50/70" href="research.html">
+                    <i class="menu-ico fa-solid fa-flask"></i>
+                    <span>Research</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="#" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <span class="icon icon-seekers" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-seekers">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl bg-white shadow-soft-lg opacity-0 invisible translate-y-1 will-change-transform transition-all duration-200 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="menu-item" href="internship.html"><i class="menu-ico fa-solid fa-user-graduate"></i><span>Internship</span></a></li>
+                <li><a class="menu-item" href="apprenticeship.html"><i class="menu-ico fa-solid fa-helmet-safety"></i><span>Apprenticeship</span></a></li>
+                <li><a class="menu-item" href="jobs.html"><i class="menu-ico fa-solid fa-briefcase"></i><span>Job</span></a></li>
+                <li><a class="menu-item" href="government-openings.html"><i class="menu-ico fa-solid fa-building-flag"></i><span>Government Openings</span></a></li>
+                <li><a class="menu-item" href="international-government-openings.html"><i class="menu-ico fa-solid fa-earth-asia"></i><span>International Govt. Openings</span></a></li>
+                <li><a class="menu-item" href="freelances.html"><i class="menu-ico fa-solid fa-laptop-code"></i><span>Freelances</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="mynetwork.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <span class="icon icon-network" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              </span>
+              <span class="nav-label nav-label-network">Network</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li class="relative">
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <span class="icon icon-messages" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-messages">Messages</span>
+              <span class="notification-badge">3</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li class="relative">
+            <a href="notification.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[70px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <span class="icon icon-notifications" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+              </span>
+              <span class="nav-label nav-label-notifications">Alerts</span>
+              <span class="notification-badge">12</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE (nudged up) -->
+          <li class="relative">
+            <button id="profileBtn"
+              class="flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium text-ink-700
+                     hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200
+                     focus:outline-none transition-all duration-200
+                     -translate-y-0.5 sm:-translate-y-1">
+              <div class="relative -mt-0.5 sm:-mt-1">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-8 w-8 rounded-full object-cover ring-2 ring-white" alt="Profile"/>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white"></span>
+              </div>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-soft-lg border border-slate-100 opacity-0 transition-all duration-200 scale-95">
+              
+              <div class="p-4 border-b border-slate-100">
+              <a href="profile.html" target="_self"
+                class="block p-4 border-b border-slate-100 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-t-xl"
+                id="profileHeaderLink">
+                <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full object-cover" alt="Profile"/>
+              <div>
+                <p class="font-medium text-ink-900">Alex Morgan</p>
+                <p class="text-xs text-slate-500">Premium Member</p>
+              </div>
+              </div>
+                </a>      
+              </div>
+
+
+              <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
+                <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="display.html"><i class="menu-ico fa-solid fa-display"></i><span>Display &amp; Accessibility</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="feedback.html"><i class="menu-ico fa-solid fa-comment-dots"></i><span>Give Feedback</span></a></li>
+                <li><a class="menu-item" role="menuitem" href="games.html"><i class="menu-ico fa-solid fa-gamepad"></i><span>Games</span></a></li>
+                <li class="px-4">
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between py-2.5" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="menu-ico fa-solid fa-moon"></i><span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                  
+                </li>
+                <li class="border-t border-slate-100 mt-2">
+                  <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
+                    <i class="menu-ico fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-3 grid grid-cols-1 lg:grid-cols-12 gap-5">
+    <!-- LEFT -->
+    <aside class="lg:col-span-3 space-y-4">
+      <!-- NEW gradient profile card -->
+<section class="p-0">
+  <div class="gradient-bg rounded-2xl p-4 text-white relative overflow-hidden w-full card-shadow">
+    <!-- subtle decorative bubbles -->
+    <div class="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white opacity-10"></div>
+    <div class="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-white opacity-10"></div>
+
+    <div class="flex flex-col items-center relative z-10">
+      <div class="relative mb-2">
+        <img
+          class="h-20 w-20 rounded-full border-2 border-white shadow-lg object-cover"
+          src="https://i.pravatar.cc/160?img=5"
+          alt="Profile"
+        />
+        <span class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></span>
+      </div>
+
+      <div class="text-center">
+        <h1 class="text-xl font-bold">Dr Alexa Morgan</h1>
+        <p class="text-blue-100 text-sm">Neurologist</p>
+        <p class="text-blue-100 mt-1 text-xs">
+          <i class="fas fa-map-marker-alt mr-1"></i> San Francisco, CA
+        </p>
+      </div>
+
+      <div class="flex space-x-2 mt-2">
+        <button id="shareProfileBtn"
+                class="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold flex items-center shadow-md hover:shadow-lg transition-shadow text-sm">
+          <i class="fas fa-share-alt mr-2"></i> Share
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <!-- <section class="nt-card p-2"> -->
+         <nav class="card rounded-xl mt-4">
+          <ul class="p-3" id="sideMenu">
+            <li>
+              <a class="side-item" href="#" data-key="home">
+                <i class="si fa-solid fa-house text-[18px] leading-none shrink-0" aria-hidden="true"></i>
+                Home Feed
+              </a>
+            </li>
+            <li>
+              <a class="mt-1 side-item" href="group.html" data-key="groups">
+                <i class="si fa-solid fa-people-group text-[18px] leading-none shrink-0" aria-hidden="true"></i>
+                My Groups
+              </a>
+            </li>
+            <li>
+              <a class="mt-1 side-item" href="#" data-key="saved">
+                <i class="si fa-solid fa-bookmark text-[18px] leading-none shrink-0" aria-hidden="true"></i>
+                Saved Posts
+              </a>
+            </li>
+          </ul>
+        </nav>
+      <!-- </section> -->
+    </aside>
+
+    <!-- CENTER WRAP -->
+    <section class="lg:col-span-9 relative" id="centerWrap">
+      <!-- MIDDLE -->
+      <section class="space-y-4 nt-scroll" id="midCol">
+        <!-- COMPOSER with upgraded icons -->
+        <div class="nt-card p-4">
+          <div class="flex items-start gap-3">
+            <img src="https://i.pravatar.cc/40?img=5" class="h-10 w-10 rounded-full" alt="">
+            <div class="flex-1">
+              <textarea id="composerText" rows="2" class="w-full rounded-xl border border-slate-200 px-4 py-3 bg-slate-50 focus:outline-none focus:border-blue-400" placeholder="What's on your mind? Mention users with @"></textarea>
+              <div class="mt-3 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-slate-600">
+                  <!-- Hidden inputs -->
+                  <input id="uplImage" type="file" accept="image/*" class="hidden" multiple>
+                  <input id="uplVideo" type="file" accept="video/*" class="hidden" multiple>
+                  <input id="uplDoc"   type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.md" class="hidden" multiple>
+
+                  <!-- Image -->
+                  <button class="tool-btn" data-for="uplImage" title="Add image" aria-label="Add image">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M3 7a4 4 0 014-4h10a4 4 0 014 4v10a4 4 0 01-4 4H7a4 4 0 01-4-4V7z"/>
+                      <path d="M8.5 11.5l2.5 3 3.5-4.5L20 17H4l4.5-5.5z" />
+                      <circle cx="9" cy="7.5" r="1.2" />
+                    </svg>
+                  </button>
+
+                  <!-- Video -->
+                  <button class="tool-btn" data-for="uplVideo" title="Add video" aria-label="Add video">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <rect x="3" y="5" width="14" height="14" rx="2"></rect>
+                      <path d="M17 9l4-2v10l-4-2z"></path>
+                    </svg>
+                  </button>
+
+                  <!-- Document -->
+                  <button class="tool-btn" data-for="uplDoc" title="Add document" aria-label="Add document">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/>
+                      <path d="M14 3v6h6"/>
+                      <path d="M9 13h6M9 17h6"/>
+                    </svg>
+                  </button>
+
+                  <!-- Content Box -->
+                  <button class="tool-btn" id="addContentBox" title="Add content box" aria-label="Add content box">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                      <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                      <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                      <path d="M17.5 14v7M14 17.5h7"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <button id="postBtn" class="px-5 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700">Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POSTS FEED (replaced with your code) -->
+        <div id="feed" class="space-y-4 pb-24"></div>
+      </section>
+
+      <!-- RIGHT RAIL (overlay) -->
+      <aside class="space-y-4 py-1" id="rightCol">
+        <div id="rightBody">
+          <main class="mx-auto max-w-sm px-0 py-0">
+            <div class="space-y-4">
+              <!-- People You May Know -->
+              <section class="card rounded-xl p-4 nt-shadow">
+                <h2 class="side-title mb-3">People You May Know</h2>
+                <div class="h-px bg-slate-200 mb-3"></div>
+                <ul id="pymkList" class="space-y-4">
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya Sharma">
+                      <div><div class="right-name">Priya Sharma</div><div class="right-role subtle">Software Engineer</div></div>
+                    </div><a href="#" class="link text-[14px]">Connect</a>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rohan Verma">
+                      <div><div class="right-name">Rohan Verma</div><div class="right-role subtle">Data Scientist</div></div>
+                    </div><a href="#" class="link text-[14px]">Connect</a>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Anjali Mehta">
+                      <div><div class="right-name">Anjali Mehta</div><div class="right-role subtle">UX Designer</div></div>
+                    </div><a href="#" class="link text-[14px]">Connect</a>
+                  </li>
+                </ul>
+                <div class="mt-3">
+                  <button id="viewMorePYMK" class="rounded-full px-3 py-1.5 text-[13px] font-semibold bg-slate-100 hover:bg-slate-200 border border-slate-200">View More</button>
+                </div>
+              </section>
+
+              <!-- Sponsored rotator -->
+              <section class="card rounded-xl p-4 nt-shadow">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-[18px] font-semibold">Sponsored</h3>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[13px] subtle select-none">Ad</span>
+                    <div class="flex items-center">
+                      <button id="sPrev" class="nav-arrow" aria-label="Previous ad" title="Previous">&lt;</button>
+                      <button id="sNext" class="nav-arrow ml-1" aria-label="Next ad" title="Next">&gt;</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="h-px bg-slate-200 mb-3"></div>
+                <div id="sCard">
+                  <img id="sImg" class="w-full h-44 object-cover rounded-xl" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" alt="Sponsored">
+                  <a id="sTitle" href="#" target="_blank" rel="noopener" class="block mt-3 text-[18px] font-semibold leading-tight hover:underline">Master the Vue 3 Composition API</a>
+                  <p id="sDesc" class="text-[14px] text-slate-600 leading-6">The ultimate course for building scalable and maintainable Vue applications. Enroll now!</p>
+                </div>
+              </section>
+
+              <!-- Right-rail cards ... (unchanged) -->
+              <section class="card rounded-xl p-4 nt-shadow">
+                <h3 class="side-title mb-2">Featured Institutes</h3>
+                <div class="h-px bg-slate-200 mb-2"></div>
+                <ul class="divide-y divide-slate-100">
+                  <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IITB</span><span class="font-semibold text-[14px]">IIT Bombay</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+                  <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IIMA</span><span class="font-semibold text-[14px]">IIM Ahmedabad</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+                  <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">NITT</span><span class="font-semibold text-[14px]">NIT Trichy</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+                </ul>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <div class="overflow-hidden rounded-xl border border-slate-200">
+                  <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=800&auto=format&fit=crop" alt="">
+                  <div class="p-3">
+                    <div class="flex items-center justify-between">
+                      <div class="text-[15px] font-semibold leading-tight">Full-Stack Web Dev (React + Node)</div>
+                      <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                    </div>
+                    <div class="text-[12px] subtle mt-0.5">ByteCraft Labs</div>
+                    <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <h3 class="text-[18px] font-semibold mb-2">Job Openings</h3>
+                <div class="h-px bg-slate-200 mb-3"></div>
+                <ul class="space-y-3">
+                  <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Backend Engineer</div><div class="text-[12px] subtle -mt-0.5">Flipkart • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+                  <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">iOS Developer</div><div class="text-[12px] subtle -mt-0.5">Swiggy • Remote</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+                  <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Data Analyst</div><div class="text-[12px] subtle -mt-0.5">Razorpay • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+                </ul>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <div class="overflow-hidden rounded-xl border border-slate-200">
+                  <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" alt="">
+                  <div class="p-3">
+                    <div class="flex items-center justify-between">
+                      <div class="text-[15px] font-semibold leading-tight">Python for Data Science</div>
+                      <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                    </div>
+                    <div class="text-[12px] subtle mt-0.5">PyMasters Academy</div>
+                    <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <h3 class="text-[18px] font-semibold mb-2">IT Internships</h3>
+                <div class="h-px bg-slate-200 mb-3"></div>
+                <ul class="space-y-3">
+                  <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">SDE Intern</div><div class="text-[12px] subtle -mt-0.5">Google • Hyderabad</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+                  <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">ML Intern</div><div class="text-[12px] subtle -mt-0.5">NVIDIA • Pune</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+                  <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Frontend Intern</div><div class="text-[12px] subtle -mt-0.5">Zoho • Chennai</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+                </ul>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <div class="overflow-hidden rounded-xl border border-slate-200">
+                  <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" alt="">
+                  <div class="p-3">
+                    <div class="flex items-center justify-between">
+                      <div class="text-[15px] font-semibold leading-tight">AI & ML Foundations</div>
+                      <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                    </div>
+                    <div class="text-[12px] subtle mt-0.5">DeepLearn Hub</div>
+                    <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <h3 class="side-title mb-2">Coding Classes</h3>
+                <div class="h-px bg-slate-200 mb-3"></div>
+                <div class="overflow-hidden rounded-xl border border-slate-200">
+                  <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1628258334105-2a0b3d6efee1?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                  <div class="p-3">
+                    <div class="flex items-center justify-between">
+                      <div class="text-[15px] font-semibold leading-tight">DSA in C++ — Interview Prep</div>
+                      <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                    </div>
+                    <div class="text-[12px] subtle mt-0.5">AlgoPro Institute</div>
+                    <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card rounded-xl p-4 nt-shadow">
+                <div class="flex items-center justify-between mb-1"><h3 class="text-[16px] font-semibold">Sponsored</h3><span class="text-[12px] subtle">Ad</span></div>
+                <div class="h-px bg-slate-200 mb-3"></div>
+                <div class="text-[15px] font-medium leading-snug">Build a career in Cloud with IBM SkillsBuild.</div>
+                <p class="text-[13px] text-slate-600 mt-1">Free labs and badges. Start today.</p>
+              </section>
+            </div>
+          </main>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- POSTS VIEWER (two-column) -->
+  <div id="viewer" class="hidden fixed inset-0 z-50 bg-black/90">
+    <div class="viewer-grid">
+      <div class="viewer-left">
+        <button id="viewerPrev" class="viewer-nav left-3 md:left-5">‹</button>
+        <button id="viewerNext" class="viewer-nav right-3 md:right-5">›</button>
+        <button id="viewerClose" class="viewer-close">✕</button>
+
+        <img id="viewerImg" class="viewer-media rounded-lg shadow-2xl select-none" draggable="false" style="display:none"/>
+        <video id="viewerVid" class="viewer-media rounded-lg shadow-2xl" controls playsinline style="display:none"></video>
+
+        <div id="zoomControls" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomOut">-</button>
+          <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomReset">100%</button>
+          <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomIn">+</button>
+        </div>
+      </div>
+
+      <aside class="viewer-panel">
+        <div id="viewerPanel" class="scroll p-4"></div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Content Box Modal -->
+  <div id="contentModal" class="hidden fixed inset-0 z-[60] bg-black/40 flex items-center justify-center p-3">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl border border-slate-100 p-4">
+      <h3 class="text-lg font-semibold">Add Content Box</h3>
+      <div class="mt-3 space-y-2">
+        <input id="cbTitle" class="w-full rounded-lg border border-slate-300 px-3 py-2" placeholder="Title">
+        <textarea id="cbBody" rows="4" class="w-full rounded-lg border border-slate-300 px-3 py-2" placeholder="Write something..."></textarea>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="cbCancel" class="px-3 py-1.5 rounded-lg border border-slate-200">Cancel</button>
+        <button id="cbAdd" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // navigation menu panel functions
+
+      function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    li.classList.remove('open');
+    const btn=li.querySelector('button.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  function togglePanel(li){
+    if(li.classList.contains('open')){ hidePanel(li) }
+    else{
+      document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
+      showPanel(li);
+    }
+  }
+
+  function toggleProfileMenu(){
+    const menu=document.getElementById('profileMenu');
+    const chevron=document.getElementById('profileChevron');
+    const expanded=menu.classList.contains('visible');
+    if(expanded){
+      menu.classList.remove('visible','opacity-100','scale-100');
+      menu.classList.add('invisible','opacity-0','scale-95');
+      chevron.classList.remove('rotate-180');
+    }else{
+      menu.classList.remove('invisible','opacity-0','scale-95');
+      menu.classList.add('visible','opacity-100','scale-100');
+      chevron.classList.add('rotate-180');
+    }
+    document.getElementById('profileBtn').setAttribute('aria-expanded', String(!expanded));
+  }
+
+  function setupThemeToggle(){
+    const toggle=document.getElementById('themeToggle');
+    const themeRow=document.getElementById('themeRow');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme=localStorage.getItem('theme');
+    if(storedTheme==='dark'||(!storedTheme&&prefersDark)){
+      document.documentElement.classList.add('dark'); toggle.checked=true;
+    }else{
+      document.documentElement.classList.remove('dark'); toggle.checked=false;
+    }
+    toggle.addEventListener('change',function(){
+      if(this.checked){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+      else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+    });
+    themeRow.addEventListener('click',function(e){ if(e.target!==toggle){ toggle.click() }});
+  }
+
+  function setupClickOutside(){
+    document.addEventListener('click',function(e){
+      document.querySelectorAll('li[data-menu].open').forEach(li=>{ if(!li.contains(e.target)) hidePanel(li) });
+      const profileMenu=document.getElementById('profileMenu');
+      const profileBtn=document.getElementById('profileBtn');
+      if(profileMenu.classList.contains('visible') && !profileMenu.contains(e.target) && !profileBtn.contains(e.target)){ toggleProfileMenu() }
+    });
+  }
+
+  function setupMobileBehavior(){
+  document.querySelectorAll('li[data-menu]').forEach(li=>{
+    const btn = li.querySelector('.nav-btn'); // works for <a> or <button>
+    if (!btn) return;
+
+    btn.addEventListener('click', function(e){
+      // prevent navigation for anchor menus
+      if (btn.tagName === 'A') e.preventDefault();
+      // on mobile, tap toggles the panel; on desktop, hover already handles it
+      if (window.innerWidth < 768) togglePanel(li);
+    });
+  });
+} 
+
+  function setupKeyboardNav(){
+    // open with Enter/Space, close with Escape
+    document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{
+      btn.addEventListener('keydown', (e)=>{
+        const li=btn.closest('li[data-menu]');
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); togglePanel(li) }
+        if(e.key==='Escape'){ hidePanel(li) }
+      });
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        // close any open panels
+        document.querySelectorAll('li[data-menu].open').forEach(li=> hidePanel(li));
+        const pm=document.getElementById('profileMenu');
+        if(pm.classList.contains('visible')) toggleProfileMenu();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setupThemeToggle();
+    setupClickOutside();
+    setupMobileBehavior();
+    setupKeyboardNav();
+    document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
+    document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
+  });
+
+
+
+
+
+    /* =========== Utilities (existing) =========== */
+    (function syncPagePad(){
+      function apply(){
+        const mainEl=document.querySelector('main');
+        if(!mainEl) return;
+        const pr=parseFloat(getComputedStyle(mainEl).paddingRight)||0;
+        document.documentElement.style.setProperty('--page-pad', pr+'px');
+      }
+      apply();
+      window.addEventListener('resize', apply);
+    })();
+
+    (function leftNavInteractions(){
+      const nav=document.getElementById('leftNav');
+      if(!nav) return;
+      const links=[...nav.querySelectorAll('.nav-link')];
+      links.forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          links.forEach(x=>{ x.classList.remove('active'); x.removeAttribute('aria-current'); });
+          a.classList.add('active');
+          a.setAttribute('aria-current','page');
+        });
+      });
+    })();
+
+    function toast(msg){
+      const host = document.getElementById('toasts') || (()=>{const d=document.createElement('div');d.id='toasts';d.className='fixed bottom-5 left-1/2 -translate-x-1/2 z-[70] space-y-2';document.body.appendChild(d);return d;})();
+      const el=document.createElement('div');
+      el.className='bg-black/80 text-white px-3 py-2 rounded-lg text-sm';
+      el.textContent=msg; host.appendChild(el);
+      setTimeout(()=>{ el.remove(); },1600);
+    }
+    function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+    /* Composer triggers (file pickers + content box) */
+    document.querySelectorAll('.tool-btn[data-for]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id=btn.getAttribute('data-for');
+        document.getElementById(id)?.click();
+      });
+    });
+    document.getElementById('uplImage')?.addEventListener('change',e=> toast(`${e.target.files.length} image(s) selected`));
+    document.getElementById('uplVideo')?.addEventListener('change',e=> toast(`${e.target.files.length} video(s) selected`));
+    document.getElementById('uplDoc')?.addEventListener('change',e=> toast(`${e.target.files.length} document(s) selected`));
+
+    const contentModal=document.getElementById('contentModal');
+    document.getElementById('addContentBox')?.addEventListener('click',()=>{ contentModal.classList.remove('hidden'); document.getElementById('cbTitle').focus(); });
+    document.getElementById('cbCancel')?.addEventListener('click',()=> contentModal.classList.add('hidden'));
+    document.getElementById('cbAdd')?.addEventListener('click',()=>{
+      const t=document.getElementById('cbTitle').value.trim();
+      const b=document.getElementById('cbBody').value.trim();
+      if(!t && !b){ toast('Nothing to add'); return; }
+      const p={
+        id:'cb'+Date.now(),
+        type:'content',
+        author:'Sakshi',
+        avatar:'https://i.pravatar.cc/40?img=5',
+        time:'just now',
+        caption:'',
+        box:{ title:t||'Untitled', body:b||'' },
+        likes:0, comments:[], saved:false, reaction:null
+      };
+      state.posts.unshift(p);
+      render();
+      contentModal.classList.add('hidden');
+      document.getElementById('cbTitle').value='';
+      document.getElementById('cbBody').value='';
+      toast('Content box added');
+    });
+
+    document.getElementById('postBtn')?.addEventListener('click',()=>{
+      const t=document.getElementById('composerText').value.trim();
+      if(!t){ toast('Write something first'); return; }
+      state.posts.unshift({
+        id:'t'+Date.now(), type:'text', author:'Sakshi', avatar:'https://i.pravatar.cc/40?img=5',
+        time:'just now', caption:'', text:t, likes:0, comments:[], saved:false, reaction:null
+      });
+      document.getElementById('composerText').value='';
+      render();
+      toast('Posted');
+    });
+
+    /* Right rail small bits */
+    document.getElementById('viewMorePYMK')?.addEventListener('click', e=> e.preventDefault());
+
+    const sItems = [
+      { img:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop', title:'Master the Vue 3 Composition API', href:'#', desc:'The ultimate course for building scalable and maintainable Vue applications. Enroll now!' },
+      { img:'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop', title:'React Hooks Deep Dive', href:'#', desc:'Build modern, testable components with custom hooks, context, and performance patterns.' },
+      { img:'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop', title:'Node.js Microservices Bootcamp', href:'#', desc:'Design resilient services with queues, events, and observability best practices.' },
+      { img:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop', title:'TypeScript for Large-Scale Apps', href:'#', desc:'Master types, generics, and architecture patterns that scale with your codebase.' }
+    ];
+    let sIdx = 0;
+    const sCard  = document.getElementById('sCard');
+    const sImg   = document.getElementById('sImg');
+    const sTitle = document.getElementById('sTitle');
+    const sDesc  = document.getElementById('sDesc');
+    function renderSponsored(idx){
+      const item = sItems[(idx + sItems.length) % sItems.length];
+      if(!sCard) return;
+      sCard.style.opacity = 0;
+      setTimeout(()=>{
+        if(sImg) sImg.src = item.img;
+        if(sTitle){ sTitle.textContent = item.title; sTitle.href = item.href || '#'; }
+        if(sDesc) sDesc.textContent = item.desc;
+        sCard.style.opacity = 1;
+      }, 180);
+    }
+    const ROTATE_MS = 5000;
+    let rotateTimer = null;
+    function startAuto(){ stopAuto(); rotateTimer = setInterval(()=>{ sIdx = (sIdx + 1) % sItems.length; renderSponsored(sIdx); }, ROTATE_MS); }
+    function stopAuto(){ if(rotateTimer){ clearInterval(rotateTimer); rotateTimer = null; } }
+    function resetAuto(){ startAuto(); }
+    document.getElementById('sPrev')?.addEventListener('click', ()=>{ sIdx = (sIdx - 1 + sItems.length) % sItems.length; renderSponsored(sIdx); resetAuto(); });
+    document.getElementById('sNext')?.addEventListener('click', ()=>{ sIdx = (sIdx + 1) % sItems.length; renderSponsored(sIdx); resetAuto(); });
+    renderSponsored(sIdx); startAuto();
+
+    /* =========== REPLACED POSTS CODE (from your snippet) =========== */
+
+    const feedEl=document.getElementById('feed');
+    const countComments=p=>{let n=0;(p.comments||[]).forEach(c=>{n++;if(c.replies)n+=c.replies.length});return n}
+    // Viewer refs (reuse existing DOM)
+    const viewer=document.getElementById('viewer');
+    const viewerImg=document.getElementById('viewerImg');
+    const viewerVid=document.getElementById('viewerVid');
+    const viewerPrev=document.getElementById('viewerPrev');
+    const viewerNext=document.getElementById('viewerNext');
+    const viewerClose=document.getElementById('viewerClose');
+    const zoomIn=document.getElementById('zoomIn');
+    const zoomOut=document.getElementById('zoomOut');
+    const zoomReset=document.getElementById('zoomReset');
+    const zoomControls=document.getElementById('zoomControls');
+    const viewerPanel=document.getElementById('viewerPanel');
+    let viewerMedia=[], viewerIndex=0, zoom=1, viewerPid=null;
+    const isVideo = it => (typeof it==='object' && it?.type==='video');
+
+    function setViewer(item){
+      viewerImg.style.display='none'; viewerVid.style.display='none';
+      zoomControls.style.display='none'; zoom=1; viewerImg.style.transform='scale(1)';
+      if(isVideo(item)){ viewerVid.src=item.src; viewerVid.currentTime=0; viewerVid.style.display='block'; }
+      else { const src=typeof item==='string'?item:(item?.src||''); viewerImg.src=src; viewerImg.style.display='block'; zoomControls.style.display='flex'; }
+    }
+    function fillViewerPanel(pid){
+      const p = state.posts.find(x=>x.id===pid);
+      viewerPanel.innerHTML='';
+      if(!p) return;
+      const cmCount = countComments(p);
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
+        <div class="flex items-start gap-3">
+          <img src="${p.avatar}" class="h-10 w-10 rounded-full" alt="">
+          <div class="flex-1">
+            <div class="font-semibold">${p.author}</div>
+            <div class="text-xs text-slate-500">about ${p.time} ago</div>
+          </div>
+        </div>
+        ${p.caption?`<div class="mt-3 text-[15px] text-slate-800 whitespace-pre-wrap">${escapeHTML(p.caption)}</div>`:''}
+        <div class="mt-3 h-px bg-slate-200 w-full"></div>
+
+        <div class="pt-3 grid grid-cols-5 items-center text-center">
+          <div class="flex justify-center">
+            ${reactionButtonHTML(p)}
+          </div>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toast('Open comments below')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 4C6.8 4 3 7.7 3 11.8c0 2.5 1.3 4.7 3.3 6.3-.1.8-.5 1.9-1.4 2.9-.25.28-.1.72.27.74 1.63.1 3.24-.37 4.37-.97a11.5 11.5 0 002.46.28c5.2 0 9-3.7 9-7.8C21 7.7 17.2 4 12 4z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Comment</span>
+            <span class="ml-1 text-slate-500">${cmCount}</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toast('Sent')">
+            <svg class="w-5 h-5 -rotate-45" viewBox="0 0 24 24" fill="none"><path d="M3.5 4.5l17 7-17 7 4.2-7L3.5 4.5zM7.7 11.5h12.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Send</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="repost('${p.id}')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 11a7 7 0 0111-5l1 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 4v4h-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 13a7 7 0 01-11 5l-1-1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 20v-4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="font-medium">Repost</span>
+            ${typeof p.reposts==='number'?`<span class="ml-1 text-slate-500">${p.reposts}</span>`:''}
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 ${p.saved?'text-amber-600':'text-slate-600 hover:text-slate-800'}" onclick="toggleSave('${p.id}')">
+            ${p.saved
+              ? `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.32 2.577A1.875 1.875 0 018.003 1.5h7.994c1.035 0 1.875.84 1.875 1.875v17.154a.75.75 0 01-1.2.6L12 16.5l-4.672 4.629a.75.75 0 01-1.2-.6V2.577z"/></svg>`
+              : `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M8 2.5h8c1.1 0 2 .9 2 2v15.7c0 .6-.7 1-1.2 .6L12 16.5l-4.8 4.3c-.5 .4-1.2 0-1.2-.6V4.5c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`
+            }
+            <span class="font-medium">${p.saved ? 'Saved' : 'Save'}</span>
+          </button>
+        </div>
+
+        <div class="mt-3">${renderCommentsBlock(p)}</div>
+      `;
+      viewerPanel.appendChild(wrap);
+      wireReactions(wrap, p);
+    }
+    function openViewer(media,index=0,pid=null){
+      viewerMedia=media||[]; viewerIndex=Math.max(0,Math.min(index,viewerMedia.length-1));
+      viewerPid=pid; setViewer(viewerMedia[viewerIndex]); fillViewerPanel(viewerPid);
+      viewer.classList.remove('hidden'); document.body.classList.add('overflow-hidden');
+    }
+    function closeViewer(){ viewer.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); viewerVid.pause(); }
+    function navViewer(d){ if(viewerMedia.length<2) return; viewerIndex=(viewerIndex+d+viewerMedia.length)%viewerMedia.length; setViewer(viewerMedia[viewerIndex]); }
+    viewerPrev.onclick=()=>navViewer(-1); viewerNext.onclick=()=>navViewer(1); viewerClose.onclick=closeViewer;
+    zoomIn.onclick=()=>{ zoom=Math.min(zoom+0.2,3); viewerImg.style.transform=`scale(${zoom})`; };
+    zoomOut.onclick=()=>{ zoom=Math.max(zoom-0.2,0.5); viewerImg.style.transform=`scale(${zoom})`; };
+    zoomReset.onclick=()=>{ zoom=1; viewerImg.style.transform='scale(1)'; };
+    window.addEventListener('keydown',e=>{ if(viewer.classList.contains('hidden')) return; if(e.key==='Escape') closeViewer(); if(e.key==='ArrowRight') navViewer(1); if(e.key==='ArrowLeft') navViewer(-1); });
+
+    // Image gallery
+    function galleryHTML(imgs, pid){
+      const n = imgs.length;
+      const escList = JSON.stringify(imgs);
+      const dataAttr = `data-images='${escList}' data-pid='${pid}'`;
+      if(n <= 1){
+        const src = imgs[0];
+        return `<img loading="lazy" src="${src}" class="mt-3 rounded-lg w-full object-cover max-h-96 cursor-pointer" ${dataAttr}
+                 onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"/>`;
+      }
+      if(n === 2){
+        return `<div class="mosaicWrap"><div class="mosaic two">
+          ${imgs.map((src,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr}
+                onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)"><img loading="lazy" src="${src}"/></div>`).join('')}
+        </div></div>`;
+      }
+      if(n === 3){
+        return `<div class="mosaicWrap"><div class="mosaic three">
+          <div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"><img loading="lazy" src="${imgs[0]}"/></div>
+          <div class="mosaic-tile cursor-pointer" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)"><img loading="lazy" src="${imgs[1]}"/></div>
+          <div class="mosaic-tile cursor-pointer" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)"><img loading="lazy" src="${imgs[2]}"/></div>
+        </div></div>`;
+      }
+      if(n === 4){
+        return `<div class="mosaicWrap"><div class="mosaic four">
+          ${imgs.slice(0,4).map((src,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)"><img loading="lazy" src="${src}"/></div>`).join('')}
+        </div></div>`;
+      }
+      const remain = n - 3;
+      const peek = imgs.slice(3, 9).map(s=>`<img src="${s}" alt=""/>`).join('');
+      return `<div class="mosaicWrap"><div class="mosaic three">
+        <div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr}
+             onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"><img loading="lazy" src="${imgs[0]}"/></div>
+        <div class="mosaic-tile cursor-pointer" ${dataAttr}
+             onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)"><img loading="lazy" src="${imgs[1]}"/></div>
+        <div class="mosaic-tile cursor-pointer has-more" ${dataAttr}
+             onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)">
+          <img loading="lazy" src="${imgs[2]}"/>
+          <div class="more-badge"><span class="more-pill">+${remain}</span></div>
+          <div class="more-peek">${peek}</div>
+        </div>
+      </div></div>`;
+    }
+
+    // Video gallery
+    function galleryVideoHTML(videos, pid){
+      const escList = JSON.stringify(videos), dataAttr = `data-images='${escList}' data-pid='${pid}'`, n = videos.length;
+      const badge = `<div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div>`;
+      if(n <= 1){
+        const v = videos[0];
+        return `<div class="relative mt-3 rounded-lg overflow-hidden cursor-pointer" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images),0,this.dataset.pid)">
+            <video preload="metadata" ${v.poster?`poster="${v.poster}"`:''} src="${v.src}" class="w-full max-h-96 object-cover" playsinline></video>${badge}
+          </div>`;
+      }
+      if(n === 2){
+        return `<div class="mosaicWrap"><div class="mosaic two">
+          ${videos.map((m,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr}
+                 onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)">
+              <video preload="metadata" ${m.poster?`poster="${m.poster}"`:''} src="${m.src}" playsinline></video>${badge}
+            </div>`).join('')}
+        </div></div>`;
+      }
+      if(n === 3){
+        return `<div class="mosaicWrap"><div class="mosaic three">
+          <div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)">
+            <video preload="metadata" ${videos[0].poster?`poster="${videos[0].poster}"`:''} src="${videos[0].src}" playsinline></video>${badge}
+          </div>
+          <div class="mosaic-tile cursor-pointer" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)">
+            <video preload="metadata" ${videos[1].poster?`poster="${videos[1].poster}"`:''} src="${videos[1].src}" playsinline></video>${badge}
+          </div>
+          <div class="mosaic-tile cursor-pointer" ${dataAttr}
+               onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)">
+            <video preload="metadata" ${videos[2].poster?`poster="${videos[2].poster}"`:''} src="${videos[2].src}" playsinline></video>${badge}
+          </div>
+        </div></div>`;
+      }
+      if(n === 4){
+        return `<div class="mosaicWrap"><div class="mosaic four">
+          ${videos.slice(0,4).map((m,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr}
+                 onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)">
+              <video preload="metadata" ${m.poster?`poster="${m.poster}"`:''} src="${m.src}" playsinline></video>${badge}
+            </div>`).join('')}
+        </div></div>`;
+      }
+      const remain = n - 3;
+      const peek = videos.slice(3,9).map(v=> v.poster? `<img src="${v.poster}" alt=""/>` : `<div class="vthumb">▶</div>`).join('');
+      return `<div class="mosaicWrap"><div class="mosaic three">
+        <div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr}
+             onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)">
+          <video preload="metadata" ${videos[0].poster?`poster="${videos[0].poster}"`:''} src="${videos[0].src}" playsinline></video>${badge}
+        </div>
+        <div class="mosaic-tile cursor-pointer" ${dataAttr}
+             onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)">
+          <video preload="metadata" ${videos[1].poster?`poster="${videos[1].poster}"`:''} src="${videos[1].src}" playsinline></video>${badge}
+        </div>
+        <div class="mosaic-tile cursor-pointer has-more" ${dataAttr}
+             onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)">
+          <video preload="metadata" ${videos[2].poster?`poster="${videos[2].poster}"`:''} src="${videos[2].src}" playsinline></video>
+          <div class="more-badge"><span class="more-pill">+${remain}</span></div>
+          <div class="more-peek">${peek}</div>
+          ${badge}
+        </div>
+      </div></div>`;
+    }
+
+    // Reactions
+    function reactionButtonHTML(p){
+      const REACTIONS={like:{label:'Like',icon:'👍'},love:{label:'Love',icon:'❤️'},celebrate:{label:'Celebrate',icon:'🎉'},insightful:{label:'Insightful',icon:'💡'},support:{label:'Support',icon:'👏'}};
+      const heartOutlineSVG=`<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M21 10.5c0 2.6-1.69 4.86-3.99 7A25.3 25.3 0 0112 20.5a25.3 25.3 0 01-5.01-3c-2.3-2.14-3.99-4.4-3.99-7A4.5 4.5 0 017.5 6c1.53 0 2.87.72 3.75 1.84A4.66 4.66 0 0115.5 6 4.5 4.5 0 0121 10.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      const rx=p.reaction; const icon=rx?`<span class="text-lg leading-none">${REACTIONS[rx].icon}</span>`:heartOutlineSVG; const label=rx?REACTIONS[rx].label:'Like';
+      return `<div class="rx-holder"><button class="btn-like inline-flex items-center gap-1 text-slate-600 hover:text-slate-800" data-id="${p.id}">${icon}<span class="font-medium">${label}</span><span class="ml-1 text-slate-500">${p.likes||0}</span></button><div class="rx-tray hidden">${Object.entries(REACTIONS).map(([k,v])=>`<button class="rx-emoji" data-rx="${k}" data-label="${v.label}" aria-selected="${p.reaction===k}">${v.icon}</button>`).join('')}</div></div>`;
+    }
+    function closeAllTrays(){document.querySelectorAll('.rx-tray').forEach(t=>{t.classList.remove('show');t.classList.add('hidden')})}
+    if(!window.__rxScrollBound){window.addEventListener('scroll',closeAllTrays,true);window.__rxScrollBound=true}
+    function wireReactions(wrap,p){
+      const holder=wrap.querySelector('.rx-holder'), tray=holder.querySelector('.rx-tray'), likeBtn=holder.querySelector('.btn-like'); let hideTimer=null;
+      function openTray(){closeAllTrays();tray.classList.remove('hidden');requestAnimationFrame(()=>tray.classList.add('show'))}
+      function closeTrayNow(){tray.classList.remove('show');setTimeout(()=>tray.classList.add('hidden'),160)}
+      function scheduleHide(){clearTimeout(hideTimer);hideTimer=setTimeout(closeTrayNow,220)}
+      likeBtn.addEventListener('mouseenter',openTray); tray.addEventListener('mouseenter',()=>clearTimeout(hideTimer)); holder.addEventListener('mouseleave',scheduleHide);
+      holder.addEventListener('click',e=>e.stopPropagation()); document.addEventListener('click',closeAllTrays);
+      likeBtn.addEventListener('click',e=>{e.stopPropagation(); if(p.reaction==='like'){p.reaction=null;p.likes=Math.max(0,(p.likes||0)-1)} else {if(!p.reaction)p.likes=(p.likes||0)+1;p.reaction='like'} render(); fillViewerPanel(p.id);});
+      tray.querySelectorAll('[data-rx]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const rx=b.dataset.rx; if(p.reaction===rx){p.reaction=null;p.likes=Math.max(0,(p.likes||0)-1)}else{if(!p.reaction)p.likes=(p.likes||0)+1;p.reaction=rx} closeTrayNow();render();fillViewerPanel(p.id);} ))
+    }
+
+    // Polls
+    function pollHTML(p){
+      const pol=p.poll; const total=pol.options.reduce((s,o)=>s+o.votes,0); const voted=pol.voted;
+      function row(o){
+        const pct = total? Math.round((o.votes/total)*100):0;
+        const chosen = voted===o.id;
+        const fillW = voted? `style="width:${pct}%;"` : '';
+               const pctUI = voted? `<div class="text-sm text-slate-600">${pct}%</div>` : '';
+        const check = chosen? `<span class="poll-check"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>` : '';
+        return `
+          <div class="poll-opt" ${voted?'':`onclick="votePoll('${p.id}','${o.id}')"`}>
+            <div class="poll-fill" ${fillW}></div>
+            <span class="poll-chip">${o.id}</span>
+            <span class="text-[15px]">${escapeHTML(o.label)}</span>
+            <div class="poll-right">${pctUI}${check}</div>
+          </div>`;
+      }
+      return `
+        <div class="poll">
+          <div class="font-semibold mb-2">${escapeHTML(pol.question)}</div>
+          <div class="space-y-2">${pol.options.map(row).join('')}</div>
+          <div class="mt-2 flex items-center justify-between">
+            <div class="text-xs text-slate-500">${total} vote${total!==1?'s':''}</div>
+            ${voted ? `<button class="text-xs px-2.5 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50" onclick="unvotePoll('${p.id}')">Remove vote</button>` : ``}
+          </div>
+        </div>`;
+    }
+    function votePoll(pid,oid){
+      const p=state.posts.find(x=>x.id===pid); if(!p?.poll||p.poll.voted) return;
+      const opt=p.poll.options.find(o=>o.id===oid);
+      if(opt){ opt.votes++; p.poll.voted=oid; render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid); }
+    }
+    function unvotePoll(pid){
+      const p=state.posts.find(x=>x.id===pid);
+      if(!p?.poll || !p.poll.voted) return;
+      const prevId = p.poll.voted;
+      const opt = p.poll.options.find(o=>o.id===prevId);
+      if(opt){ opt.votes = Math.max(0, (opt.votes||0) - 1); }
+      p.poll.voted = null;
+      render();
+      if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);
+    }
+    window.votePoll=votePoll; window.unvotePoll=unvotePoll;
+
+    // Comments
+    const expandedReplies=new Set(); const openReplyFor=new Set(); let editing={type:null,pid:null,cid:null,rid:null};
+    function renderCommentsBlock(p){
+      const list=(p.comments||[]).map(c=>{
+        const shown=Math.min(1,c.replies?.length||0); const isOpen=expandedReplies.has(c.id);
+        const hiddenCount=Math.max(0,(c.replies?.length||0)-shown); const repliesToShow=isOpen?(c.replies||[]):(c.replies||[]).slice(0,shown);
+        const composer=openReplyFor.has(c.id)?`
+          <div class="mt-2 ml-10 flex items-center gap-2">
+            <img src="https://i.pravatar.cc/32?img=5" class="h-8 w-8 rounded-full" alt="">
+            <div class="flex-1 relative">
+              <input id="reply-${p.id}-${c.id}" class="w-full rounded-full border border-slate-300 pl-4 pr-24 py-2 bg-white focus:outline-none focus:border-blue-400" placeholder="Write a reply...">
+              <button class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-blue-600 text-white text-sm" onclick="addReply('${p.id}','${c.id}')">Send</button>
+            </div>
+          </div>`:'';
+        return `
+          <div class="space-y-2" id="clist-${p.id}-${c.id}">
+            ${renderOneComment(p.id,c)}
+            ${composer}
+            ${repliesToShow.map(r=>renderOneReply(p.id,c.id,r)).join('')}
+            ${(hiddenCount>0 && !isOpen)?`<button class="text-xs text-slate-600 hover:underline ml-10" onclick="expandReplies('${c.id}')">View ${hiddenCount} more repl${hiddenCount>1?'ies':'y'}</button>`:''}
+          </div>`;
+      }).join('');
+      return `
+        <div class="rounded-2xl border bg-white p-3">
+          <div class="mb-3 flex items-center gap-2">
+            <img src="https://i.pravatar.cc/32?img=5" class="h-8 w-8 rounded-full" alt="">
+            <div class="flex-1 relative">
+              <input id="cinput-${p.id}" class="w-full rounded-full border border-slate-300 pl-4 pr-24 py-2 bg-slate-50 focus:outline-none focus:border-blue-400" placeholder="Add a comment...">
+              <button class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-blue-600 text-white text-sm" onclick="addComment('${p.id}')">Send</button>
+            </div>
+          </div>
+          <div class="mb-2 text-sm text-slate-600">Most relevant</div>
+          <div class="space-y-4">${list || '<div class="text-slate-500 text-sm">No comments yet.</div>'}</div>
+        </div>`;
+    }
+    function renderOneComment(pid,c){
+      const isEditing=editing.type==='comment'&&editing.pid===pid&&editing.cid===c.id;
+      if(isEditing){
+        return `<div class="flex gap-2"><img src="https://i.pravatar.cc/32?img=12" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${c.author}</span><span class="text-slate-500 text-xs">· 1h</span></div><div class="rounded-2xl bg-white border p-2 mt-1"><textarea id="editc-${pid}-${c.id}" rows="2" class="w-full rounded border px-2 py-1">${escapeHTML(c.text)}</textarea><div class="mt-1 flex gap-2 justify-end text-xs"><button class="px-2 py-1 rounded border" onclick="cancelEdit()">Cancel</button><button class="px-2 py-1 rounded bg-blue-600 text-white" onclick="saveEditComment('${pid}','${c.id}')">Save</button></div></div></div></div>`;
+      }
+      return `<div class="flex gap-2"><img src="https://i.pravatar.cc/32?img=12" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${c.author}</span><span class="text-slate-500 text-xs">· 1h</span></div><div class="inline-block max-w-[90%] rounded-2xl bg-slate-50 border px-3 py-2 mt-1"><div class="text-sm">${escapeHTML(c.text)}</div></div><div class="mt-1 flex items-center gap-4 text-xs text-slate-600"><button class="hover:underline" onclick="likeComment('${pid}','${c.id}')">Like${c.likes?` · ${c.likes}`:''}</button><button class="hover:underline" onclick="toggleReplyComposer('${pid}','${c.id}')">${openReplyFor.has(c.id)?'Cancel':'Reply'}</button><button class="hover:underline" onclick="startEditComment('${pid}','${c.id}')">Edit</button><button class="hover:underline text-red-600" onclick="deleteComment('${pid}','${c.id}')">Delete</button></div></div></div>`;
+    }
+    function renderOneReply(pid,cid,r){
+      const isEditing=editing.type==='reply'&&editing.pid===pid&&editing.cid===cid&&editing.rid===r.id;
+      if(isEditing){
+        return `<div class="flex gap-2 ml-10"><img src="https://i.pravatar.cc/32?img=15" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${r.author}</span><span class="text-slate-500 text-xs">· 30m</span></div><div class="rounded-2xl bg-white border p-2 mt-1"><textarea id="editr-${pid}-${cid}-${r.id}" rows="2" class="w-full rounded border px-2 py-1">${escapeHTML(r.text)}</textarea><div class="mt-1 flex gap-2 justify-end text-xs"><button class="px-2 py-1 rounded border" onclick="cancelEdit()">Cancel</button><button class="px-2 py-1 rounded bg-blue-600 text-white" onclick="saveEditReply('${pid}','${cid}','${r.id}')">Save</button></div></div></div></div>`;
+      }
+      return `<div class="flex gap-2 ml-10"><img src="https://i.pravatar.cc/32?img=15" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${r.author}</span><span class="text-slate-500 text-xs">· 30m</span></div><div class="inline-block max-w-[90%] rounded-2xl bg-white border px-3 py-2 mt-1"><div class="text-sm">${escapeHTML(r.text)}</div></div><div class="mt-1 flex items-center gap-4 text-xs text-slate-600"><button class="hover:underline" onclick="likeReply('${pid}','${cid}','${r.id}')">Like${r.likes?` · ${r.likes}`:''}</button><button class="hover:underline" onclick="startEditReply('${pid}','${cid}','${r.id}')">Edit</button><button class="hover:underline text-red-600" onclick="deleteReply('${pid}','${cid}','${r.id}')">Delete</button></div></div></div>`;
+    }
+    function toggleReplyComposer(pid,cid){if(openReplyFor.has(cid))openReplyFor.delete(cid);else openReplyFor.add(cid);render();document.getElementById(`reply-${pid}-${cid}`)?.focus()}
+    function expandReplies(cid){expandedReplies.add(cid);render()}
+    function toggleSave(id){const p=state.posts.find(x=>x.id===id);p.saved=!p.saved;render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(id); }
+    function toggleComments(id){document.getElementById('cwrap-'+id).classList.toggle('hidden')}
+    function addComment(id){const p=state.posts.find(x=>x.id===id);const inp=document.getElementById('cinput-'+id);const t=inp.value.trim();if(!t)return;p.comments=p.comments||[];p.comments.push({id:'c'+Date.now(),author:'You',text:t,likes:0,replies:[]});inp.value='';render();document.getElementById('cwrap-'+id).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(p.id);}
+    function addReply(pid,cid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const inp=document.getElementById(`reply-${pid}-${cid}`);const t=inp.value.trim();if(!t)return;(c.replies||(c.replies=[])).push({id:'r'+Date.now(),author:'You',text:t,likes:0});openReplyFor.delete(cid);inp.value='';expandedReplies.add(cid);render();document.getElementById('cwrap-'+pid).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function likeComment(pid,cid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);c.likes=(c.likes||0)+1;render();document.getElementById('cwrap-'+pid).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function likeReply(pid,cid,rid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const r=c.replies.find(x=>x.id===rid);r.likes=(r.likes||0)+1;render();document.getElementById('cwrap-'+pid).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function startEditComment(pid,cid){editing={type:'comment',pid,cid,rid:null};render();document.getElementById(`editc-${pid}-${cid}`)?.focus()}
+    function saveEditComment(pid,cid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const v=document.getElementById(`editc-${pid}-${cid}`).value.trim();if(v)c.text=v;editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function deleteComment(pid,cid){const p=state.posts.find(x=>x.id===pid);p.comments=p.comments.filter(c=>c.id!==cid);openReplyFor.delete(cid);editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function startEditReply(pid,cid,rid){editing={type:'reply',pid,cid,rid};render();document.getElementById(`editr-${pid}-${cid}-${rid}`)?.focus()}
+    function saveEditReply(pid,cid,rid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const r=c.replies.find(x=>x.id===rid);const v=document.getElementById(`editr-${pid}-${cid}-${rid}`).value.trim();if(v)r.text=v;editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function deleteReply(pid,cid,rid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);c.replies=c.replies.filter(r=>r.id!==rid);editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function cancelEdit(){editing={type:null};render()}
+    function deletePost(id){state.posts=state.posts.filter(x=>x.id!==id);render()}
+    function repost(id){const p=state.posts.find(x=>x.id===id);if(!p)return;p.reposts=(p.reposts||0)+1;toast('Reposted');render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(id); }
+    window.repost=repost;
+
+    // Render post
+    function renderPost(p){
+      const wrap=document.createElement('article');
+      wrap.className='bg-white rounded-xl shadow border border-slate-100 p-4';
+      let media='';
+      if(p.type==='text'){
+        media = `<div class="mt-3 whitespace-pre-wrap max-h-48 overflow-y-auto p-2 bg-slate-50 rounded-lg">${escapeHTML(p.text||'')}</div>`;
+      }else if(p.type==='content'){
+        media = `
+          <div class="mt-3 rounded-xl border bg-slate-50 p-3">
+            <div class="text-[15px] font-semibold">${escapeHTML(p.box?.title||'')}</div>
+            ${p.box?.body?`<div class="mt-1 text-[14px] text-slate-700 whitespace-pre-wrap">${escapeHTML(p.box.body)}</div>`:''}
+          </div>`;
+      }else if(p.type==='image'){
+        media = `<img loading="lazy" src="${p.src}" class="mt-3 rounded-lg w-full object-cover max-h-96 cursor-pointer"
+                  onclick="openViewer(['${p.src}'],0,'${p.id}')">`;
+      }else if(p.type==='video'){
+        const payload = JSON.stringify([{type:'video',src:p.src,poster:p.poster}]);
+        media = `<div class="relative mt-3 rounded-lg overflow-hidden cursor-pointer" data-images='${payload}' data-pid='${p.id}'
+                   onclick="openViewer(JSON.parse(this.dataset.images),0,this.dataset.pid)">
+                   <video preload="metadata" ${p.poster?`poster="${p.poster}"`:''} class="w-full max-h-96 object-cover" src="${p.src}" playsinline></video>
+                   <div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div>
+                 </div>`;
+      }else if(p.type==='gallery'){
+        media = galleryHTML(p.images||[], p.id);
+      }else if(p.type==='vgallery'){
+        media = galleryVideoHTML(p.videos||[], p.id);
+      }else if(p.type==='poll'){
+        media = pollHTML(p);
+      }
+
+      const cmCount=countComments(p);
+      wrap.innerHTML=`
+        <div class="flex items-start gap-3">
+          <img src="${p.avatar}" class="h-9 w-9 rounded-full" alt="">
+          <div class="flex-1">
+            <div class="font-semibold">${p.author}</div>
+            <div class="text-xs text-slate-500">about ${p.time} ago</div>
+            ${p.caption?`<div class="mt-1 text-[15px] text-slate-800">${escapeHTML(p.caption)}</div>`:''}
+          </div>
+          <div class="relative z-30">
+            <button class="p-2 rounded-full hover:bg-slate-100" aria-label="post menu">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </button>
+            <div class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden z-40">
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="toast('Edit disabled in demo')">Edit caption</button>
+              <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="deletePost('${p.id}')">Delete Post</button>
+            </div>
+          </div>
+        </div>
+        ${media}
+        <div class="mt-3 h-px bg-slate-200 w-full"></div>
+
+        <div class="pt-3 grid grid-cols-5 items-center text-center">
+          <div class="flex justify-center">
+            ${reactionButtonHTML(p)}
+          </div>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toggleComments('${p.id}')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 4C6.8 4 3 7.7 3 11.8c0 2.5 1.3 4.7 3.3 6.3-.1.8-.5 1.9-1.4 2.9-.25.28-.1.72.27.74 1.63.1 3.24-.37 4.37-.97a11.5 11.5 0 002.46.28c5.2 0 9-3.7 9-7.8C21 7.7 17.2 4 12 4z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Comment</span>
+            <span class="ml-1 text-slate-500">${cmCount}</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toast('Sent')">
+            <svg class="w-5 h-5 -rotate-45" viewBox="0 0 24 24" fill="none"><path d="M3.5 4.5l17 7-17 7 4.2-7L3.5 4.5zM7.7 11.5h12.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Send</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="repost('${p.id}')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 11a7 7 0 0111-5l1 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 4v4h-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 13a7 7 0 01-11 5l-1-1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 20v-4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="font-medium">Repost</span>
+            ${typeof p.reposts==='number'?`<span class="ml-1 text-slate-500">${p.reposts}</span>`:''}
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 ${p.saved?'text-amber-600':'text-slate-600 hover:text-slate-800'}" onclick="toggleSave('${p.id}')">
+            ${p.saved
+              ? `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.32 2.577A1.875 1.875 0 018.003 1.5h7.994c1.035 0 1.875.84 1.875 1.875v17.154a.75.75 0 01-1.2.6L12 16.5l-4.672 4.629a.75.75 0 01-1.2-.6V2.577z"/></svg>`
+              : `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M8 2.5h8c1.1 0 2 .9 2 2v15.7c0 .6-.7 1-1.2 .6L12 16.5l-4.8 4.3c-.5 .4-1.2 0-1.2-.6V4.5c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`
+            }
+            <span class="font-medium">${p.saved ? 'Saved' : 'Save'}</span>
+          </button>
+        </div>
+
+        <div id="cwrap-${p.id}" class="mt-3 hidden">${renderCommentsBlock(p)}</div>
+      `;
+      const menuBtn = wrap.querySelector('button[aria-label="post menu"]');
+      const menu = menuBtn.nextElementSibling;
+      menuBtn.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('hidden'); });
+      document.addEventListener('click', e => { if(!menu.contains(e.target) && !menuBtn.contains(e.target)) menu.classList.add('hidden'); });
+      wireReactions(wrap,p);
+      return wrap;
+    }
+
+    function render(){ feedEl.innerHTML=''; state.posts.forEach(p=>feedEl.appendChild(renderPost(p))); }
+
+    // Build feed (from your snippet, plus supports content box & composer posts)
+    const FEED_SIZE=24;
+    const state={posts:[]};
+    function buildPosts(){
+      let id=1, posts=[]; const avatar='https://i.pravatar.cc/40?img=5';
+      const add=p=>{p.id='p'+(id++);p.author='Sakshi';p.avatar=avatar;p.saved=false;p.reaction=null;p.comments=[];posts.push(p)};
+
+      const singles=[
+        'https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1554774853-b415df9eeb92?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1520975922203-b4a49b37e471?auto=format&fit=crop&w=1600&q=80'
+      ];
+      const g2 = [
+        ['https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1520975922203-b4a49b37e471?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80']
+      ];
+      const g3 = [
+        ['https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1543269864-76bc3997d9ea?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80']
+      ];
+      const g4 = [
+        ['https://images.unsplash.com/photo-1502720705749-3cfa7b0c8f47?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1518085250887-2f903c200fee?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1518085250887-2f903c200fee?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80']
+      ];
+      const g5 = [
+        ['https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1543269864-76bc3997d9ea?auto=format&fit=crop&w=1200&q=80'],
+        ['https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1554774853-b415df9eeb92?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80']
+      ];
+
+      const V = {
+        s5:  'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+        s10: 'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
+        s15: 'https://samplelib.com/lib/preview/mp4/sample-15s.mp4',
+        s20: 'https://samplelib.com/lib/preview/mp4/sample-20s.mp4',
+        s30: 'https://samplelib.com/lib/preview/mp4/sample-30s.mp4',
+        bunny: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        ele:   'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'
+      };
+
+      const vEdu4 = [
+        {type:'video',src:V.s5,  poster:'https://images.unsplash.com/photo-1558021212-51b6ecfa0db9?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s10, poster:'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s15, poster:'https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s20, poster:'https://images.unsplash.com/photo-1584697964403-2d3b3f5e94d1?auto=format&fit=crop&w=1200&q=80'}
+      ];
+      const vBiz4 = [
+        {type:'video',src:V.s30, poster:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s20, poster:'https://images.unsplash.com/photo-1529336953121-adf3d2e8082b?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s15, poster:'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s10, poster:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'}
+      ];
+      const vStocks6 = [
+        {type:'video',src:V.bunny, poster:'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.ele,   poster:'https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s30,   poster:'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s20,   poster:'https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s15,   poster:'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80'},
+        {type:'video',src:V.s10,   poster:'https://images.unsplash.com/photo-1559526324-4b87b5f74c61?auto=format&fit=crop&w=1200&q=80'}
+      ];
+
+      // Text + polls
+      add({type:'text', time:'1h', caption:'Cleared the Agile PM certification today 🎓', text:'Exam tips: timebox every section; flag and move; return for the last 10 minutes.', likes:18});
+      add({type:'text', time:'3h', caption:'Offer update', text:'Got a call for the SDE-1 role—system design round next week!', likes:25});
+      add({type:'poll',time:'5h',likes:7,poll:{question:'WHYYY???...........',voted:null,options:[{id:'A',label:'Why not.',votes:0},{id:'B',label:'yes.',votes:0}]}} );
+      add({type:'poll',time:'6h',likes:3,poll:{question:'Choose your track',voted:null,options:[{id:'A',label:'Education',votes:0},{id:'B',label:'Business',votes:0},{id:'C',label:'Stocks',votes:0}]}} );
+      add({type:'poll',time:'7h',likes:4,poll:{question:'Best posting time?',voted:null,options:[{id:'A',label:'Morning',votes:0},{id:'B',label:'Afternoon',votes:0},{id:'C',label:'Evening',votes:0},{id:'D',label:'Late night',votes:0}]}} );
+
+      // Requested video posts
+      add({type:'vgallery', time:'10h', caption:'Single education video', videos:[vEdu4[0]], likes:12});
+      add({type:'vgallery', time:'11h', caption:'Two business clips',   videos:[vBiz4[0], vBiz4[1]], likes:13});
+      add({type:'vgallery', time:'12h', caption:'Education clips', videos:vEdu4, likes:19});
+      add({type:'vgallery', time:'1d',  caption:'Business clips',  videos:vBiz4, likes:16});
+      add({type:'vgallery', time:'2d',  caption:'Stock market explainers (+ more)', videos:vStocks6, likes:22});
+
+      // Image feed
+      for(let i=0;i<FEED_SIZE;i++){
+        const t = i % 5;
+        if(t===0){ add({type:'image', time:`${(i%10)+2}h`, caption:'Mock interview—DSA round today.', src: singles[i % singles.length], likes:10+(i%30)}); }
+        else if(t===1){ add({type:'gallery', time:`${(i%10)+3}h`, caption:'Leetcode grind + whiteboard review.', images: g2[i % g2.length], likes:15+(i%30)}); }
+        else if(t===2){ add({type:'gallery', time:`${(i%10)+4}h`, caption:'Team sprint review snapshots.', images: g3[i % g3.length], likes:12+(i%30)}); }
+        else if(t===3){ add({type:'gallery', time:`${(i%10)+6}h`, caption:'Campus fest + project demo.', images: g4[i % g4.length], likes:14+(i%30)}); }
+        else{ add({type:'gallery', time:`${(i%10)+8}h`, caption:'Hackathon day in pictures.', images: g5[i % g5.length], likes:18+(i%30)}); }
+      }
+
+      add({type:'image', time:'2d', caption:'Daily notes from system design.', src:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80', likes:31});
+      add({type:'gallery', time:'3d', caption:'Placement drive highlights.', images:[
+        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80'
+      ], likes:28});
+
+      return posts;
+    }
+
+    function init(){ state.posts = buildPosts(); render(); }
+    init();
+
+    // Expose for inline handlers
+    window.openViewer=openViewer; window.toggleSave=toggleSave; window.toggleComments=toggleComments;
+    window.addComment=addComment; window.addReply=addReply; window.likeComment=likeComment; window.likeReply=likeReply;
+    window.startEditComment=startEditComment; window.saveEditComment=saveEditComment; window.deleteComment=deleteComment;
+    window.startEditReply=startEditReply; window.saveEditReply=saveEditReply; window.deleteReply=deleteReply; window.cancelEdit=cancelEdit;
+    window.deletePost=deletePost; window.expandReplies=expandReplies; window.toggleReplyComposer=toggleReplyComposer;
+  </script>
+</body>
+</html>

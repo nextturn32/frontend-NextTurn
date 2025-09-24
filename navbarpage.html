@@ -1,0 +1,373 @@
+
+<!doctype html>  
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NxtTurn • Premium Navbar (single row, tighter)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Font Awesome v6 (used for Explore + profile) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          brand:{50:'#eef5ff',200:'#cfe0ff',400:'#7fb0ff',500:'#4f91ff',600:'#2f78f0',700:'#1d5fde'},
+          ink:{900:'#0f172a',700:'#1e293b',500:'#334155'}
+        },
+        boxShadow:{soft:'0 6px 20px rgba(2,6,23,.08)'}
+      }
+    }
+  }
+</script>
+<style>
+  .nt-glass{background:rgba(255,255,255,.88);backdrop-filter:blur(8px)}
+  .nav-btn .underline{opacity:0;transition:opacity .15s ease,transform .18s ease}
+  .nav-btn.active .underline{opacity:1;transform:translateX(-50%) scaleX(1)}
+  .nav-btn .icon{transition:color .18s ease, stroke .18s ease}
+  .nav-btn:hover .icon{color:#2f78f0}
+  .nav-btn.active .icon{color:#2f78f0}
+  .nav-label{font-size:11px;line-height:1rem;color:#64748b;white-space:nowrap;transition:.18s ease}
+  .nav-btn:hover .nav-label{color:#0f172a}
+  .nav-btn.active .nav-label{color:#2f78f0}
+
+  :root { --icon-sm: 20px; --icon-lg: 24px; }
+  .nav-btn{ padding:.25rem }
+  .nav-btn .icon{ width:var(--icon-sm); height:var(--icon-sm); font-size:var(--icon-sm); display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; }
+  @media (min-width:640px){ .nav-btn .icon{ width:var(--icon-lg); height:var(--icon-lg); font-size:var(--icon-lg);} }
+
+  .nt-scroll::-webkit-scrollbar{width:8px;height:8px}
+  .nt-scroll::-webkit-scrollbar-thumb{background:#e6eaf1;border-radius:999px}
+  .nt-scroll:hover::-webkit-scrollbar-thumb{background:#cfd6e1}
+  .no-scrollbar::-webkit-scrollbar{display:none}
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+
+  .toggle { width:36px;height:20px;border-radius:9999px;background:#cbd5e1;position:relative;transition:background .2s ease }
+  .toggle::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:9999px;background:#fff;transition:transform .2s ease;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+  input[type="checkbox"].toggle-input:checked + .toggle{background:#2f78f0}
+  input[type="checkbox"].toggle-input:checked + .toggle::after{transform:translateX(16px)}
+
+  .dark body{background:linear-gradient(to bottom,#0b1220,#0b1220);color:#e2e8f0}
+  .dark .nt-glass{background:rgba(15,23,42,.82)}
+  .dark #profileMenu, .dark .menu-panel{background:#0f172a;border-color:#1f2937}
+  .dark .nav-btn .icon{color:#94a3b8}
+  .dark .nav-btn:hover .icon, .dark .nav-btn.active .icon{color:#93c5fd}
+  .dark .nav-label{color:#94a3b8}
+  .dark .nav-btn:hover .nav-label{color:#e5e7eb}
+  .dark input[type="search"]{background:rgba(2,6,23,.4)!important;color:#cbd5e1!important;border-color:#1f2937!important}
+
+  .nav-btn .underline, .nav-btn:hover .underline, .nav-btn.active .underline{display:none!important}
+
+  .profile-ico{font-size:18px;color:#475569;transition:color .18s ease,transform .18s ease}
+  #profileMenu a:hover .profile-ico, #profileMenu button:hover .profile-ico{color:#2f78f0;transform:translateY(-1px)}
+  .dark .profile-ico{color:#94a3b8}
+  .dark #profileMenu a:hover .profile-ico, .dark #profileMenu button:hover .profile-ico{color:#93c5fd}
+
+  /* ===== fixed navbar + no horizontal icon scroll ===== */
+  :root{ --nav-h: 64px; }
+  html, body { max-width:100%; overflow-x:hidden; }
+  body{ padding-top: var(--nav-h); }
+
+  .nav-scroller{ overflow-x: visible !important; }
+  .nav-scroller > ul{
+    width:100% !important;
+    max-width:100% !important;
+    flex-wrap:wrap !important;
+  }
+
+  /* ===== CRITICAL: allow dropdowns to overflow the bar ===== */
+  header, header.nt-glass, header nav { overflow: visible !important; }
+</style>
+</head>
+<body class="bg-gradient-to-b from-slate-50 to-slate-100 text-ink-900">
+
+<!-- fixed (not sticky) -->
+<header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+  <nav class="mx-auto w-full max-w-full px-2 sm:px-4">
+    <div class="flex items-center gap-3 py-2.5">
+      <!-- BRAND -->
+      <a class="select-none inline-flex items-center" href="index.html">
+        <img src="assets/logo.jpg" alt="NxtTurn" class="h-4 sm:h-4 w-auto object-contain" />
+      </a>
+
+      <!-- Search -->
+      <div class="relative ml-3 hidden md:block">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </span>
+        <input class="w-[340px] rounded-full border border-slate-200 bg-white/70 px-9 py-2 text-sm text-ink-500 shadow-soft outline-none transition focus:border-brand-300 focus:bg-white focus:ring-4 focus:ring-brand-500/10" placeholder="Search..." type="search"/>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <!-- ICON STRIP -->
+      <div class="nav-scroller w-full md:w-auto overflow-x-auto md:overflow-visible no-scrollbar">
+        <ul class="flex flex-nowrap items-end gap-0.5 sm:gap-1 md:gap-2 w-max pr-1">
+          <!-- EXPLORE -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="explore">
+            <a href="explore.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Explore" aria-haspopup="true" aria-expanded="false">
+              <i class="icon fa-brands fa-wpexplorer text-slate-500"></i>
+              <span class="nav-label">Explore</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-60 -translate-x-1/2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl opacity-0 invisible translate-y-1 will-change-transform transition duration-150 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="schools.html">Schools</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="institutes.html">Institutes</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="enterprises.html">Enterprises</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="government-enterprises.html">Government Enterprises</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- SEEKERS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="seekers">
+            <a href="seekers.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Seekers" aria-haspopup="true" aria-expanded="false">
+              <svg class="icon text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/><path d="M5.5 21a6.5 6.5 0 0113 0"/>
+              </svg>
+              <span class="nav-label">Seekers</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl opacity-0 invisible translate-y-1 will-change-transform transition duration-150 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="internship.html">Internship</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="apprenticeship.html">Apprenticeship</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="jobs.html">Job</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="government-openings.html">Government Openings</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="international-government-openings.html">International Government Openings</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="freelances.html">Freelances</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- EXAMS -->
+          <li class="relative group before:content-[''] before:absolute before:left-0 before:right-0 before:top-full before:h-3" data-menu="exams">
+            <a href="exams.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Exams" aria-haspopup="true" aria-expanded="false">
+              <svg class="icon text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/>
+              </svg>
+              <span class="nav-label">Exams</span>
+            </a>
+            <div class="menu-panel nt-scroll absolute left-1/2 z-40 mt-3 w-72 -translate-x-1/2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl opacity-0 invisible translate-y-1 will-change-transform transition duration-150 md:group-hover:opacity-100 md:group-hover:visible md:group-hover:translate-y-0">
+              <ul class="divide-y divide-slate-100 text-sm">
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="mock-tests.html">Mock Test</a></li>
+                <li><a class="block px-3 py-2.5 hover:bg-brand-50/70" href="exam-calendar.html">Exam Calendar</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- MY NETWORK -->
+          <li>
+            <a href="network.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="My Network">
+              <svg class="icon text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="8" r="3"/><circle cx="18" cy="8" r="3"/><circle cx="12" cy="17" r="3"/>
+                <path d="M8.8 10.2 10 12m5.2-1.8L14 12M9 15l-2.5 2M15 15l2.5 2"/>
+              </svg>
+              <span class="nav-label">My Network</span>
+            </a>
+          </li>
+
+          <!-- RESEARCH -->
+          <li>
+            <a href="research.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Research">
+              <svg class="icon text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19.5 5.5v13m-13 0v-13m4 10h5m-5-6h5m-9 0h.01M6.5 9.5h.01M6.5 15.5h.01M12 5.5h.01M12 9.5h.01M12 15.5h.01M12 19.5h.01"/>
+                <rect x="3.5" y="3.5" width="17" height="17" rx="2" stroke-width="1.9"/>
+              </svg>
+              <span class="nav-label">Research</span>
+            </a>
+          </li>
+
+          <!-- MESSAGING -->
+          <li>
+            <a href="messages.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Messaging">
+              <svg class="icon text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15a4 4 0 0 1-4 4H8l-4 3V7a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4v8z"/>
+              </svg>
+              <span class="nav-label">Messaging</span>
+            </a>
+          </li>
+
+          <!-- NOTIFICATIONS -->
+          <li>
+            <a href="notifications.html" class="nav-btn min-w-[56px] sm:min-w-[64px] md:min-w-[76px] group relative flex flex-col items-center justify-center gap-0 focus:outline-none" aria-label="Notifications">
+              <svg class="icon text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 16V11a6 6 0 10-12 0v5l-2 2h16l-2-2z"/>
+                <path d="M10 19a2 2 0 0 0 4 0"/>
+              </svg>
+              <span class="nav-label">Notifications</span>
+            </a>
+          </li>
+
+          <li class="mx-1 hidden h-6 w-px bg-slate-200 md:block"></li>
+
+          <!-- PROFILE -->
+          <li class="relative">
+            <button id="profileBtn" class="flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-[12px] font-medium text-ink-700 hover:bg-white hover:shadow-soft hover:ring-1 hover:ring-slate-200 focus:outline-none" aria-haspopup="true" aria-expanded="false">
+              <img src="https://i.pravatar.cc/40?img=5" class="h-7 w-7 rounded-full object-cover" alt="Profile"/>
+              <span class="hidden sm:inline">Profile</span>
+              <svg id="profileChevron" class="h-4 w-4 text-slate-600 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+
+            <div id="profileMenu" class="invisible absolute right-0 mt-2 w-72 origin-top-right rounded-xl border border-slate-200 bg-white shadow-xl opacity-0 transition duration-150">
+              <ul class="py-1 text-sm" role="menu" aria-label="Profile menu">
+                <li>
+                  <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" href="settings.html">
+                    <i class="profile-ico fa-solid fa-user-gear"></i>
+                    <span>Settings &amp; Privacy</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" href="help.html">
+                    <i class="profile-ico fa-solid fa-circle-question"></i>
+                    <span>Help &amp; Support</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" href="display.html">
+                    <i class="profile-ico fa-solid fa-display"></i>
+                    <span>Display &amp; Accessibility</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" href="feedback.html">
+                    <i class="profile-ico fa-solid fa-comment-dots"></i>
+                    <span>Give Feedback</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" href="games.html">
+                    <i class="profile-ico fa-solid fa-gamepad"></i>
+                    <span>Games</span>
+                  </a>
+                </li>
+
+                <li>
+                  <button id="themeRow" type="button" class="w-full flex items-center justify-between px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" aria-pressed="false">
+                    <span class="flex items-center gap-3">
+                      <i class="profile-ico fa-solid fa-moon"></i>
+                      <span>Dark Mode</span>
+                    </span>
+                    <span class="flex items-center gap-2">
+                      <input id="themeToggle" class="toggle-input sr-only" type="checkbox" aria-label="Toggle dark mode"/>
+                      <span class="toggle" aria-hidden="true"></span>
+                    </span>
+                  </button>
+                </li>
+
+                <li>
+                  <a class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50/70" role="menuitem" href="login.html">
+                    <i class="profile-ico fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+<script>
+  /* Mobile: tap top-level items to open/close their dropdown instead of navigating.
+     Desktop: normal anchor navigation (no JS needed). */
+  function showPanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.remove('invisible','opacity-0','translate-y-1');
+    p.classList.add('visible','opacity-100','translate-y-0');
+    li.classList.add('open');
+    const btn = li.querySelector('.nav-btn'); btn?.setAttribute('aria-expanded','true');
+  }
+  function hidePanel(li){
+    const p=li.querySelector('.menu-panel'); if(!p) return;
+    p.classList.add('invisible','opacity-0','translate-y-1');
+    p.classList.remove('visible','opacity-100','translate-y-0');
+    li.classList.remove('open');
+    const btn = li.querySelector('.nav-btn'); btn?.setAttribute('aria-expanded','false');
+  }
+  document.querySelectorAll('li[data-menu]').forEach(li=>{
+    const btn=li.querySelector('.nav-btn'); // now an <a href="...">
+    btn?.addEventListener('click',e=>{
+      if(window.matchMedia('(max-width:1024px)').matches){
+        // On mobile/tablet, toggle dropdown instead of following link
+        if(li.querySelector('.menu-panel')){
+          e.preventDefault();
+          li.classList.contains('open')?hidePanel(li):showPanel(li);
+        }
+      }
+      // On desktop, do nothing: default anchor navigation happens.
+    });
+  });
+
+  // Profile dropdown
+  const profileBtn = document.getElementById('profileBtn');
+  const profileMenu = document.getElementById('profileMenu');
+  const profileChevron = document.getElementById('profileChevron');
+
+  function openProfile(){
+    profileMenu.classList.remove('invisible','opacity-0');
+    profileBtn.setAttribute('aria-expanded','true');
+    profileChevron.classList.add('rotate-180');
+  }
+  function closeProfile(){
+    profileMenu.classList.add('invisible','opacity-0');
+    profileBtn.setAttribute('aria-expanded','false');
+    profileChevron.classList.remove('rotate-180');
+  }
+  function toggleProfile(){
+    const open = profileBtn.getAttribute('aria-expanded')==='true';
+    open ? closeProfile() : openProfile();
+  }
+  profileBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleProfile(); });
+
+  document.addEventListener('click', (e)=>{
+    const open = profileBtn.getAttribute('aria-expanded')==='true';
+    if(open){
+      const within = profileMenu.contains(e.target) || profileBtn.contains(e.target);
+      if(!within) closeProfile();
+    }
+  });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeProfile(); });
+
+  // Dark / Light mode toggle (persists)
+  const themeToggle = document.getElementById('themeToggle');
+  const themeRow = document.getElementById('themeRow');
+
+  function applyTheme(on){
+    document.documentElement.classList.toggle('dark', on);
+    if(themeToggle){ themeToggle.checked = on; }
+    if(themeRow){ themeRow.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    localStorage.setItem('theme', on ? 'dark' : 'light');
+  }
+
+  (function initTheme(){
+    const saved = localStorage.getItem('theme');
+    const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const useDark = saved ? (saved === 'dark') : prefers;
+    applyTheme(useDark);
+  })();
+
+  if(themeRow){
+    themeRow.addEventListener('click', (e)=>{
+      if(e.target instanceof HTMLInputElement) return;
+      applyTheme(!document.documentElement.classList.contains('dark'));
+    });
+  }
+  if(themeToggle){
+    themeToggle.addEventListener('change', (e)=> applyTheme(e.target.checked));
+  }
+</script>
+</body>
+</html>
