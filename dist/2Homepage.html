@@ -50,7 +50,7 @@
 </script>
 
   <style>
-
+    
 
 :root { --nav-gap: 16px; } /* adjust as you like */
 
@@ -223,40 +223,6 @@ body{
     }
     .left-nav .nav-link.active .nav-ico{color:#2563eb}
 
-
-    /* LEFT: side menu card + items (matches screenshot) */
-.side-card{
-  background:#fff; border:1px solid #e5e7eb; border-radius: .75rem;
-  box-shadow:0 1px 2px rgba(16,24,40,.04);
-}
-.side-list{ padding:.75rem; }
-
-.side-item{
-  display:flex; align-items:center; gap:.65rem;
-  border:1px solid transparent; border-radius:.5rem;
-  padding:.55rem .6rem;
-  font-weight:600; font-size:14.5px;
-  color:#0f172a; text-decoration:none;
-  transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
-}
-.side-item .si{ font-size:18px; line-height:1; color:inherit; }
-
-.side-item:hover{ background:#f8fafc; }
-
-.side-item.active{
-  background:#eef5ff;               /* light blue fill */
-  border-color:#cfe0ff;              /* soft blue border */
-  color:#2f78f0;                     /* blue text/icon */
-  box-shadow:0 0 0 3px rgba(47,120,240,.10) inset;
-}
-
-/* focus ring (keyboard) */
-.side-item:focus-visible{
-  outline: none;
-  box-shadow:0 0 0 3px rgba(47,120,240,.18);
-}
-
-
     /* Middle+Right wrapper */
     #centerWrap{
       position: relative;
@@ -402,12 +368,35 @@ body{
     }
     .tool-btn:hover{ background:#f8fafc; box-shadow:0 2px 10px rgba(2,6,23,.06) }
     .tool-btn:active{ transform: translateY(1px) }
+
+
+
+    
+  /* LEFT selectable items */
+  .side-item{
+    display:flex; align-items:center; gap:.75rem;
+    border:1px solid transparent;
+    border-radius:.5rem;
+    padding:.625rem .75rem;
+    font-weight:600;
+    color:#1f2937;
+    transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .side-item .si{ color:#1f2937; transition: color .18s ease; }
+  .side-item:hover{ background:#f8fafc; }
+  .side-item.active{
+    background:var(--side-active-bg);
+    border-color:var(--side-active-border);
+    color:var(--side-active-text);
+    box-shadow:0 0 0 3px rgba(47,120,240,.09) inset;
+  }
+  .side-item.active .si{ color:var(--side-active-text); }
   </style>
 </head>
 <body>
 
 
- <header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
+<header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
   <!-- container pushed in -->
   <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
 
@@ -465,7 +454,7 @@ body{
                   </a>
                 </li>
                 <li>
-                  <a class="menu-item hover:bg-brand-50/70" href="#">
+                  <a class="menu-item hover:bg-brand-50/70" href="">
                     <i class="menu-ico fa-solid fa-pen-to-square"></i>
                     <span>Exams</span>
                   </a>
@@ -580,9 +569,10 @@ body{
                 <p class="text-xs text-slate-500">Premium Member</p>
               </div>
               </div>
-                </a>
+                </a>      
               </div>
-              
+
+
               <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
                 <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
                 <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
@@ -599,6 +589,7 @@ body{
                       <span class="toggle" aria-hidden="true"></span>
                     </span>
                   </button>
+                  
                 </li>
                 <li class="border-t border-slate-100 mt-2">
                   <a class="menu-item text-rose-600 hover:bg-rose-50/70" role="menuitem" href="login.html">
@@ -613,6 +604,8 @@ body{
     </div>
   </nav>
 </header>
+
+
 
 
   <main class="max-w-7xl mx-auto px-3 sm:px-6 py-3 grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -636,7 +629,7 @@ body{
       </div>
 
       <div class="text-center">
-        <h1 class="text-xl font-bold">Alexa Morgan</h1>
+        <h1 class="text-xl font-bold">Dr Alexa Morgan</h1>
         <p class="text-blue-100 text-sm">Neurologist</p>
         <p class="text-blue-100 mt-1 text-xs">
           <i class="fas fa-map-marker-alt mr-1"></i> San Francisco, CA
@@ -654,32 +647,30 @@ body{
 </section>
 
 
-      
-        <nav class="side-card mt-4">
-  <ul class="side-list" id="sideMenu">
-    <li>
-      <a class="side-item active" href="Homepage.html" data-key="home">
-        <i class="si fa-solid fa-house" aria-hidden="true"></i>
-        Home Feed
-      </a>
-    </li>
-    <li>
-      <!-- default selected like the image -->
-      <a class="side-item " href="group.html" data-key="groups">
-        <i class="si fa-solid fa-people-group" aria-hidden="true"></i>
-        Groups
-      </a>
-    </li>
-    <li>
-      <a class="side-item" href="savedposts.html" data-key="saved">
-        <i class="si fa-solid fa-bookmark" aria-hidden="true"></i>
-        Saved Posts
-      </a>
-    </li>
-  </ul>
-</nav>
-
-      
+      <!-- <section class="nt-card p-2"> -->
+         <nav class="card rounded-xl mt-4">
+          <ul class="p-3" id="sideMenu">
+            <li>
+              <a class="side-item" href="#" data-key="home">
+                <i class="si fa-solid fa-house text-[18px] leading-none shrink-0" aria-hidden="true"></i>
+                Home Feed
+              </a>
+            </li>
+            <li>
+              <a class="mt-1 side-item" href="group.html" data-key="groups">
+                <i class="si fa-solid fa-people-group text-[18px] leading-none shrink-0" aria-hidden="true"></i>
+                My Groups
+              </a>
+            </li>
+            <li>
+              <a class="mt-1 side-item" href="#" data-key="saved">
+                <i class="si fa-solid fa-bookmark text-[18px] leading-none shrink-0" aria-hidden="true"></i>
+                Saved Posts
+              </a>
+            </li>
+          </ul>
+        </nav>
+      <!-- </section> -->
     </aside>
 
     <!-- CENTER WRAP -->
@@ -942,8 +933,6 @@ body{
   </div>
 
   <script>
-
-    
     // navigation menu panel functions
 
       function showPanel(li){
@@ -1022,7 +1011,8 @@ body{
       if (window.innerWidth < 768) togglePanel(li);
     });
   });
-}
+} 
+
   function setupKeyboardNav(){
     // open with Enter/Space, close with Escape
     document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{
@@ -1049,20 +1039,6 @@ body{
     setupKeyboardNav();
     document.getElementById('profileBtn').addEventListener('click',function(e){ e.stopPropagation(); toggleProfileMenu() });
     document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
-  });
-
-
-  //side menu
-  const sideMenuEl = document.getElementById('sideMenu');
-  sideMenuEl?.addEventListener('click', (e) => {
-    const link = e.target.closest('a.side-item');
-    if (!link) return;
-
-    e.preventDefault(); // cancel default
-    sideMenuEl.querySelectorAll('a.side-item')
-      .forEach(a => a.classList.remove('active'));
-    link.classList.add('active');
-    window.location.assign(link.href); // navigate explicitly
   });
 
 
@@ -1731,6 +1707,7 @@ body{
     function init(){ state.posts = buildPosts(); render(); }
     init();
 
+    
     // Expose for inline handlers
     window.openViewer=openViewer; window.toggleSave=toggleSave; window.toggleComments=toggleComments;
     window.addComment=addComment; window.addReply=addReply; window.likeComment=likeComment; window.likeReply=likeReply;

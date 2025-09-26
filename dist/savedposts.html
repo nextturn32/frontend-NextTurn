@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NxtTurn • Profile + Posts + Right Rail</title>
+
+  <!-- Tailwind (CDN for quick standalone preview) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            secondary: '#4f46e5',
+            dark: '#1e293b',
+            light: '#f8fafc'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Optional compiled CSS -->
+  <link href="dist/output.css" rel="stylesheet">
+
+  <style>
+    
+    /* LEFT: side menu card + items (matches screenshot) */
+.side-card{
+  background:#fff; border:1px solid #e5e7eb; border-radius: .75rem;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.side-list{ padding:.75rem; }
+
+.side-item{
+  display:flex; align-items:center; gap:.65rem;
+  border:1px solid transparent; border-radius:.5rem;
+  padding:.55rem .6rem;
+  font-weight:600; font-size:14.5px;
+  color:#0f172a; text-decoration:none;
+  transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.side-item .si{ font-size:18px; line-height:1; color:inherit; }
+
+.side-item:hover{ background:#f8fafc; }
+
+.side-item.active{
+  background:#eef5ff;               /* light blue fill */
+  border-color:#cfe0ff;              /* soft blue border */
+  color:#2f78f0;                     /* blue text/icon */
+  box-shadow:0 0 0 3px rgba(47,120,240,.10) inset;
+}
+
+/* focus ring (keyboard) */
+.side-item:focus-visible{
+  outline: none;
+  box-shadow:0 0 0 3px rgba(47,120,240,.18);
+}
+
+
+
+
+
+
+
+    /* ===== base + scrolling layout ===== */
+    html, body { height: 100%; }
+    body{ font-family:'Inter',sans-serif; height: 100dvh; overflow: hidden; background:#f8fafc; color:#0f172a; }
+    .gridwrap{ height: calc(100dvh - 32px); } /* py-4 = 32px */
+    .col-scroll{ height: 100%; overflow-y: auto; overscroll-behavior: contain; }
+
+    /* Left sidebar profile card visuals */
+    .gradient-bg{ background:linear-gradient(120deg,#2563eb,#4f46e5); }
+    .card-shadow{ box-shadow:0 4px 6px rgba(0,0,0,.05); }
+
+    /* Nice scrollbars for center feed only */
+    .nt-scroll::-webkit-scrollbar{width:10px;height:10px}
+    .nt-scroll::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:999px}
+    .nt-scroll:hover::-webkit-scrollbar-thumb{background:#cbd5e1}
+
+    /* Hide scrollbar visuals on the side columns */
+    aside.col-scroll, .lcol.col-scroll{ scrollbar-width: none; -ms-overflow-style: none; }
+    aside.col-scroll::-webkit-scrollbar, .lcol.col-scroll::-webkit-scrollbar{ width:0; height:0; }
+
+    /* ===== media, viewer, polls, reactions, etc. ===== */
+    .mosaicWrap{background:#fff;border-radius:.5rem;overflow:hidden;margin-top:.75rem}
+    .mosaic{display:grid;gap:1px}
+    .mosaic.two{grid-template-columns:1fr 1fr;height:320px}
+    .mosaic.three{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:420px}
+    .mosaic.four{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:420px}
+    .mosaic-tile{position:relative;overflow:hidden;background:#000}
+    .mosaic-tile>img,.mosaic-tile>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .play-badge{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:1}
+    .play-badge span{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:rgba(0,0,0,.5)}
+    .play-badge svg{width:24px;height:24px;color:#fff;transform:translateX(1px)}
+    .more-badge{position:absolute;top:8px;right:8px;z-index:3;pointer-events:none}
+    .more-pill{padding:.25rem .6rem;font-size:14px;font-weight:700;color:#fff;border-radius:999px;
+      background:rgba(15,23,42,.72);border:1px solid rgba(255,255,255,.28);box-shadow:0 6px 14px rgba(15,23,42,.35)}
+    .mosaic-tile.has-more:hover .more-pill{transform:scale(1.04)}
+    .more-peek{position:absolute;right:8px;bottom:8px;z-index:3;display:none;grid-template-columns:repeat(3,28px);gap:4px;padding:6px;border-radius:.75rem;background:rgba(15,23,42,.82);border:1px solid rgba(255,255,255,.18);box-shadow:0 12px 28px rgba(15,23,42,.45);backdrop-filter:saturate(160%) blur(8px)}
+    .mosaic-tile.has-more:hover .more-peek{display:grid}
+    .more-peek img,.more-peek video,.more-peek .vthumb{width:28px;height:28px;object-fit:cover;border-radius:6px;display:block}
+    .vthumb{background:#0b1220;display:grid;place-items:center;font-size:12px;color:#93c5fd}
+    .rx-holder{position:relative;display:inline-block;vertical-align:middle;}
+    .btn-like{white-space:nowrap;position:relative;top:1px;}
+    .rx-tray{position:absolute; bottom:calc(100% + 8px); left:0; z-index:30; display:flex; gap:.35rem; padding:.35rem .45rem; border-radius:999px; background:rgba(255,255,255,.75); border:1px solid rgba(148,163,184,.35); box-shadow:0 14px 36px rgba(15,23,42,.20); backdrop-filter:saturate(160%) blur(10px); transform-origin:bottom left; opacity:0; transform:translateY(6px) scale(.96); pointer-events:none; transition:opacity .16s ease, transform .16s ease;}
+    .rx-tray.hidden{display:none !important}
+    .rx-tray.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .rx-emoji{position:relative;width:42px;height:42px;border-radius:999px;display:grid;place-items:center;font-size:20px;line-height:1;background:linear-gradient(#ffffff,#f8fafc); border:1px solid rgba(148,163,184,.35); box-shadow:0 2px 6px rgba(15,23,42,.08); transform:translateY(0) scale(1); transition:transform .12s ease, box-shadow .12s ease; cursor:pointer; user-select:none;}
+    .rx-emoji:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 10px 20px rgba(15,23,42,.12)}
+    .rx-emoji:active{transform:scale(.95)}
+    .rx-emoji[aria-selected="true"]{box-shadow:0 0 0 2px #3b82f6 inset, 0 6px 18px rgba(59,130,246,.22); background:linear-gradient(#eaf2ff,#ffffff);}
+    .rx-emoji::after{content:attr(data-label); position:absolute;bottom:-26px;left:50%;transform:translateX(-50%) translateY(6px); font-size:11px;background:#0f172a;color:#fff;padding:2px 6px;border-radius:999px; opacity:0;pointer-events:none;white-space:nowrap; transition:opacity .12s ease, transform .12s ease;}
+    .rx-emoji:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+    .poll{margin-top:.75rem}
+    .poll-opt{display:flex;align-items:center;gap:.5rem;border:1px solid #e5e7eb;border-radius:.9rem;padding:.625rem .75rem;cursor:pointer;background:#fff;position:relative;overflow:hidden}
+    .poll-opt:hover{background:#f8fafc}
+    .poll-fill{position:absolute;inset:0 auto 0 0;height:100%;background:rgba(59,130,246,.18);width:0;pointer-events:none}
+    .poll-chip{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:999px;background:#e2e8f0;font-weight:600;color:#334155}
+    .poll-right{margin-left:auto;display:flex;align-items:center;gap:.5rem}
+    .poll-check{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#2563eb}
+    .poll-check svg{width:14px;height:14px;color:#fff}
+    #viewer{backdrop-filter:saturate(120%) blur(2px)}
+    .viewer-grid{display:grid;grid-template-columns:1fr; height:100%; width:100%}
+    @media (min-width: 900px){ .viewer-grid{grid-template-columns:minmax(0,1fr) 420px} }
+    .viewer-left{position:relative;display:flex;align-items:center;justify-content:center;background:#000}
+    .viewer-media{max-height:82vh;max-width:92vw}
+    @media (min-width:900px){ .viewer-media{max-height:90vh;max-width:calc(100vw - 460px)} }
+    .viewer-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:34px;color:#ffffffcc}
+    .viewer-nav:hover{color:#fff}
+    .viewer-close{position:absolute;top:14px;right:14px;font-size:28px;color:#fff}
+    .viewer-panel{background:#fff;display:flex;flex-direction:column;min-height:0}
+    .viewer-panel .scroll{overflow:auto}
+
+    /* ===== right-rail bits ===== */
+    :root{ --nt-shadow: 0 0 12px rgba(2,6,23,.08); --text:#0f172a; --muted:#64748b; --border:#e5e7eb; }
+    .nt-shadow{ box-shadow: var(--nt-shadow) !important; }
+    .nt-border{ border:1px solid rgba(226,232,240,.9) }
+    .card{background:#fff;border:1px solid var(--border)}
+    .link{color:#2563eb;font-weight:600}
+    aside.col-scroll a.link{background:#2563eb;color:#fff !important;border:1px solid #1d4ed8;padding:6px 12px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;}
+    aside.col-scroll a.link:hover{ background:#1d4ed8; }
+    aside.col-scroll a.link:active{ background:#1e40af; }
+    .subtle{color:#64748b}
+    .side-title{font-size:16px;line-height:1.02;font-weight:700;color:#0f172a}
+    .right-name{font-size:14px;font-weight:600}
+    .right-role{font-size:12px}
+    .nav-arrow{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9999px;border:1.5px solid (var(--border));background:#fff;color:inherit;font-weight:800;line-height:1;user-select:none;transition:background .15s ease, box-shadow .15s ease, transform .05s ease;}
+    .nav-arrow:hover{ background:#f8fafc; box-shadow:0 0 0 4px rgba(2,6,23,.06) }
+    .nav-arrow:active{ transform:translateY(1px) }
+  </style>
+</head>
+<body class="text-slate-800">
+  <!-- Layout: left (profile) + middle (feed) + right (rail) -->
+  <div
+  class="gridwrap mx-auto max-w-[1440px] px-3 sm:px-6 py-4 grid grid-cols-1
+         lg:[grid-template-columns:260px_minmax(0,1.2fr)_260px]
+         xl:[grid-template-columns:280px_minmax(0,1.35fr)_280px]
+         2xl:[grid-template-columns:300px_minmax(0,1.5fr)_300px] gap-6">
+
+
+    <!-- LEFT: Profile + Side Menu -->
+    <aside class="lcol col-scroll">
+      <div class="gradient-bg rounded-2xl p-6 text-white relative overflow-hidden w-full card-shadow">
+        <div class="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white opacity-10"></div>
+        <div class="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-white opacity-10"></div>
+
+        <div class="flex flex-col items-center relative z-10">
+          <div class="relative mb-4">
+            <img
+              class="h-24 w-24 rounded-full border-2 border-white shadow-lg object-cover"
+              src="https://i.pravatar.cc/40?img=5" 
+              alt="Profile"
+            />
+            <span class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></span>
+          </div>
+
+          <div class="text-center">
+            <h1 class="text-xl font-bold">Alexa Morgan</h1>
+            <p class="text-blue-100 text-sm">Neurologist</p>
+            <p class="text-blue-100 mt-1 text-xs">
+              <i class="fas fa-map-marker-alt mr-1"></i> San Francisco, CA
+            </p>
+          </div>
+
+          <div class="flex space-x-2 mt-4">
+            <button id="shareProfileBtn"
+                    class="bg-white text-primary px-4 py-2 rounded-lg font-semibold flex items-center shadow-md hover:shadow-lg transition-shadow text-sm">
+              <i class="fas fa-share-alt mr-2"></i> Share
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side menu that matches screenshot -->
+      <nav class="side-card mt-4">
+  <ul class="side-list" id="sideMenu">
+    <li>
+      <a class="side-item" href="Homepage.html" data-key="home">
+        <i class="si fa-solid fa-house" aria-hidden="true"></i>
+        Home Feed
+      </a>
+    </li>
+    <li>
+      <!-- default selected like the image -->
+      <a class="side-item " href="group.html" data-key="groups">
+        <i class="si fa-solid fa-people-group" aria-hidden="true"></i>
+        My Groups
+      </a>
+    </li>
+    <li>
+      <a class="side-item active" href="savedposts.html" data-key="saved">
+        <i class="si fa-solid fa-bookmark" aria-hidden="true"></i>
+        Saved Posts
+      </a>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+
+    <!-- CENTER: Feed -->
+    <main class="col-scroll nt-scroll min-w-0">
+      <div class="flex items-center justify-between mb-3">
+        <h1 class="text-xl font-semibold">Saved Posts</h1>
+      </div>
+      <div id="feed" class="space-y-4 pb-24"></div>
+    </main>
+
+    <!-- RIGHT: Rail -->
+    <aside class="col-scroll space-y-4 py-1">
+      <main class="mx-auto max-w-sm px-0 py-0">
+        <div class="space-y-4">
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h2 class="side-title mb-3">People You May Know</h2>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <ul id="pymkList" class="space-y-4">
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya Sharma">
+                  <div><div class="right-name">Priya Sharma</div><div class="right-role subtle">Software Engineer</div></div>
+                </div><a href="#" class="link text-[14px]">Connect</a>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rohan Verma">
+                  <div><div class="right-name">Rohan Verma</div><div class="right-role subtle">Data Scientist</div></div>
+                </div><a href="#" class="link text-[14px]">Connect</a>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img class="h-10 w-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Anjali Mehta">
+                  <div><div class="right-name">Anjali Mehta</div><div class="right-role subtle">UX Designer</div></div>
+                </div><a href="#" class="link text-[14px]">Connect</a>
+              </li>
+            </ul>
+            <div class="mt-3">
+              <button id="viewMorePYMK" class="rounded-full px-3 py-1.5 text-[13px] font-semibold bg-slate-100 hover:bg-slate-200 border border-slate-200">View More</button>
+            </div>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-[18px] font-semibold">Sponsored</h3>
+              <div class="flex items-center gap-2">
+                <span class="text-[13px] subtle select-none">Ad</span>
+                <div class="flex items-center">
+                  <button id="sPrev" class="nav-arrow" aria-label="Previous ad" title="Previous">&lt;</button>
+                  <button id="sNext" class="nav-arrow ml-1" aria-label="Next ad" title="Next">&gt;</button>
+                </div>
+              </div>
+            </div>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <div id="sCard">
+              <img id="sImg" class="w-full h-44 object-cover rounded-xl" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" alt="Sponsored">
+              <a id="sTitle" href="#" target="_blank" rel="noopener" class="block mt-3 text-[18px] font-semibold leading-tight hover:underline">Master the Vue 3 Composition API</a>
+              <p id="sDesc" class="text-[14px] text-slate-600 leading-6">The ultimate course for building scalable and maintainable Vue applications. Enroll now!</p>
+            </div>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h3 class="side-title mb-2">Featured Institutes</h3>
+            <div class="h-px bg-slate-200 mb-2"></div>
+            <ul class="divide-y divide-slate-100">
+              <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IITB</span><span class="font-semibold text-[14px]">IIT Bombay</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+              <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">IIMA</span><span class="font-semibold text-[14px]">IIM Ahmedabad</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+              <li class="py-3 flex items-center justify-between"><div class="flex items-center gap-3"><span class="px-3 py-2 rounded-lg font-semibold text-[13px] bg-slate-100 border border-slate-200">NITT</span><span class="font-semibold text-[14px]">NIT Trichy</span></div><a class="link text-[14px]" href="#">Follow</a></li>
+            </ul>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="overflow-hidden rounded-xl border border-slate-200">
+              <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=800&auto=format&fit=crop" alt="Full-Stack Web Development Poster">
+              <div class="p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-[15px] font-semibold leading-tight">Full-Stack Web Dev (React + Node)</div>
+                  <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                </div>
+                <div class="text-[12px] subtle mt-0.5">ByteCraft Labs</div>
+                <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h3 class="text-[18px] font-semibold mb-2">Job Openings</h3>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Backend Engineer</div><div class="text-[12px] subtle -mt-0.5">Flipkart • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">iOS Developer</div><div class="text-[12px] subtle -mt-0.5">Swiggy • Remote</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Data Analyst</div><div class="text-[12px] subtle -mt-0.5">Razorpay • Bengaluru</div></div><a class="link text-[14px]" href="#">Apply</a></li>
+            </ul>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="overflow-hidden rounded-xl border border-slate-200">
+              <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" alt="Python for Data Science Poster">
+              <div class="p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-[15px] font-semibold leading-tight">Python for Data Science</div>
+                  <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                </div>
+                <div class="text-[12px] subtle mt-0.5">PyMasters Academy</div>
+                <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <h3 class="text-[18px] font-semibold mb-2">IT Internships</h3>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">SDE Intern</div><div class="text-[12px] subtle -mt-0.5">Google • Hyderabad</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">ML Intern</div><div class="text-[12px] subtle -mt-0.5">NVIDIA • Pune</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+              <li class="flex items-center justify-between"><div><div class="text-[15px] font-medium">Frontend Intern</div><div class="text-[12px] subtle -mt-0.5">Zoho • Chennai</div></div><a href="#" class="link text-[14px]">Apply</a></li>
+            </ul>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="overflow-hidden rounded-xl border border-slate-200">
+              <img class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" alt="AI & ML Foundations Poster">
+              <div class="p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-[15px] font-semibold leading-tight">AI & ML Foundations</div>
+                  <span class="px-2 py-0.5 text-[11px] rounded-full bg-slate-100 border border-slate-200">Sponsored</span>
+                </div>
+                <div class="text-[12px] subtle mt-0.5">DeepLearn Hub</div>
+                <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="card rounded-xl p-4 nt-shadow">
+            <div class="flex items-center justify-between mb-1"><h3 class="text-[16px] font-semibold">Sponsored</h3><span class="text-[12px] subtle">Ad</span></div>
+            <div class="h-px bg-slate-200 mb-3"></div>
+            <div class="text-[15px] font-medium leading-snug">Build a career in Cloud with IBM SkillsBuild.</div>
+            <p class="text-[13px] text-slate-600 mt-1">Free labs and badges. Start today.</p>
+          </section>
+        </div>
+      </main>
+    </aside>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="viewer" class="hidden fixed inset-0 z-50 bg-black/90">
+    <div class="viewer-grid">
+      <div class="viewer-left">
+        <button id="viewerPrev" class="viewer-nav left-3 md:left-5">‹</button>
+        <button id="viewerNext" class="viewer-nav right-3 md:right-5">›</button>
+        <button id="viewerClose" class="viewer-close">✕</button>
+        <img id="viewerImg" class="viewer-media rounded-lg shadow-2xl select-none" draggable="false" style="display:none"/>
+        <video id="viewerVid" class="viewer-media rounded-lg shadow-2xl" controls playsinline style="display:none"></video>
+        <div id="zoomControls" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomOut">-</button>
+          <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomReset">100%</button>
+          <button class="px-3 py-1.5 rounded bg-white/10 text-white hover:bg-white/20" id="zoomIn">+</button>
+        </div>
+      </div>
+      <aside class="viewer-panel">
+        <div id="viewerPanel" class="scroll p-4"></div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    
+    // Share button
+    document.getElementById('shareProfileBtn')?.addEventListener('click', () => {
+      alert('Share profile clicked!');
+    });
+
+    
+
+  
+  const sideMenuEl = document.getElementById('sideMenu');
+  sideMenuEl?.addEventListener('click', (e) => {
+    const link = e.target.closest('a.side-item');
+    if (!link) return;
+
+    e.preventDefault(); // cancel default
+    sideMenuEl.querySelectorAll('a.side-item')
+      .forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+    window.location.assign(link.href); // navigate explicitly
+  });
+
+
+
+
+
+    const feedEl=document.getElementById('feed');
+    const escapeHTML=s=>(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))
+    const countComments=p=>{let n=0;(p.comments||[]).forEach(c=>{n++;if(c.replies)n+=c.replies.length});return n}
+
+    /* Random authors */
+    const NAME_POOL = ['Aarav Patel','Isha Sharma','Kabir Mehta','Riya Verma','Vivaan Singh','Anaya Gupta','Arjun Nair','Myra Khan','Ishaan Desai','Sara Iqbal','Atharv Kulkarni','Aanya Reddy','Reyansh Roy','Diya Choudhury','Advik Bansal','Kiara Menon','Hrithik Ghosh','Tara Bajaj','Neel Joshi','Saanvi Mishra','Aadi Kapoor','Zara Fernandes','Yuvraj Malik','Mira Dutta','Kian Sethi','Nisha Bose','Raghav Chauhan','Pia Anand','Dev Malhotra','Aisha Qureshi','Veer Saxena','Inaaya Pillai','Ritvik Arora','Mahika Shetty','Arnav Sinha','Meher Sandhu','Nivaan Jindal','Aarohi Khatri','Vihaan Bhatt','Sneha Purohit'];
+    function avatarFor(name){const n=name.split('').reduce((s,c)=>s+c.charCodeAt(0),0);const id=(n%70)+1;return `https://i.pravatar.cc/40?img=${id}`;}
+    function getAuthor(){const name=NAME_POOL[Math.floor(Math.random()*NAME_POOL.length)];return {name,avatar:avatarFor(name)};}
+
+    /* Viewer */
+    const viewer=document.getElementById('viewer');
+    const viewerImg=document.getElementById('viewerImg');
+    const viewerVid=document.getElementById('viewerVid');
+    const viewerPrev=document.getElementById('viewerPrev');
+    const viewerNext=document.getElementById('viewerNext');
+    const viewerClose=document.getElementById('viewerClose');
+    const zoomIn=document.getElementById('zoomIn');
+    const zoomOut=document.getElementById('zoomOut');
+    const zoomReset=document.getElementById('zoomReset');
+    const zoomControls=document.getElementById('zoomControls');
+    const viewerPanel=document.getElementById('viewerPanel');
+    let viewerMedia=[], viewerIndex=0, zoom=1, viewerPid=null;
+    const isVideo = it => (typeof it==='object' && it?.type==='video');
+
+    function setViewer(item){
+      viewerImg.style.display='none'; viewerVid.style.display='none';
+      zoomControls.style.display='none'; zoom=1; viewerImg.style.transform='scale(1)';
+      if(isVideo(item)){ viewerVid.src=item.src; viewerVid.currentTime=0; viewerVid.style.display='block'; }
+      else { const src=typeof item==='string'?item:(item?.src||''); viewerImg.src=src; viewerImg.style.display='block'; zoomControls.style.display='flex'; }
+    }
+    function fillViewerPanel(pid){
+      const p = state.posts.find(x=>x.id===pid);
+      viewerPanel.innerHTML='';
+      if(!p) return;
+      const cmCount = countComments(p);
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
+        <div class="flex items-start gap-3">
+          <img src="${p.avatar}" class="h-10 w-10 rounded-full" alt="">
+          <div class="flex-1">
+            <div class="font-semibold">${p.author}</div>
+            <div class="text-xs text-slate-500">about ${p.time} ago</div>
+          </div>
+        </div>
+        ${p.caption?`<div class="mt-3 text-[15px] text-slate-800 whitespace-pre-wrap">${escapeHTML(p.caption)}</div>`:''}
+        <div class="mt-3 h-px bg-slate-200 w-full"></div>
+        <div class="pt-3 grid grid-cols-5 items-center text-center">
+          <div class="flex justify-center">${reactionButtonHTML(p)}</div>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toast('Open comments below')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 4C6.8 4 3 7.7 3 11.8c0 2.5 1.3 4.7 3.3 6.3-.1.8-.5 1.9-1.4 2.9-.25.28-.1.72.27.74 1.63.1 3.24-.37 4.37-.97a11.5 11.5 0 002.46.28c5.2 0 9-3.7 9-7.8C21 7.7 17.2 4 12 4z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Comment</span><span class="ml-1 text-slate-500">${cmCount}</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toast('Sent')">
+            <svg class="w-5 h-5 -rotate-45" viewBox="0 0 24 24" fill="none"><path d="M3.5 4.5l17 7-17 7 4.2-7L3.5 4.5zM7.7 11.5h12.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Send</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="repost('${p.id}')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11a7 7 0 0111-5l1 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4v4h-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 13a7 7 0 01-11 5l-1-1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Repost</span>${typeof p.reposts==='number'?`<span class="ml-1 text-slate-500">${p.reposts}</span>`:''}
+          </button>
+          <!-- Lightbox Save: label fixed + active style respected -->
+          <button class="inline-flex w-full justify-center items-center gap-1 ${p.saved?'text-amber-600':'text-slate-600 hover:text-slate-800'}" onclick="toggleSave('${p.id}')">
+            ${p.saved?`<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.32 2.577A1.875 1.875 0 018.003 1.5h7.994c1.035 0 1.875.84 1.875 1.875v17.154a.75.75 0 01-1.2.6L12 16.5l-4.672 4.629a.75.75 0 01-1.2-.6V2.577z"/></svg>`:`<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M8 2.5h8c1.1 0 2 .9 2 2v15.7c0 .6-.7 1-1.2 .6L12 16.5l-4.8 4.3c-.5 .4-1.2 0-1.2-.6V4.5c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`}
+            <span class="font-medium">Saved</span>
+          </button>
+        </div>
+        <div class="mt-3">${renderCommentsBlock(p)}</div>`;
+      viewerPanel.appendChild(wrap);
+      wireReactions(wrap, p);
+    }
+    function openViewer(media,index=0,pid=null){viewerMedia=media||[];viewerIndex=Math.max(0,Math.min(index,viewerMedia.length-1));viewerPid=pid;setViewer(viewerMedia[viewerIndex]);fillViewerPanel(viewerPid);viewer.classList.remove('hidden');document.body.classList.add('overflow-hidden');}
+    function closeViewer(){ viewer.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); viewerVid.pause(); }
+    function navViewer(d){ if(viewerMedia.length<2) return; viewerIndex=(viewerIndex+d+viewerMedia.length)%viewerMedia.length; setViewer(viewerMedia[viewerIndex]); }
+    viewerPrev.onclick=()=>navViewer(-1); viewerNext.onclick=()=>navViewer(1); viewerClose.onclick=closeViewer;
+    zoomIn.onclick=()=>{ zoom=Math.min(zoom+0.2,3); viewerImg.style.transform=`scale(${zoom})`; };
+    zoomOut.onclick=()=>{ zoom=Math.max(zoom-0.2,0.5); viewerImg.style.transform=`scale(${zoom})`; };
+    zoomReset.onclick=()=>{ zoom=1; viewerImg.style.transform='scale(1)'; };
+    window.addEventListener('keydown',e=>{ if(viewer.classList.contains('hidden')) return; if(e.key==='Escape') closeViewer(); if(e.key==='ArrowRight') navViewer(1); if(e.key==='ArrowLeft') navViewer(-1); });
+
+    /* Galleries */
+    function galleryHTML(imgs, pid){
+      const n = imgs.length;
+      const escList = JSON.stringify(imgs);
+      const dataAttr = `data-images='${escList}' data-pid='${pid}'`;
+      if(n <= 1){
+        const src = imgs[0];
+        return `<img loading="lazy" src="${src}" class="mt-3 rounded-lg w-full object-cover max-h-96 cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"/>`;
+      }
+      if(n === 2){
+        return `<div class="mosaicWrap"><div class="mosaic two">${imgs.map((src,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)"><img loading="lazy" src="${src}"/></div>`).join('')}</div></div>`;
+      }
+      if(n === 3){
+        return `<div class="mosaicWrap"><div class="mosaic three"><div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"><img loading="lazy" src="${imgs[0]}"/></div><div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)"><img loading="lazy" src="${imgs[1]}"/></div><div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)"><img loading="lazy" src="${imgs[2]}"/></div></div></div>`;
+      }
+      if(n === 4){
+        return `<div class="mosaicWrap"><div class="mosaic four">${imgs.slice(0,4).map((src,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)"><img loading="lazy" src="${src}"/></div>`).join('')}</div></div>`;
+      }
+      const remain = n - 3;
+      const peek = imgs.slice(3, 9).map(s=>`<img src="${s}" alt=""/>`).join('');
+      return `<div class="mosaicWrap"><div class="mosaic three"><div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"><img loading="lazy" src="${imgs[0]}"/></div><div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)"><img loading="lazy" src="${imgs[1]}"/></div><div class="mosaic-tile cursor-pointer has-more" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)"><img loading="lazy" src="${imgs[2]}"/><div class="more-badge"><span class="more-pill">+${remain}</span></div><div class="more-peek">${peek}</div></div></div></div>`;
+    }
+    function galleryVideoHTML(videos, pid){
+      const escList = JSON.stringify(videos), dataAttr = `data-images='${escList}' data-pid='${pid}'`, n = videos.length;
+      if(n <= 1){
+        const v = videos[0];
+        return `<div class="relative mt-3 rounded-lg overflow-hidden cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images),0,this.dataset.pid)"><video preload="metadata" ${v.poster?`poster="${v.poster}"`:''} src="${v.src}" class="w-full max-h-96 object-cover" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div>`;
+      }
+      if(n === 2){
+        return `<div class="mosaicWrap"><div class="mosaic two">${videos.map((m,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)"><video preload="metadata" ${m.poster?`poster="${m.poster}"`:''} src="${m.src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div>`).join('')}</div></div>`;
+      }
+      if(n === 3){
+        return `<div class="mosaicWrap"><div class="mosaic three"><div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"><video preload="metadata" ${videos[0].poster?`poster="${videos[0].poster}"`:''} src="${videos[0].src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div><div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)"><video preload="metadata" ${videos[1].poster?`poster="${videos[1].poster}"`:''} src="${videos[1].src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div><div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)"><video preload="metadata" ${videos[2].poster?`poster="${videos[2].poster}"`:''} src="${videos[2].src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div></div></div>`;
+      }
+      if(n === 4){
+        return `<div class="mosaicWrap"><div class="mosaic four">${videos.slice(0,4).map((m,i)=>`<div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), ${i}, this.dataset.pid)"><video preload="metadata" ${m.poster?`poster="${m.poster}"`:''} src="${m.src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div>`).join('')}</div></div>`;
+      }
+      const remain = n - 3;
+      const peek = videos.slice(3,9).map(v=> v.poster? `<img src="${v.poster}" alt=""/>` : `<div class="vthumb">▶</div>`).join('');
+      return `<div class="mosaicWrap"><div class="mosaic three"><div class="mosaic-tile cursor-pointer" style="grid-row:1 / span 2" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 0, this.dataset.pid)"><video preload="metadata" ${videos[0].poster?`poster="${videos[0].poster}"`:''} src="${videos[0].src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div><div class="mosaic-tile cursor-pointer" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 1, this.dataset.pid)"><video preload="metadata" ${videos[1].poster?`poster="${videos[1].poster}"`:''} src="${videos[1].src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div><div class="mosaic-tile cursor-pointer has-more" ${dataAttr} onclick="openViewer(JSON.parse(this.dataset.images), 2, this.dataset.pid)"><video preload="metadata" ${videos[2].poster?`poster="${videos[2].poster}"`:''} src="${videos[2].src}" playsinline></video><div class="more-badge"><span class="more-pill">+${remain}</span></div><div class="more-peek">${peek}</div><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div></div></div>`;
+    }
+
+    /* Reactions & comments */
+    function reactionButtonHTML(p){
+      const REACTIONS={like:{label:'Like',icon:'👍'},love:{label:'Love',icon:'❤️'},celebrate:{label:'Celebrate',icon:'🎉'},insightful:{label:'Insightful',icon:'💡'},support:{label:'Support',icon:'👏'}};
+      const heartOutlineSVG=`<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M21 10.5c0 2.6-1.69 4.86-3.99 7A25.3 25.3 0 0112 20.5a25.3 25.3 0 01-5.01-3c-2.3-2.14-3.99-4.4-3.99-7A4.5 4.5 0 017.5 6c1.53 0 2.87.72 3.75 1.84A4.66 4.66 0 0115.5 6 4.5 4.5 0 0121 10.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      const rx=p.reaction; const icon=rx?`<span class="text-lg leading-none">${REACTIONS[rx].icon}</span>`:heartOutlineSVG; const label=rx?REACTIONS[rx].label:'Like';
+      return `<div class="rx-holder"><button class="btn-like inline-flex items-center gap-1 text-slate-600 hover:text-slate-800" data-id="${p.id}">${icon}<span class="font-medium">${label}</span><span class="ml-1 text-slate-500">${p.likes||0}</span></button><div class="rx-tray hidden">${Object.entries(REACTIONS).map(([k,v])=>`<button class="rx-emoji" data-rx="${k}" data-label="${v.label}" aria-selected="${p.reaction===k}">${v.icon}</button>`).join('')}</div></div>`;
+    }
+    function closeAllTrays(){document.querySelectorAll('.rx-tray').forEach(t=>{t.classList.remove('show');t.classList.add('hidden')})}
+    if(!window.__rxScrollBound){window.addEventListener('scroll',closeAllTrays,true);window.__rxScrollBound=true}
+    function wireReactions(wrap,p){
+      const holder=wrap.querySelector('.rx-holder'), tray=holder.querySelector('.rx-tray'), likeBtn=holder.querySelector('.btn-like'); let hideTimer=null;
+      function openTray(){closeAllTrays();tray.classList.remove('hidden');requestAnimationFrame(()=>tray.classList.add('show'))}
+      function closeTrayNow(){tray.classList.remove('show');setTimeout(()=>tray.classList.add('hidden'),160)}
+      function scheduleHide(){clearTimeout(hideTimer);hideTimer=setTimeout(closeTrayNow,220)}
+      likeBtn.addEventListener('mouseenter',openTray); tray.addEventListener('mouseenter',()=>clearTimeout(hideTimer)); holder.addEventListener('mouseleave',scheduleHide);
+      holder.addEventListener('click',e=>e.stopPropagation()); document.addEventListener('click',closeAllTrays);
+      likeBtn.addEventListener('click',e=>{e.stopPropagation(); if(p.reaction==='like'){p.reaction=null;p.likes=Math.max(0,(p.likes||0)-1)} else {if(!p.reaction)p.likes=(p.likes||0)+1;p.reaction='like'} render(); fillViewerPanel(p.id);});
+      tray.querySelectorAll('[data-rx]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const rx=b.dataset.rx; if(p.reaction===rx){p.reaction=null;p.likes=Math.max(0,(p.likes||0)-1)}else{if(!p.reaction)p.likes=(p.likes||0)+1;p.reaction=rx} closeTrayNow();render();fillViewerPanel(p.id);} ))
+    }
+
+    const expandedReplies=new Set(); const openReplyFor=new Set(); let editing={type:null,pid:null,cid:null,rid:null};
+    function renderCommentsBlock(p){const list=(p.comments||[]).map(c=>{const shown=Math.min(1,c.replies?.length||0); const isOpen=expandedReplies.has(c.id); const hiddenCount=Math.max(0,(c.replies?.length||0)-shown); const repliesToShow=isOpen?(c.replies||[]):(c.replies||[]).slice(0,shown); const composer=openReplyFor.has(c.id)?`<div class="mt-2 ml-10 flex items-center gap-2"><img src="https://i.pravatar.cc/32?img=5" class="h-8 w-8 rounded-full" alt=""><div class="flex-1 relative"><input id="reply-${p.id}-${c.id}" class="w-full rounded-full border border-slate-300 pl-4 pr-24 py-2 bg-white focus:outline-none focus:border-blue-400" placeholder="Write a reply..."><button class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-blue-600 text-white text-sm" onclick="addReply('${p.id}','${c.id}')">Send</button></div></div>`:''; return `<div class="space-y-2" id="clist-${p.id}-${c.id}">${renderOneComment(p.id,c)}${composer}${repliesToShow.map(r=>renderOneReply(p.id,c.id,r)).join('')}${(hiddenCount>0 && !isOpen)?`<button class="text-xs text-slate-600 hover:underline ml-10" onclick="expandReplies('${c.id}')">View ${hiddenCount} more repl${hiddenCount>1?'ies':'y'}</button>`:''}</div>`;}).join(''); return `<div class="rounded-2xl border bg-white p-3"><div class="mb-3 flex items-center gap-2"><img src="https://i.pravatar.cc/32?img=5" class="h-8 w-8 rounded-full" alt=""><div class="flex-1 relative"><input id="cinput-${p.id}" class="w-full rounded-full border border-slate-300 pl-4 pr-24 py-2 bg-slate-50 focus:outline-none focus:border-blue-400" placeholder="Add a comment..."><button class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-blue-600 text-white text-sm" onclick="addComment('${p.id}')">Send</button></div></div><div class="mb-2 text-sm text-slate-600">Most relevant</div><div class="space-y-4">${list || '<div class="text-slate-500 text-sm">No comments yet.</div>'}</div></div>`;}
+    function renderOneComment(pid,c){const isEditing=editing.type==='comment'&&editing.pid===pid&&editing.cid===c.id;if(isEditing){return `<div class="flex gap-2"><img src="https://i.pravatar.cc/32?img=12" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${c.author}</span><span class="text-slate-500 text-xs">· 1h</span></div><div class="rounded-2xl bg-white border p-2 mt-1"><textarea id="editc-${pid}-${c.id}" rows="2" class="w-full rounded border px-2 py-1">${escapeHTML(c.text)}</textarea><div class="mt-1 flex gap-2 justify-end text-xs"><button class="px-2 py-1 rounded border" onclick="cancelEdit()">Cancel</button><button class="px-2 py-1 rounded bg-blue-600 text-white" onclick="saveEditComment('${pid}','${c.id}')">Save</button></div></div></div></div>`;} return `<div class="flex gap-2"><img src="https://i.pravatar.cc/32?img=12" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${c.author}</span><span class="text-slate-500 text-xs">· 1h</span></div><div class="inline-block max-w-[90%] rounded-2xl bg-slate-50 border px-3 py-2 mt-1"><div class="text-sm">${escapeHTML(c.text)}</div></div><div class="mt-1 flex items-center gap-4 text-xs text-slate-600"><button class="hover:underline" onclick="likeComment('${pid}','${c.id}')">Like${c.likes?` · ${c.likes}`:''}</button><button class="hover:underline" onclick="toggleReplyComposer('${pid}','${c.id}')">${openReplyFor.has(c.id)?'Cancel':'Reply'}</button><button class="hover:underline" onclick="startEditComment('${pid}','${c.id}')">Edit</button><button class="hover:underline text-red-600" onclick="deleteComment('${pid}','${c.id}')">Delete</button></div></div></div>`;}
+    function renderOneReply(pid,cid,r){const isEditing=editing.type==='reply'&&editing.pid===pid&&editing.cid===cid&&editing.rid===r.id;if(isEditing){return `<div class="flex gap-2 ml-10"><img src="https://i.pravatar.cc/32?img=15" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${r.author}</span><span class="text-slate-500 text-xs">· 30m</span></div><div class="rounded-2xl bg-white border p-2 mt-1"><textarea id="editr-${pid}-${cid}-${r.id}" rows="2" class="w-full rounded border px-2 py-1">${escapeHTML(r.text)}</textarea><div class="mt-1 flex gap-2 justify-end text-xs"><button class="px-2 py-1 rounded border" onclick="cancelEdit()">Cancel</button><button class="px-2 py-1 rounded bg-blue-600 text-white" onclick="saveEditReply('${pid}','${cid}','${r.id}')">Save</button></div></div></div></div>`;} return `<div class="flex gap-2 ml-10"><img src="https://i.pravatar.cc/32?img=15" class="h-8 w-8 rounded-full" alt=""><div class="flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-sm">${r.author}</span><span class="text-slate-500 text-xs">· 30m</span></div><div class="inline-block max-w-[90%] rounded-2xl bg-white border px-3 py-2 mt-1"><div class="text-sm">${escapeHTML(r.text)}</div></div><div class="mt-1 flex items-center gap-4 text-xs text-slate-600"><button class="hover:underline" onclick="likeReply('${pid}','${cid}','${r.id}')">Like${r.likes?` · ${r.likes}`:''}</button><button class="hover:underline" onclick="startEditReply('${pid}','${cid}','${r.id}')">Edit</button><button class="hover:underline text-red-600" onclick="deleteReply('${pid}','${cid}','${r.id}')">Delete</button></div></div></div>`;}
+    function toggleReplyComposer(pid,cid){if(openReplyFor.has(cid))openReplyFor.delete(cid);else openReplyFor.add(cid);render();document.getElementById(`reply-${pid}-${cid}`)?.focus()}
+    function expandReplies(cid){expandedReplies.add(cid);render()}
+    function toggleSave(id){const p=state.posts.find(x=>x.id===id);p.saved=!p.saved;render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(id); }
+    function toggleComments(id){document.getElementById('cwrap-'+id).classList.toggle('hidden')}
+    function addComment(id){const p=state.posts.find(x=>x.id===id);const inp=document.getElementById('cinput-'+id);const t=inp.value.trim();if(!t)return;p.comments=p.comments||[];p.comments.push({id:'c'+Date.now(),author:'You',text:t,likes:0,replies:[]});inp.value='';render();document.getElementById('cwrap-'+id).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(p.id);}
+    function addReply(pid,cid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const inp=document.getElementById(`reply-${pid}-${cid}`);const t=inp.value.trim();if(!t)return;(c.replies||(c.replies=[])).push({id:'r'+Date.now(),author:'You',text:t,likes:0});openReplyFor.delete(cid);inp.value='';expandedReplies.add(cid);render();document.getElementById('cwrap-'+pid).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function likeComment(pid,cid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);c.likes=(c.likes||0)+1;render();document.getElementById('cwrap-'+pid).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function likeReply(pid,cid,rid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const r=c.replies.find(x=>x.id===rid);r.likes=(r.likes||0)+1;render();document.getElementById('cwrap-'+pid).classList.remove('hidden'); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function startEditComment(pid,cid){editing={type:'comment',pid,cid,rid:null};render();document.getElementById(`editc-${pid}-${cid}`)?.focus()}
+    function saveEditComment(pid,cid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const v=document.getElementById(`editc-${pid}-${cid}`).value.trim();if(v)c.text=v;editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function deleteComment(pid,cid){const p=state.posts.find(x=>x.id===pid);p.comments=p.comments.filter(c=>c.id!==cid);openReplyFor.delete(cid);editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function startEditReply(pid,cid,rid){editing={type:'reply',pid,cid,rid};render();document.getElementById(`editr-${pid}-${cid}-${rid}`)?.focus()}
+    function saveEditReply(pid,cid,rid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);const r=c.replies.find(x=>x.id===rid);const v=document.getElementById(`editr-${pid}-${cid}-${rid}`).value.trim();if(v)r.text=v;editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function deleteReply(pid,cid,rid){const p=state.posts.find(x=>x.id===pid);const c=p.comments.find(x=>x.id===cid);c.replies=c.replies.filter(r=>r.id!==rid);editing={type:null};render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid);}
+    function cancelEdit(){editing={type:null};render()}
+    function deletePost(id){state.posts=state.posts.filter(x=>x.id!==id);render()}
+    function repost(id){const p=state.posts.find(x=>x.id===id);if(!p)return;p.reposts=(p.reposts||0)+1;toast('Reposted');render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(id); }
+
+    /* --- renderPost (core renderer) --- */
+    function renderPost(p){
+      const wrap=document.createElement('article');
+      wrap.className='bg-white rounded-xl shadow border border-slate-100 p-4';
+      let media='';
+      if(p.type==='text'){
+        media = `<div class="mt-3 whitespace-pre-wrap max-h-48 overflow-y-auto p-2 bg-slate-50 rounded-lg">${escapeHTML(p.text||'')}</div>`;
+      }else if(p.type==='image'){
+        media = `<img loading="lazy" src="${p.src}" class="mt-3 rounded-lg w-full object-cover max-h-96 cursor-pointer" onclick="openViewer(['${p.src}'],0,'${p.id}')">`;
+      }else if(p.type==='video'){
+        const payload = JSON.stringify([{type:'video',src:p.src,poster:p.poster}]);
+        media = `<div class="relative mt-3 rounded-lg overflow-hidden cursor-pointer" data-images='${payload}' data-pid='${p.id}' onclick="openViewer(JSON.parse(this.dataset.images),0,this.dataset.pid)"><video preload="metadata" ${p.poster?`poster="${p.poster}"`:''} class="w-full max-h-96 object-cover" src="${p.src}" playsinline></video><div class="play-badge"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></div></div>`;
+      }else if(p.type==='gallery'){
+        media = galleryHTML(p.images||[], p.id);
+      }else if(p.type==='vgallery'){
+        media = galleryVideoHTML(p.videos||[], p.id);
+      }else if(p.type==='poll'){
+        media = pollHTML(p);
+      }
+
+      const cmCount=countComments(p);
+      wrap.innerHTML=`
+        <div class="flex items-start gap-3">
+          <img src="${p.avatar}" class="h-9 w-9 rounded-full" alt="">
+          <div class="flex-1">
+            <div class="font-semibold">${p.author}</div>
+            <div class="text-xs text-slate-500">about ${p.time} ago</div>
+            ${p.caption?`<div class="mt-1 text-[15px] text-slate-800">${escapeHTML(p.caption)}</div>`:''}
+          </div>
+          <div class="relative z-30">
+            <button class="p-2 rounded-full hover:bg-slate-100" aria-label="post menu">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 13.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM12 20.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+            </button>
+            <div class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden z-40">
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50" onclick="alert('Edit caption is disabled on posts.html')">Edit caption</button>
+              <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50" onclick="deletePost('${p.id}')">Delete Post</button>
+            </div>
+          </div>
+        </div>
+        ${media}
+        <div class="mt-3 h-px bg-slate-200 w-full"></div>
+        <div class="pt-3 grid grid-cols-5 items-center text-center">
+          <div class="flex justify-center">${reactionButtonHTML(p)}</div>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toggleComments('${p.id}')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 4C6.8 4 3 7.7 3 11.8c0 2.5 1.3 4.7 3.3 6.3-.1.8-.5 1.9-1.4 2.9-.25.28-.1.72.27.74 1.63.1 3.24-.37 4.37-.97a11.5 11.5 0 002.46.28c5.2 0 9-3.7 9-7.8C21 7.7 17.2 4 12 4z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Comment</span><span class="ml-1 text-slate-500">${cmCount}</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="toast('Sent')">
+            <svg class="w-5 h-5 -rotate-45" viewBox="0 0 24 24" fill="none"><path d="M3.5 4.5l17 7-17 7 4.2-7L3.5 4.5zM7.7 11.5h12.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Send</span>
+          </button>
+          <button class="inline-flex w-full justify-center items-center gap-1 text-slate-600 hover:text-slate-800" onclick="repost('${p.id}')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11a7 7 0 0111-5l1 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 4v4h-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 13a7 7 0 01-11 5l-1-1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="font-medium">Repost</span>${typeof p.reposts==='number'?`<span class="ml-1 text-slate-500">${p.reposts}</span>`:''}
+          </button>
+          <!-- SAVE button: label fixed to "Saved"; active style when p.saved === true -->
+          <button class="inline-flex w-full justify-center items-center gap-1 ${p.saved?'text-amber-600':'text-slate-600 hover:text-slate-800'}" onclick="toggleSave('${p.id}')">
+            ${p.saved?`<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.32 2.577A1.875 1.875 0 018.003 1.5h7.994c1.035 0 1.875.84 1.875 1.875v17.154a.75.75 0 01-1.2.6L12 16.5l-4.672 4.629a.75.75 0 01-1.2-.6V2.577z"/></svg>`:`<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M8 2.5h8c1.1 0 2 .9 2 2v15.7c0 .6-.7 1-1.2 .6L12 16.5l-4.8 4.3c-.5 .4-1.2 0-1.2-.6V4.5c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`}
+            <span class="font-medium">Saved</span>
+          </button>
+        </div>
+        <div id="cwrap-${p.id}" class="mt-3 hidden">${renderCommentsBlock(p)}</div>
+      `;
+      const menuBtn = wrap.querySelector('button[aria-label="post menu"]');
+      const menu = menuBtn.nextElementSibling;
+      menuBtn.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('hidden'); });
+      document.addEventListener('click', e => { if(!menu.contains(e.target) && !menuBtn.contains(e.target)) menu.classList.add('hidden'); });
+      wireReactions(wrap,p);
+      return wrap;
+    }
+
+    /* Poll helpers */
+    function pollHTML(p){const pol=p.poll; const total=pol.options.reduce((s,o)=>s+o.votes,0); const voted=pol.voted; function row(o){const pct = total? Math.round((o.votes/total)*100):0; const chosen = voted===o.id; const fillW = voted? `style="width:${pct}%;"` : ''; const pctUI = voted? `<div class="text-sm text-slate-600">${pct}%</div>` : ''; const check = chosen? `<span class="poll-check"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>` : ''; return `<div class="poll-opt" ${voted?'':`onclick="votePoll('${p.id}','${o.id}')"`}><div class="poll-fill" ${fillW}></div><span class="poll-chip">${o.id}</span><span class="text-[15px]">${escapeHTML(o.label)}</span><div class="poll-right">${pctUI}${check}</div></div>`;} return `<div class="poll"><div class="font-semibold mb-2">${escapeHTML(pol.question)}</div><div class="space-y-2">${pol.options.map(row).join('')}</div><div class="mt-2 flex items-center justify-between"><div class="text-xs text-slate-500">${total} vote${total!==1?'s':''}</div>${voted ? `<button class="text-xs px-2.5 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50" onclick="unvotePoll('${p.id}')">Remove vote</button>` : ``}</div></div>`;}
+    function votePoll(pid,oid){const p=state.posts.find(x=>x.id===pid); if(!p?.poll||p.poll.voted) return; const opt=p.poll.options.find(o=>o.id===oid); if(opt){ opt.votes++; p.poll.voted=oid; render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid); }}
+    function unvotePoll(pid){const p=state.posts.find(x=>x.id===pid); if(!p?.poll || !p.poll.voted) return; const prevId = p.poll.voted; const opt = p.poll.options.find(o=>o.id===prevId); if(opt){ opt.votes = Math.max(0, (opt.votes||0) - 1); } p.poll.voted = null; render(); if(!viewer.classList.contains('hidden')) fillViewerPanel(pid); }
+    window.votePoll=votePoll; window.unvotePoll=unvotePoll;
+
+    /* Build feed */
+    const FEED_SIZE=24;
+    const state={posts:[]};
+    function buildPosts(){
+      let id=1, posts=[];
+      // default saved state TRUE so the Save button is active ("Saved")
+      const add=p=>{p.id='p'+(id++); const a=getAuthor(); p.author=a.name; p.avatar=a.avatar; p.saved=true; p.reaction=null; p.comments=[]; posts.push(p)};
+
+      const singles=[ 'https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1554774853-b415df9eeb92?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80','https://images.unsplash.com/photo-1520975922203-b4a49b37e471?auto=format&fit=crop&w=1600&q=80' ];
+      const g2 = [['https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1520975922203-b4a49b37e471?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80']];
+      const g3 = [['https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1543269864-76bc3997d9ea?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80']];
+      const g4 = [['https://images.unsplash.com/photo-1502720705749-3cfa7b0c8f47?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1518085250887-2f903c200fee?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1518085250887-2f903c200fee?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80']];
+      const g5 = [['https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1543269864-76bc3997d9ea?auto=format&fit=crop&w=1200&q=80'],['https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1523246206020-0826f8f1a7bf?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1554774853-b415df9eeb92?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80']];
+
+      const V={s5:'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',s10:'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',s15:'https://samplelib.com/lib/preview/mp4/sample-15s.mp4',s20:'https://samplelib.com/lib/preview/mp4/sample-20s.mp4',s30:'https://samplelib.com/lib/preview/mp4/sample-30s.mp4',bunny:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',ele:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'};
+
+      const vEdu4=[{type:'video',src:V.s5,poster:'https://images.unsplash.com/photo-1558021212-51b6ecfa0db9?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s10,poster:'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s15,poster:'https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s20,poster:'https://images.unsplash.com/photo-1584697964403-2d3b3f5e94d1?auto=format&fit=crop&w=1200&q=80'}];
+      const vBiz4=[{type:'video',src:V.s30,poster:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s20,poster:'https://images.unsplash.com/photo-1529336953121-adf3d2e8082b?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s15,poster:'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s10,poster:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'}];
+      const vStocks6=[{type:'video',src:V.bunny,poster:'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.ele,poster:'https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s30,poster:'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s20,poster:'https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s15,poster:'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80'},{type:'video',src:V.s10,poster:'https://images.unsplash.com/photo-1559526324-4b87b5f74c61?auto=format&fit=crop&w=1200&q=80'}];
+
+      add({type:'text', time:'1h', caption:'Cleared the Agile PM certification today 🎓', text:'Exam tips: timebox every section; flag and move; return for the last 10 minutes.', likes:18});
+      add({type:'text', time:'3h', caption:'Offer update', text:'Got a call for the SDE-1 role—system design round next week!', likes:25});
+      add({type:'poll',time:'5h',likes:7,poll:{question:'WHYYY???...........',voted:null,options:[{id:'A',label:'Why not.',votes:0},{id:'B',label:'yes.',votes:0}]}} );
+      add({type:'poll',time:'6h',likes:3,poll:{question:'Choose your track',voted:null,options:[{id:'A',label:'Education',votes:0},{id:'B',label:'Business',votes:0},{id:'C',label:'Stocks',votes:0}]}} );
+      add({type:'poll',time:'7h',likes:4,poll:{question:'Best posting time?',voted:null,options:[{id:'A',label:'Morning',votes:0},{id:'B',label:'Afternoon',votes:0},{id:'C',label:'Evening',votes:0},{id:'D',label:'Late night',votes:0}]}} );
+
+      add({type:'vgallery', time:'10h', caption:'Single education video', videos:[vEdu4[0]], likes:12});
+      add({type:'vgallery', time:'11h', caption:'Two business clips',   videos:[vBiz4[0], vBiz4[1]], likes:13});
+      add({type:'vgallery', time:'12h', caption:'Education clips', videos:vEdu4, likes:19});
+      add({type:'vgallery', time:'1d',  caption:'Business clips',  videos:vBiz4, likes:16});
+      add({type:'vgallery', time:'2d',  caption:'Stock market explainers (+ more)', videos:vStocks6, likes:22});
+
+      for(let i=0;i<FEED_SIZE;i++){
+        const t = i % 5;
+        if(t===0){ add({type:'image', time:`${(i%10)+2}h`, caption:'Mock interview—DSA round today.', src: singles[i % singles.length], likes:10+(i%30)}); }
+        else if(t===1){ add({type:'gallery', time:`${(i%10)+3}h`, caption:'Leetcode grind + whiteboard review.', images: g2[i % g2.length], likes:15+(i%30)}); }
+        else if(t===2){ add({type:'gallery', time:`${(i%10)+4}h`, caption:'Team sprint review snapshots.', images: g3[i % g3.length], likes:12+(i%30)}); }
+        else if(t===3){ add({type:'gallery', time:`${(i%10)+6}h`, caption:'Campus fest + project demo.', images: g4[i % g4.length], likes:14+(i%30)}); }
+        else{ add({type:'gallery', time:`${(i%10)+8}h`, caption:'Hackathon day in pictures.', images: g5[i % g5.length], likes:18+(i%30)}); }
+      }
+
+      add({type:'image', time:'2d', caption:'Daily notes from system design.', src:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80', likes:31});
+      add({type:'gallery', time:'3d', caption:'Placement drive highlights.', images:[
+        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1555529771-35a38fb89a54?auto=format&fit=crop&w=1200&q=80'
+      ], likes:28});
+
+      return posts;
+    }
+
+    function render(){ feedEl.innerHTML=''; state.posts.forEach(p=>feedEl.appendChild(renderPost(p))); }
+
+    function toast(msg){let el=document.getElementById('___toast'); if(!el){ el=document.createElement('div'); el.id='___toast'; document.body.appendChild(el); } el.className='fixed bottom-5 left-1/2 -translate-x-1/2 bg-black/80 text-white px-3 py-2 rounded-lg text-sm shadow'; el.textContent=msg; setTimeout(()=>{ el.remove(); },1200);}
+
+    function init(){ state.posts = buildPosts(); render(); }
+    init();
+
+    /* expose */
+    window.openViewer=openViewer; window.toggleSave=toggleSave; window.toggleComments=toggleComments;
+    window.addComment=addComment; window.addReply=addReply; window.likeComment=likeComment; window.likeReply=likeReply;
+    window.startEditComment=startEditComment; window.saveEditComment=saveEditComment; window.deleteComment=deleteComment;
+    window.startEditReply=startEditReply; window.saveEditReply=saveEditReply; window.deleteReply=deleteReply; window.cancelEdit=cancelEdit;
+    window.deletePost=deletePost; window.expandReplies=expandReplies; window.toggleReplyComposer=toggleReplyComposer;
+
+    /* Right-rail ads */
+    const viewMoreBtn = document.getElementById('viewMorePYMK'); if(viewMoreBtn){ viewMoreBtn.addEventListener('click', (e)=> e.preventDefault()); }
+    const sItems=[{img:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=800&auto=format&fit=crop',title:'Executive MBA (Online)',href:'#',desc:'Earn an accredited MBA while you work. Scholarships available—apply soon.'},{img:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop',title:'Start & Register Your Company',href:'#',desc:'Incorporation + GST + compliance toolkit. Launch your startup in 7 days.'},{img:'https://images.unsplash.com/photo-1535320404287-416e2c6d2b80?q=80&w=800&auto=format&fit=crop',title:'Stock Market Mastery',href:'#',desc:'Live trading classes, risk management, and options basics for beginners.'},{img:'https://images.unsplash.com/photo-1519494080410-f9aa76cb4283?q=80&w=800&auto=format&fit=crop',title:'Consult a Doctor Online',href:'#',desc:'24×7 telemedicine—connect with verified MDs in under 2 minutes.'},{img:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=800&auto=format&fit=crop',title:'IELTS / TOEFL Sprint',href:'#',desc:'Target Band 7+. Mock tests, feedback, and speaking rooms.'},{img:'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop',title:'Business Analytics: Excel → SQL',href:'#',desc:'Weekend cohort with case studies, dashboards, and job-ready projects.'},{img:'https://images.unsplash.com/photo-1523287562758-66c7fc58967e?q=80&w=800&auto=format&fit=crop',title:'Zero-Brokerage Demat Account',href:'#',desc:'Open in 10 minutes. Free ETF for first-time investors.'},{img:'https://images.unsplash.com/photo-1580281657527-47cf1e991dd0?q=80&w=800&auto=format&fit=crop',title:'Medical PG Prep (NEET-PG)',href:'#',desc:'Video lectures, Q-banks, and revision notes by top faculty.'}];
+    let sIdx=0; const sCard=document.getElementById('sCard'); const sImg=document.getElementById('sImg'); const sTitle=document.getElementById('sTitle'); const sDesc=document.getElementById('sDesc');
+    function renderSponsored(idx){const item=sItems[(idx+sItems.length)%sItems.length]; if(sCard) { sCard.style.opacity=0; setTimeout(()=>{ if(sImg) sImg.src=item.img; if(sTitle){ sTitle.textContent=item.title; sTitle.href=item.href||'#'; } if(sDesc) sDesc.textContent=item.desc; sCard.style.opacity=1; },180);}}
+    const ROTATE_MS=5000; let rotateTimer=null; function startAuto(){ stopAuto(); rotateTimer=setInterval(()=>{ sIdx=(sIdx+1)%sItems.length; renderSponsored(sIdx); }, ROTATE_MS);} function stopAuto(){ if(rotateTimer){ clearInterval(rotateTimer); rotateTimer=null; } } function resetAuto(){ startAuto(); }
+    document.getElementById('sPrev')?.addEventListener('click', ()=>{ sIdx=(sIdx-1+sItems.length)%sItems.length; renderSponsored(sIdx); resetAuto(); });
+    document.getElementById('sNext')?.addEventListener('click', ()=>{ sIdx=(sIdx+1)%sItems.length; renderSponsored(sIdx); resetAuto(); });
+    renderSponsored(sIdx); startAuto();
+  </script>
+</body>
+</html>
