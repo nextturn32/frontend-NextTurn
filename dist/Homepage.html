@@ -1038,9 +1038,9 @@ body{
         document.querySelectorAll('li[data-menu].open').forEach(li=> hidePanel(li));
         const pm=document.getElementById('profileMenu');
         if(pm.classList.contains('visible')) toggleProfileMenu();
-      }
+      } 
     });
-  }
+  } 
 
   document.addEventListener('DOMContentLoaded',function(){
     setupThemeToggle();
@@ -1051,6 +1051,7 @@ body{
     document.getElementById('profileChevron').classList.add('transition-transform','duration-200');
   });
 
+  
 
   //side menu
   const sideMenuEl = document.getElementById('sideMenu');
