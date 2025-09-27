@@ -268,6 +268,7 @@
 </head>
 <body class="bg-slate-50">
 
+ 
   <header class="fixed top-0 z-50 w-full nt-glass border-b border-slate-200/70">
   <!-- container pushed in -->
   <nav class="mx-auto w-full max-w-7xl px-6 lg:px-12">
@@ -326,7 +327,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="menu-item hover:bg-brand-50/70" href="">
+                  <a class="menu-item hover:bg-brand-50/70" href="#">
                     <i class="menu-ico fa-solid fa-pen-to-square"></i>
                     <span>Exams</span>
                   </a>
@@ -443,7 +444,7 @@
               </div>
                 </a>
               </div>
-
+              
               <ul class="py-2 text-sm" role="menu" aria-label="Profile menu">
                 <li><a class="menu-item" role="menuitem" href="settings.html"><i class="menu-ico fa-solid fa-user-gear"></i><span>Settings &amp; Privacy</span></a></li>
                 <li><a class="menu-item" role="menuitem" href="help.html"><i class="menu-ico fa-solid fa-circle-question"></i><span>Help &amp; Support</span></a></li>
@@ -475,6 +476,7 @@
   </nav>
 </header>
 
+
 <main class="mx-auto max-w-7xl px-3 sm:px-4 pt-6 pb-5">
   <div class="grid grid-cols-12 gap-4">
     <!-- LEFT -->
@@ -490,15 +492,15 @@
       <div class="relative mb-4">
         <img
           class="h-16 w-16 rounded-full border-2 border-white shadow-lg object-cover"
-          src="https://i.pravatar.cc/160?img=5"
+          src="https://randomuser.me/api/portraits/men/52.jpg"
           alt="Profile"
         />
         <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></span>
       </div>
 
       <div class="text-center">
-        <h1 class="text-xl font-bold">Dr Alexa Morgan</h1>
-        <p class="text-blue-100 text-sm">Neurologist</p>
+        <h1 class="text-xl font-bold">John Doe</h1>
+        <p class="text-blue-100 text-sm">Senior Product Designer at TechCorp</p>
         <p class="text-blue-100 mt-1 text-xs">
           <i class="fas fa-map-marker-alt mr-1"></i> San Francisco, CA
         </p>
@@ -910,7 +912,7 @@
     });
   }
 
-  function setupMobileBehavior(){
+ function setupMobileBehavior(){
   document.querySelectorAll('li[data-menu]').forEach(li=>{
     const btn = li.querySelector('.nav-btn'); // works for <a> or <button>
     if (!btn) return;
@@ -923,7 +925,6 @@
     });
   });
 }
-
   function setupKeyboardNav(){
     // open with Enter/Space, close with Escape
     document.querySelectorAll('li[data-menu] .nav-btn').forEach(btn=>{

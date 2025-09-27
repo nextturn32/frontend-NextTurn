@@ -45,6 +45,39 @@
 
 <style>
 
+  /* LEFT: side menu card + items (matches screenshot) */
+.side-card{
+  background:#fff; border:1px solid #e5e7eb; border-radius: .75rem;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.side-list{ padding:.75rem; }
+
+.side-item{
+  display:flex; align-items:center; gap:.65rem;
+  border:1px solid transparent; border-radius:.5rem;
+  padding:.55rem .6rem;
+  font-weight:600; font-size:14.5px;
+  color:#0f172a; text-decoration:none;
+  transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.side-item .si{ font-size:18px; line-height:1; color:inherit; }
+
+.side-item:hover{ background:#f8fafc; }
+
+.side-item.active{
+  background:#eef5ff;               /* light blue fill */
+  border-color:#cfe0ff;              /* soft blue border */
+  color:#2f78f0;                     /* blue text/icon */
+  box-shadow:0 0 0 3px rgba(47,120,240,.10) inset;
+}
+
+/* focus ring (keyboard) */
+.side-item:focus-visible{
+  outline: none;
+  box-shadow:0 0 0 3px rgba(47,120,240,.18);
+}
+
+
   /* Lock the page completely */
 html, body {
   height: 100%;
@@ -500,28 +533,30 @@ main.max-w-7xl.mx-auto.grid {
 
       <!-- Left navigation -->
       <section class="nt-card p-0">
-        <nav class="card rounded-xl mt-4">
-          <ul class="p-1" id="sideMenu">
-            <li>
-              <a class="side-item" href="#" data-key="home">
-                <i class="si fa-solid fa-house text-[18px] leading-none shrink-0" aria-hidden="true"></i>
-                Home Feed
-              </a>
-            </li>
-            <li>
-              <a class="mt-1 side-item" href="group.html" data-key="groups">
-                <i class="si fa-solid fa-people-group text-[18px] leading-none shrink-0" aria-hidden="true"></i>
-                My Groups
-              </a>
-            </li>
-            <li>
-              <a class="mt-1 side-item" href="#" data-key="saved">
-                <i class="si fa-solid fa-bookmark text-[18px] leading-none shrink-0" aria-hidden="true"></i>
-                Saved Posts
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <nav class="side-card mt-4">
+  <ul class="side-list" id="sideMenu">
+    <li>
+      <a class="side-item" href="Homepage.html" data-key="home">
+        <i class="si fa-solid fa-house" aria-hidden="true"></i>
+        Home Feed
+      </a>
+    </li>
+    <li>
+      <!-- default selected like the image -->
+      <a class="side-item active" href="group.html" data-key="groups">
+        <i class="si fa-solid fa-people-group" aria-hidden="true"></i>
+         Groups
+      </a>
+    </li>
+    <li>
+      <a class="side-item" href="savedposts.html" data-key="saved">
+        <i class="si fa-solid fa-bookmark" aria-hidden="true"></i>
+        Saved Posts
+      </a>
+    </li>
+  </ul>
+</nav>
+
       </section> <!-- ✅ fixed: closed section -->
     </aside>
 
@@ -534,14 +569,10 @@ main.max-w-7xl.mx-auto.grid {
           <div class="flex flex-wrap items-center gap-3 justify-between">
             <div>
               <h1 class="text-lg sm:text-xl font-semibold">Groups</h1>
-              <p class="text-slate-600 text-xs sm:text-sm">Find communities to learn, share and collaborate.</p>
+              
             </div>
             <div class="flex items-center gap-2">
-              <div class="hidden sm:flex items-center gap-2 seg">
-                <button class="seg-btn" data-sort="relevance" aria-pressed="true">Relevance</button>
-                <button class="seg-btn" data-sort="members" aria-pressed="false">Members</button>
-                <button class="seg-btn" data-sort="recent" aria-pressed="false">Recent</button>
-              </div>
+              
               <select id="sortSelect" class="sm:hidden px-2.5 py-2 rounded-xl border bg-white text-sm">
                 <option value="relevance">Relevance</option>
                 <option value="members">Most members</option>
@@ -558,13 +589,7 @@ main.max-w-7xl.mx-auto.grid {
             <button class="px-3 py-2 rounded-xl border bg-white hidden sm:inline-flex items-center gap-2" onclick="openCreateModal()">+ New group</button>
           </div>
 
-          <div class="mt-3 flex gap-2 flex-wrap">
-            <button class="chip" data-chip="design" aria-pressed="false" onclick="toggleChip(this)">Design</button>
-            <button class="chip" data-chip="engineering" aria-pressed="false" onclick="toggleChip(this)">Engineering</button>
-            <button class="chip" data-chip="startup" aria-pressed="false" onclick="toggleChip(this)">Startup</button>
-            <button class="chip" data-chip="education" aria-pressed="false" onclick="toggleChip(this)">Education</button>
-            <button class="chip" data-chip="ml" aria-pressed="false" onclick="toggleChip(this)">ML/AI</button>
-          </div>
+          
 
           <div class="mt-3">
             <div class="seg" role="tablist">
@@ -890,7 +915,7 @@ main.max-w-7xl.mx-auto.grid {
   <input id="coverFile" type="file" accept="image/*" class="hidden"/>
   <input id="avatarFile" type="file" accept="image/*" class="hidden"/>
 
-<script>
+<script> 
     function showPanel(li){
     const p=li.querySelector('.menu-panel'); if(!p) return;
     p.classList.remove('invisible','opacity-0','translate-y-1');
@@ -911,7 +936,9 @@ main.max-w-7xl.mx-auto.grid {
       document.querySelectorAll('li[data-menu].open').forEach(o=>{ if(o!==li) hidePanel(o) });
       showPanel(li);
     }
-  }
+  }  
+
+
 
   function toggleProfileMenu(){
     const menu=document.getElementById('profileMenu');
@@ -968,6 +995,25 @@ main.max-w-7xl.mx-auto.grid {
     });
   });
 }
+
+
+
+  //side menu
+  const sideMenuEl = document.getElementById('sideMenu');
+  sideMenuEl?.addEventListener('click', (e) => {
+    const link = e.target.closest('a.side-item');
+    if (!link) return;
+
+    e.preventDefault(); // cancel default
+    sideMenuEl.querySelectorAll('a.side-item')
+      .forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+    window.location.assign(link.href); // navigate explicitly
+  });
+
+
+
+
 
   function setupKeyboardNav(){
     // open with Enter/Space, close with Escape

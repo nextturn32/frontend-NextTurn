@@ -54,10 +54,34 @@
   }
   </script>
 
+  
+
+
+
   <!-- Font Awesome for navbar icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
+
+    /* Make left sidebar scrollable */
+aside.col-scroll {
+  height: calc(100vh - 24px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Hide scrollbar for WebKit browsers */
+aside.col-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Ensure the content inside the sidebar flows correctly */
+aside.col-scroll > * {
+  flex-shrink: 0;
+}
 
 
     
@@ -599,9 +623,9 @@ html, body {
               </button>
             </div>
             <div class="mt-3 flex flex-col items-center gap-2">
-              <p id="profileUser" class="text-slate-500">@Sakshi</p>
+              <p id="profileUser" class="text-slate-500">@alexamorgan</p>
               <div class="flex items-center gap-2">
-                <h2 id="profileName" class="text-xl font-bold mb-2">DR Alexa Morgan</h2>
+                <h2 id="profileName" class="text-xl font-bold mb-2">Dr. Alexa Morgan</h2>
                 <!-- Removed the pencil icon beside the name -->
               </div>
               <div id="designationRow" class="meta-row mb-1"></div>
@@ -787,7 +811,7 @@ html, body {
                   <button id="sPrev" class="nav-arrow" aria-label="Previous ad" title="Previous">&lt;</button>
                   <button id="sNext" class="nav-arrow ml-1" aria-label="Next ad" title="Next">&gt;</button>
                 </div>
-              </div>
+              </div> 
             </div>
             <div class="h-px bg-slate-200 mb-3"></div>
             <div id="sCard">
@@ -873,7 +897,7 @@ html, body {
                 <a href="#" class="link text-[14px] inline-block mt-2">Enroll</a>
               </div>
             </div>
-          </section>
+          </section> 
 
           <!-- Small Sponsored -->
           <section class="card rounded-xl p-4 nt-shadow">
@@ -1091,17 +1115,17 @@ html, body {
 
     /* ====== STATE ====== */
     const state={
-      name:'DR Alexa Morgan',
+      name:'Dr. Alexa Morgan',
       username:'@alexa morgan',
       avatar:'https://i.pravatar.cc/160?img=5',
       cover:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
-      designations:['MBBS','Neurologist'],
+      designations:['MBBS',' MD','Neurologist'],
       followers:1248,
       following:321,
       connections:560,
       bio:['I am Passionate Dr with a great Experince '],
       experience:['Greengroves Hospital , UK'],
-      education:['MBBS'],
+      education:['MBBS ','MD','Neurology'],
       skills:['Neurologist','MBBS'],
       contact:['Email: alexamorgan@example.com','Phone: +91-90000-00000'],
       customTabs:[],
